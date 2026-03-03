@@ -1,17 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import DashboardLayout from "./pages/Dashboard/DashboardLayout";
+import DashboardHome from "./pages/Dashboard/DashboardHome";
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-     <h1 class="text-3xl text-yellow-400 font-bold underline">
-    Hello world!
-  </h1>
-    </>
+    <div className="App">
+      {/* Dashboard Layout with Sidebar + Topbar */}
+      <DashboardLayout>
+        <DashboardHome />
+      </DashboardLayout>
+    </div>
   )
 }
 
