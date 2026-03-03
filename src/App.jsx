@@ -1,10 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import About from "./pages/About.jsx";
+import PublicLayout from "./layouts/PublicLayout";
+import DashboardLayout from "./pages/Dashboard/DashboardLayout";
+
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
-import Services from "./pages/Services.jsx";
-import CaseStudies from "./pages/CaseStudies.jsx";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import CaseStudies from "./pages/CaseStudies";
+import DashboardHome from "./pages/Dashboard/DashboardHome";
+import Analytics from "./pages/Dashboard/Analytics";
+import Profile from "./pages/Dashboard/Profile";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -25,14 +30,22 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar />
-
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/case-studies" element={<CaseStudies />} />
+        {/* Public Layout */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
+        </Route>
+
+        {/* Dashboard Layout */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+        
       </Routes>
     </BrowserRouter>
   );

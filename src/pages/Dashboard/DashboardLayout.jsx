@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import { Outlet } from "react-router-dom";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -13,7 +14,7 @@ const DashboardLayout = ({ children }) => {
         <Topbar toggle={() => setIsOpen(!isOpen)} />
         
         <main className="flex-1 p-6 overflow-y-auto">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
