@@ -10,20 +10,17 @@ export default function Navbar() {
     { name: "About Us", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
-    { name: "Blog", path: "/blog" },   
-    { name: "Pricing", path: "/pricing" },   
+    { name: "FAQ", path: "/faq" },
+    { name: "Blog", path: "/blog" },
+    { name: "Pricing", path: "/pricing" },
     { name: "Contact", path: "/contact" },
   ];
 
   return (
-    <nav className="fixed w-full z-50 bg-white shadow-md">
+    <nav className="fixed w-full z-50 bg-gray-800 shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold text-black hover:text-[#800000] transition"
-        >
+        <Link to="/" className="text-2xl font-bold text-[#8F00FF] transition">
           Neurocelix AI
         </Link>
 
@@ -33,18 +30,16 @@ export default function Navbar() {
             <Link
               key={index}
               to={link.path}
-              className="text-gray-700 hover:text-[#800000] transition duration-300 relative group"
+              className="text-white hover:text-[#8F00FF] transition duration-300 relative group"
             >
               {link.name}
-              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#800000] transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#8F00FF] transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
 
-        
-
           <Link
             to="/auth"
-            className="px-4 py-2 rounded-lg bg-black text-white hover:bg-[#800000] transition duration-300"
+            className="px-4 py-2 rounded-lg bg-black text-white hover:bg-[#8F00FF] transition duration-300"
           >
             Login
           </Link>

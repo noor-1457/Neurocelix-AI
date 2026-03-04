@@ -11,9 +11,9 @@ const About = () => {
         className="text-center mb-16"
       >
         <h1 className="text-5xl font-bold mb-4">
-          About <span className="text-[#800000]">Neurocelix</span>
+          About <span className="text-[#8F00FF]">Neurocelix</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-600">
+        <p className="max-w-2xl mx-auto text-gray-600 dark:text-black">
           We build AI-powered automation systems and scalable digital solutions
           to help businesses grow smarter and faster.
         </p>
@@ -23,10 +23,10 @@ const About = () => {
       <div className="grid md:grid-cols-2 gap-10 mb-20">
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-[#1a1a1a]
+          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-gray-800
                      transition duration-300 border border-gray-200"
         >
-          <h2 className="text-2xl font-semibold mb-4 text-[#800000]">
+          <h2 className="text-2xl font-semibold mb-4 text-[#8F00FF]">
             Our Mission
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
@@ -37,10 +37,10 @@ const About = () => {
 
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-[#1a1a1a]
+          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-gray-800
                      transition duration-300 border border-gray-200"
         >
-          <h2 className="text-2xl font-semibold mb-4 text-[#800000]">
+          <h2 className="text-2xl font-semibold mb-4 text-[#8F00FF]">
             Our Vision
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
@@ -74,10 +74,10 @@ const About = () => {
               viewport={{ once: true }}
               className="flex items-center gap-6"
             >
-              <div className="text-[#800000] font-bold text-xl">
+              <div className="text-[#8F00FF] font-bold text-xl">
                 {item.year}
               </div>
-              <div className="flex-1 border-l-2 border-[#800000] pl-6 text-gray-600 dark:text-gray-600">
+              <div className="flex-1 border-l-2 border-[#8F00FF] pl-6 text-gray-600 dark:text-black">
                 {item.text}
               </div>
             </motion.div>
@@ -95,7 +95,7 @@ const About = () => {
               <motion.div
                 key={index}
                 whileHover={{ y: -10 }}
-                className="p-8 rounded-2xl shadow-lg bg-white dark:bg-[#1a1a1a]
+                className="p-8 rounded-2xl shadow-lg bg-white dark:bg-gray-800
                            text-center transition duration-300"
               >
                 {/* <div className="w-24 h-24 mx-auto rounded-full bg-gray-300 mb-6"></div> */}

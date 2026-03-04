@@ -15,7 +15,7 @@ import BlogDetail from "./pages/BlogDetail";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
-
+import FAQ from "./pages/FAQ";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -48,8 +48,8 @@ function App() {
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact" element={<Contact />} />
-           <Route path="/auth" element={<AuthPage />} />
-
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/faq" element={<FAQ />} />
         </Route>
 
         {/* Dashboard Layout */}
@@ -58,7 +58,6 @@ function App() {
           <Route path="analytics" element={<Analytics />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        
       </Routes>
     </BrowserRouter>
   );

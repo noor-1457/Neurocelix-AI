@@ -3,7 +3,6 @@ import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
 
-
 function StatCard({ icon, value, label }) {
   const controls = useAnimation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
@@ -50,20 +49,18 @@ function Home() {
   const is404 = location.pathname !== "/";
 
   const [dark, setDark] = useState(
-    localStorage.getItem("dark") === "true" ? true : false
+    localStorage.getItem("dark") === "true" ? true : false,
   );
 
- 
-
-  // Apply/remove dark theme
-  useEffect(() => {
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("dark", dark);
-  }, [dark]);
+  // // Apply/remove dark theme
+  // useEffect(() => {
+  //   if (dark) {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  //   localStorage.setItem("dark", dark);
+  // }, [dark]);
 
   // Typing Animation
   const words = ["AI Automation", "Smart Analytics", "Future Technology"];
@@ -98,12 +95,9 @@ function Home() {
     );
   }
 
-
-
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* DARK MODE TOGGLE */}
-      <div className="fixed top-5 right-5 z-50">
+      {/* <div className="fixed top-5 right-5 z-50">
         <button
           onClick={() => setDark(!dark)}
           className="px-4 py-2 bg-gray-500 hover:bg-[#800000] 
@@ -111,8 +105,7 @@ function Home() {
         >
           {dark ? "☀" : "🌙"}
         </button>
-      </div>
-
+      </div> */}
       {/* HERO */}
       <section
         className="relative h-screen flex justify-center items-center 
@@ -126,9 +119,7 @@ function Home() {
 
         <div className="relative z-10 max-w-3xl">
           <h1 className="text-5xl mb-5 font-bold">{text}</h1>
-          <p className="text-lg">
-            Next generation AI powered SaaS platform.
-          </p>
+          <p className="text-lg">Next generation AI powered SaaS platform.</p>
 
           <div className="mt-5">
             <button
@@ -149,9 +140,8 @@ function Home() {
           </div>
         </div>
       </section>
-
       {/* SERVICES */}
-      <section className="flex justify-center gap-10 p-20 flex-wrap bg-white dark:bg-[#111] text-black dark:text-white">
+      <section className="flex justify-center gap-10 p-20 flex-wrap bg-white dark:bg-gray-800 text-black dark:text-white">
         {[
           {
             img: "https://cdn-icons-png.flaticon.com/512/4712/4712035.png",
@@ -171,16 +161,15 @@ function Home() {
             className="w-[280px] bg-white/10 backdrop-blur-xl 
             p-10 rounded-2xl text-center shadow-xl 
             transition duration-300 hover:-translate-y-3 
-            hover:bg-[#800000] hover:text-white"
+            hover:bg-[#8F00FF] hover:text-white"
           >
             <img src={item.img} alt="" className="w-20 mx-auto mb-5" />
             <h3 className="text-xl font-semibold">{item.title}</h3>
           </div>
         ))}
       </section>
-
       {/* STATS */}
-      <section className="flex justify-center gap-12 p-20 flex-wrap bg-gray-100 dark:bg-[#1a1a1a] text-black dark:text-white">
+      <section className="flex justify-center gap-12 p-20 flex-wrap bg-gray-100 dark:bg-gray-800 text-black dark:text-white">
         {[
           { icon: "👥", value: 1000, label: "Users" },
           { icon: "📁", value: 250, label: "Projects" },
@@ -189,7 +178,6 @@ function Home() {
           <StatCard key={idx} {...stat} />
         ))}
       </section>
-
       {/* VIDEO MODAL */}
       {open && (
         <div
