@@ -10,6 +10,12 @@ import CaseStudies from "./pages/CaseStudies";
 import DashboardHome from "./pages/Dashboard/DashboardHome";
 import Analytics from "./pages/Dashboard/Analytics";
 import Profile from "./pages/Dashboard/Profile";
+import BlogList from "./pages/BlogList";
+import BlogDetail from "./pages/BlogDetail";
+import Pricing from "./pages/Pricing";
+import Contact from "./pages/Contact";
+import AuthPage from "./pages/AuthPage";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -34,9 +40,16 @@ function App() {
         {/* Public Layout */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/blog" element={<BlogList />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/contact" element={<Contact />} />
+           <Route path="/auth" element={<AuthPage />} />
+
         </Route>
 
         {/* Dashboard Layout */}

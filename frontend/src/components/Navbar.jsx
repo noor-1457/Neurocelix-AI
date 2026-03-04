@@ -10,8 +10,8 @@ export default function Navbar() {
     { name: "About Us", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Case Studies", path: "/case-studies" },
-    { name: "Blog", path: "/blog" },
-    
+    { name: "Blog", path: "/blog" },   
+    { name: "Pricing", path: "/pricing" },   
     { name: "Contact", path: "/contact" },
   ];
 
@@ -43,7 +43,7 @@ export default function Navbar() {
         
 
           <Link
-            to="/login"
+            to="/auth"
             className="px-4 py-2 rounded-lg bg-black text-white hover:bg-[#800000] transition duration-300"
           >
             Login
