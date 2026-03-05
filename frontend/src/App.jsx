@@ -15,7 +15,8 @@ import BlogDetail from "./pages/BlogDetail";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
-
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <AuthProvider>
       <Routes>
         {/* Public Layout */}
         <Route element={<PublicLayout />}>
@@ -48,18 +50,24 @@ function App() {
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact" element={<Contact />} />
-           <Route path="/auth" element={<AuthPage />} />
-
+          <Route path="/auth" element={<AuthPage />} />
         </Route>
 
         {/* Dashboard Layout */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<DashboardHome />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

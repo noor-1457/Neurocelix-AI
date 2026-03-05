@@ -1,11 +1,40 @@
-import React, { useState } from "react";
+// src/pages/AuthPage.jsx
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState(""); // for signup
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // for signup
+  const [error, setError] = useState("");
+
+  const { login, signup } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      if (isLogin) {
+        // Login
+        await login(email, password);
+      } else {
+        // Signup
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          return;
+        }
+        await signup(name, email, password);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-4">
-      
       <div className="bg-white mt-5 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-500">
 
         {/* Left Side */}
@@ -32,32 +61,46 @@ const AuthPage = () => {
             {isLogin ? "Login" : "Sign Up"}
           </h2>
 
-          <form className="space-y-4">
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {!isLogin && (
               <input
                 type="text"
                 placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
               />
             )}
 
             <input
               type="email"
               placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
             />
 
             <input
               type="password"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
             />
 
             {!isLogin && (
               <input
                 type="password"
                 placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
               />
             )}
 
