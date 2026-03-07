@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import * as Icons from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 const PublicServices = () => {
   const [services, setServices] = useState([]);
@@ -31,7 +33,6 @@ const PublicServices = () => {
 
   return (
     <div className="pt-28 px-6 md:px-20 bg-gradient-to-br from-[#DDA0DD] to-[#8F00FF] min-h-screen pb-20">
-
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: -40 }}
@@ -44,53 +45,54 @@ const PublicServices = () => {
 
       {/* Services Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {services.map((service, index) => {
+          const Icon = Icons[service.icon]; // ✅ correct place
 
-        {services.map((service, index) => (
-          <motion.div
-            key={service._id}
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300"
-          >
-            
-            {/* Category Badge */}
-            <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
-              {service.category}
-            </span>
+          return (
+            <motion.div
+              key={service._id}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              {/* Category Badge */}
+              <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                {service.category}
+              </span>
 
-            {/* Icon */}
-            <div className="w-14 h-14 flex items-center justify-center bg-purple-100 rounded-full text-2xl mt-4 mb-4">
-              {service.icon}
-            </div>
+              {/* Icon */}
+              <div className="w-14 h-14 flex items-center justify-center bg-purple-100 rounded-full mt-4 mb-4">
+                {Icon ? <Icon size={40} className="text-pink-600" /> : null}
+              </div>
 
-            {/* Title */}
-            <h3 className="text-xl font-bold mb-3 text-gray-800">
-              {service.title}
-            </h3>
+              {/* Title */}
+              <h3 className="text-xl font-bold mb-3 text-gray-800">
+                {service.title}
+              </h3>
 
-            {/* Description */}
-            <p className="text-gray-600 mb-5 text-sm">
-              {service.description}
-            </p>
+              {/* Description */}
+              <p className="text-gray-600 mb-5 text-sm">
+                {service.description}
+              </p>
 
-            {/* Features */}
-            <ul className="space-y-2">
-              {service.features.map((feature, i) => (
-                <li
-                  key={i}
-                  className="flex items-center text-gray-600 text-sm gap-2"
-                >
-                  <span className="text-purple-600 font-bold">✔</span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
-
+              {/* Features */}
+              <ul className="space-y-2">
+                {service.features.map((feature, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center text-gray-600 text-sm gap-2"
+                  >
+                    <CheckCircle size={16} className="text-purple-600" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
