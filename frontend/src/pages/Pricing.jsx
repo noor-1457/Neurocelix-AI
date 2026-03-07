@@ -1,34 +1,26 @@
-import React, { useState } from "react";
-// import { pricingPlans } from "./pricingData";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
 
 const Pricing = () => {
-   const pricingPlans = [
-  {
-    id: 1,
-    name: "Basic",
-    monthly: 29,
-    yearly: 290,
-    features: ["1 Project", "5 GB Storage", "Basic Support"],
-  },
-  {
-    id: 2,
-    name: "Pro",
-    monthly: 59,
-    yearly: 590,
-    features: ["10 Projects", "50 GB Storage", "Priority Support"],
-  },
-  {
-    id: 3,
-    name: "Enterprise",
-    monthly: 99,
-    yearly: 990,
-    features: ["Unlimited Projects", "500 GB Storage", "24/7 Support"],
-  },
-];
+  const [pricingPlans, setPricingPlans] = useState([]);
   const [isYearly, setIsYearly] = useState(false);
 
   const togglePricing = () => setIsYearly(!isYearly);
+
+  // API Call
+  useEffect(() => {
+    const fetchPricing = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/pricing");
+        setPricingPlans(res.data);
+      } catch (error) {
+        console.error("Pricing API Error:", error);
+      }
+    };
+
+    fetchPricing();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
@@ -36,9 +28,10 @@ const Pricing = () => {
         Pricing Plans
       </h1>
 
-      {/* Toggle Monthly / Yearly */}
+      {/* Toggle */}
       <div className="flex justify-center mb-12">
         <span className="mr-4 text-gray-700 dark:text-gray-300">Monthly</span>
+
         <button
           onClick={togglePricing}
           className={`relative inline-flex items-center h-6 rounded-full w-12 transition-colors ${
@@ -51,6 +44,7 @@ const Pricing = () => {
             }`}
           ></span>
         </button>
+
         <span className="ml-4 text-gray-700 dark:text-gray-300">Yearly</span>
       </div>
 
@@ -58,16 +52,20 @@ const Pricing = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {pricingPlans.map((plan) => (
           <motion.div
-            key={plan.id}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-2xl transition-shadow cursor-pointer"
+            key={plan._id}
+            className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-2xl transition-shadow cursor-pointer ${
+              plan.highlighted ? "border-2 border-blue-600 scale-105" : ""
+            }`}
             whileHover={{ scale: 1.05 }}
           >
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
               {plan.name}
             </h2>
+
             <p className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-white">
-              ${isYearly ? plan.yearly : plan.monthly}
+              ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
             </p>
+
             <p className="text-gray-500 dark:text-gray-300 mb-6">
               {isYearly ? "per year" : "per month"}
             </p>
@@ -79,37 +77,40 @@ const Pricing = () => {
                 </li>
               ))}
             </ul>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors">
+
+            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-md transition-colors">
               Choose Plan
             </button>
           </motion.div>
         ))}
       </div>
 
-      {/* Feature Comparison Table */}
+      {/* Feature Table */}
       <div className="mt-16 max-w-5xl mx-auto overflow-x-auto">
         <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
               <th className="py-3 px-6 text-left">Feature</th>
+
               {pricingPlans.map((plan) => (
-                <th key={plan.id} className="py-3 px-6 text-center">
+                <th key={plan._id} className="py-3 px-6 text-center">
                   {plan.name}
                 </th>
               ))}
             </tr>
           </thead>
+
           <tbody>
-            {/* Assuming all features appear in all plans for simplicity */}
-            {["Projects", "Storage", "Support"].map((feature, idx) => (
+            {pricingPlans[0]?.features.map((feature, idx) => (
               <tr
                 key={idx}
                 className="border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
               >
                 <td className="py-3 px-6">{feature}</td>
+
                 {pricingPlans.map((plan) => (
-                  <td key={plan.id} className="py-3 px-6 text-center">
-                    {plan.features[idx]}
+                  <td key={plan._id} className="py-3 px-6 text-center">
+                    {plan.features[idx] || "-"}
                   </td>
                 ))}
               </tr>

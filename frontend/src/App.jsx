@@ -5,7 +5,7 @@ import DashboardLayout from "./pages/Dashboard/DashboardLayout";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Services from "./pages/Services";
+import PublicServices from "./pages/PublicServices";
 import CaseStudies from "./pages/CaseStudies";
 import DashboardHome from "./pages/Dashboard/DashboardHome";
 import Analytics from "./pages/Dashboard/Analytics";
@@ -17,6 +17,11 @@ import Contact from "./pages/Contact";
 import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import FAQ from "./pages/FAQ";
+import Users from "./pages/Dashboard/Users";
+import Blogs from "./pages/Dashboard/Blogs";
+import Contacts from "./pages/Dashboard/Contacts";
+import Services from "./pages/Dashboard/Services";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,36 +42,41 @@ function App() {
 
   return (
     <BrowserRouter>
-    <AuthProvider>
-      <Routes>
-        {/* Public Layout */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/blog" element={<BlogList />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/auth" element={<AuthPage />} />
-        </Route>
+      <AuthProvider>
+        <Routes>
+          {/* Public Layout */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<PublicServices />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/faq" element={<FAQ />} />
+          </Route>
 
-        {/* Dashboard Layout */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<DashboardHome />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
-      </Routes>
+          {/* Dashboard Layout */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="users" element={<Users />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="contacts" element={<Contacts />} />
+            <Route path="services-private" element={<Services />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

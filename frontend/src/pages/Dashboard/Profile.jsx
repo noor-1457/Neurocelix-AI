@@ -1,18 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../context/AuthContext";
 
 const Profile = () => {
+  const { profile, updateProfile } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
-    name: "Rukhsar Yaqoob",
-    email: "rukhsar@example.com",
-    company: "Codecelix",
-    role: "Frontend Developer",
+    name: "",
+    email: "",
     password: "",
     confirmPassword: ""
   });
 
+  // Load profile data into form
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        name: profile.name || "",
+        email: profile.email || "",
+        password: "",
+        confirmPassword: ""
+      });
+    }
+  }, [profile]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    try {
+
+      if (formData.password && formData.password !== formData.confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      await updateProfile({
+        name: formData.name,
+        email: formData.email
+      });
+
+      alert("Profile updated successfully");
+
+    } catch (err) {
+      alert("Profile update failed");
+    }
   };
 
   return (
@@ -30,15 +63,11 @@ const Profile = () => {
             alt="profile"
             className="w-28 h-28 rounded-full object-cover border-4 border-purple-500"
           />
-          <button className="absolute bottom-0 right-0 bg-purple-600 text-white text-xs px-2 py-1 rounded-full">
-            Edit
-          </button>
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold">{formData.name}</h2>
-          <p className="text-gray-500">{formData.role}</p>
-          <p className="text-sm text-gray-400">{formData.company}</p>
+          <h2 className="text-2xl font-bold">{profile?.name}</h2>
+          <p className="text-gray-500">{profile?.email}</p>
         </div>
       </motion.div>
 
@@ -51,6 +80,7 @@ const Profile = () => {
         <h3 className="text-xl font-semibold mb-6">Edit Profile</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           <input
             type="text"
             name="name"
@@ -69,29 +99,14 @@ const Profile = () => {
             className="p-3 rounded-lg border dark:bg-gray-900"
           />
 
-          <input
-            type="text"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-            placeholder="Company"
-            className="p-3 rounded-lg border dark:bg-gray-900"
-          />
-
-          <input
-            type="text"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            placeholder="Role"
-            className="p-3 rounded-lg border dark:bg-gray-900"
-          />
         </div>
 
+        {/* Password section */}
         <div className="mt-8">
           <h4 className="text-lg font-semibold mb-4">Change Password</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <input
               type="password"
               name="password"
@@ -109,16 +124,19 @@ const Profile = () => {
               placeholder="Confirm Password"
               className="p-3 rounded-lg border dark:bg-gray-900"
             />
+
           </div>
         </div>
 
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={handleSubmit}
           className="mt-8 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-md"
         >
           Save Changes
         </motion.button>
+
       </motion.div>
     </div>
   );

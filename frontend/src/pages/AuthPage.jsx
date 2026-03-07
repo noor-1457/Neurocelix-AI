@@ -34,7 +34,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 p-4">
       <div className="bg-white mt-5 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-500">
 
         {/* Left Side */}
