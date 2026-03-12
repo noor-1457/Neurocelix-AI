@@ -81,11 +81,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               Analytics
             </Link>
 
-            <Link to="/dashboard/profile" onClick={handleClose} className={linkClass("/dashboard/profile")}>
-              <User size={20} />
-              Profile
-            </Link>
-
             <Link to="/dashboard/blogs" onClick={handleClose} className={linkClass("/dashboard/blogs")}>
               <FileText size={20} />
               Blogs

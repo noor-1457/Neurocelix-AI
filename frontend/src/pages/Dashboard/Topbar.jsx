@@ -1,8 +1,10 @@
 import React from "react";
 import { ChevronLeft, Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Topbar = ({ setIsOpen }) => {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-white shadow-sm px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-30">
 
@@ -34,10 +36,12 @@ const Topbar = ({ setIsOpen }) => {
       {/* Right Section */}
       <div className="flex items-center gap-3">
 
+        {/* Profile Image */}
         <img
           src="https://i.pravatar.cc/40"
           alt="profile"
           className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover cursor-pointer border"
+          onClick={() => navigate("/dashboard/profile")}
         />
 
       </div>
