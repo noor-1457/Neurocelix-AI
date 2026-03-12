@@ -24,70 +24,70 @@ async function seed() {
 
   // Services
   await Service.insertMany([
-    {
-      title: "AI Automation",
-      description:
-        "Automate your business processes with cutting-edge AI solutions that save time and reduce costs.",
-      icon: "🤖",
-      features: [
-        "Process Automation",
-        "Machine Learning",
-        "Natural Language Processing",
-        "Predictive Analytics",
-      ],
-      category: "AI",
-    },
-    {
-      title: "Cloud Solutions",
-      description:
-        "Scalable cloud infrastructure and migration services for modern enterprises.",
-      icon: "☁️",
-      features: ["Cloud Migration", "DevOps", "Serverless", "Load Balancing"],
-      category: "Cloud",
-    },
-    {
-      title: "Data Analytics",
-      description:
-        "Transform raw data into actionable insights with our advanced analytics platform.",
-      icon: "📊",
-      features: [
-        "Real-time Analytics",
-        "Data Visualization",
-        "BI Reports",
-        "Data Warehousing",
-      ],
-      category: "Data",
-    },
-    {
-      title: "Cybersecurity",
-      description:
-        "Protect your digital assets with enterprise-grade security solutions.",
-      icon: "🔒",
-      features: [
-        "Threat Detection",
-        "Penetration Testing",
-        "Compliance",
-        "Security Audits",
-      ],
-      category: "Security",
-    },
-    {
-      title: "Mobile Development",
-      description:
-        "Build powerful cross-platform mobile applications for iOS and Android.",
-      icon: "📱",
-      features: ["React Native", "Flutter", "iOS", "Android"],
-      category: "Development",
-    },
-    {
-      title: "Web Development",
-      description:
-        "Create stunning, high-performance web applications with modern technologies.",
-      icon: "🌐",
-      features: ["React/Next.js", "Node.js", "Performance Optimization", "SEO"],
-      category: "Development",
-    },
-  ]);
+  {
+    title: "AI Automation",
+    description:
+      "Automate your business processes with cutting-edge AI solutions that save time and reduce costs.",
+    icon: "Bot",
+    features: [
+      "Process Automation",
+      "Machine Learning",
+      "Natural Language Processing",
+      "Predictive Analytics",
+    ],
+    category: "AI",
+  },
+  {
+    title: "Cloud Solutions",
+    description:
+      "Scalable cloud infrastructure and migration services for modern enterprises.",
+    icon: "Cloud",
+    features: ["Cloud Migration", "DevOps", "Serverless", "Load Balancing"],
+    category: "Cloud",
+  },
+  {
+    title: "Data Analytics",
+    description:
+      "Transform raw data into actionable insights with our advanced analytics platform.",
+    icon: "BarChart3",
+    features: [
+      "Real-time Analytics",
+      "Data Visualization",
+      "BI Reports",
+      "Data Warehousing",
+    ],
+    category: "Data",
+  },
+  {
+    title: "Cybersecurity",
+    description:
+      "Protect your digital assets with enterprise-grade security solutions.",
+    icon: "ShieldCheck",
+    features: [
+      "Threat Detection",
+      "Penetration Testing",
+      "Compliance",
+      "Security Audits",
+    ],
+    category: "Security",
+  },
+  {
+    title: "Mobile Development",
+    description:
+      "Build powerful cross-platform mobile applications for iOS and Android.",
+    icon: "Smartphone",
+    features: ["React Native", "Flutter", "iOS", "Android"],
+    category: "Development",
+  },
+  {
+    title: "Web Development",
+    description:
+      "Create stunning, high-performance web applications with modern technologies.",
+    icon: "Globe",
+    features: ["React/Next.js", "Node.js", "Performance Optimization", "SEO"],
+    category: "Development",
+  },
+]);
 
   // Pricing
   await Pricing.insertMany([
