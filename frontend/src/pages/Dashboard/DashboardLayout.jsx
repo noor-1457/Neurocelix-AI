@@ -8,10 +8,10 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900 transition-all">
-      <Sidebar isOpen={isOpen} />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       
       <div className="flex-1 flex flex-col">
-        <Topbar toggle={() => setIsOpen(!isOpen)} />
+        <Topbar setIsOpen={setIsOpen} />
         
         <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />

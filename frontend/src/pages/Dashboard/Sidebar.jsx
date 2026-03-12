@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import {
   Home,
@@ -11,67 +10,116 @@ import {
   CircleUserRound,
   Box,
   BarChart3,
+  X
 } from "lucide-react";
 
-const Sidebar = ({ isOpen }) => {
-
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const { logout, profile } = useContext(AuthContext);
+  const location = useLocation();
 
-  const linkClass =
-    "flex items-center font-medium gap-3 px-3 py-2 rounded-lg transition-all duration-300 hover:bg-purple-100 hover:text-purple-600";
-
-  // agar admin nahi hai to sidebar hide
   if (profile?.role !== "admin") return null;
 
-  return (
-    <motion.div
-      animate={{ width: isOpen ? 250 : 80 }}
-      className="bg-white shadow-lg h-full p-4 transition-all"
-    >
-      <Link to="/">
-        <h2 className="text-xl font-bold mb-8 text-purple-600 cursor-pointer">
-          {isOpen ? "Codecelix" : "CC"}
-        </h2>
-      </Link>
+  const linkClass = (path) =>
+    `flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-all duration-300
+    ${
+      location.pathname === path
+        ? "bg-purple-100 text-purple-600"
+        : "hover:bg-purple-100 hover:text-purple-600"
+    }`;
 
-      <nav className="space-y-2">
-        <Link to="/dashboard" className={linkClass}>
-          <Home size={20} />
-          {isOpen && "Overview"}
-        </Link>
-        <Link to="/dashboard/analytics" className={linkClass}>
-          <BarChart2 size={20} />
-          {isOpen && "Analytics"}
-        </Link>
-        <Link to="/dashboard/profile" className={linkClass}>
-          <User size={20} />
-          {isOpen && "Profile"}
-        </Link>
-        <Link to="/dashboard/blogs" className={linkClass}>
-          <FileText size={20} />
-          {isOpen && "Blogs"}
-        </Link>
-        <Link to="/dashboard/services-private" className={linkClass}>
-          <Box size={20} />
-          {isOpen && "Services"}
-        </Link>
-        <Link to="/dashboard/case-studies" className={linkClass}>
-          <BarChart3 size={20} />
-          {isOpen && "Case Studies"}
-        </Link>
-        <Link to="/dashboard/contacts" className={linkClass}>
-          <CircleUserRound size={20} />
-          {isOpen && "Contacts"}
-        </Link>
-        <button
-          onClick={logout}
-          className="flex items-center px-3 py-2 rounded-lg text-red-500 hover:bg-red-100 transition-all duration-300"
-        >
-          <LogOut size={20} />
-          {isOpen && "Logout"}
-        </button>
-      </nav>
-    </motion.div>
+  const handleClose = () => {
+    if (window.innerWidth < 1024) {
+      setIsOpen(false);
+    }
+  };
+
+  return (
+    <>
+      {/* Overlay (mobile only) */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed lg:static top-0 left-0 h-screen w-[250px] bg-white shadow-lg z-50
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
+      >
+        <div className="flex flex-col h-full p-4">
+
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/" onClick={handleClose}>
+              <h2 className="text-xl font-bold text-purple-600">
+                Codecelix
+              </h2>
+            </Link>
+
+            <button
+              className="lg:hidden"
+              onClick={() => setIsOpen(false)}
+            >
+              <X size={22} />
+            </button>
+          </div>
+
+          {/* Menu */}
+          <nav className="flex flex-col gap-1 flex-1 overflow-y-auto">
+
+            <Link to="/dashboard" onClick={handleClose} className={linkClass("/dashboard")}>
+              <Home size={20} />
+              Overview
+            </Link>
+
+            <Link to="/dashboard/analytics" onClick={handleClose} className={linkClass("/dashboard/analytics")}>
+              <BarChart2 size={20} />
+              Analytics
+            </Link>
+
+            <Link to="/dashboard/profile" onClick={handleClose} className={linkClass("/dashboard/profile")}>
+              <User size={20} />
+              Profile
+            </Link>
+
+            <Link to="/dashboard/blogs" onClick={handleClose} className={linkClass("/dashboard/blogs")}>
+              <FileText size={20} />
+              Blogs
+            </Link>
+
+            <Link to="/dashboard/services-private" onClick={handleClose} className={linkClass("/dashboard/services-private")}>
+              <Box size={20} />
+              Services
+            </Link>
+
+            <Link to="/dashboard/case-studies" onClick={handleClose} className={linkClass("/dashboard/case-studies")}>
+              <BarChart3 size={20} />
+              Case Studies
+            </Link>
+
+            <Link to="/dashboard/contacts" onClick={handleClose} className={linkClass("/dashboard/contacts")}>
+              <CircleUserRound size={20} />
+              Contacts
+            </Link>
+
+          </nav>
+
+          {/* Logout */}
+          <button
+            onClick={logout}
+            className="flex items-center gap-3 px-3 py-2 mt-4 rounded-lg text-red-500 hover:bg-red-100 transition-all duration-300"
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
+
+        </div>
+      </aside>
+    </>
   );
 };
 
