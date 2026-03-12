@@ -10,7 +10,9 @@ export const AuthProvider = ({ children }) => {
 
   // Auth state
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +29,9 @@ export const AuthProvider = ({ children }) => {
   const loadProfile = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/auth/profile");
+
       setProfile(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data)); // save user including role
       setIsAuthenticated(true);
     } catch (err) {
       console.error(err);
@@ -58,12 +62,16 @@ export const AuthProvider = ({ children }) => {
       );
 
       const token = res.data.token;
+      const user = res.data.user;
 
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user)); // save user including role
       setToken(token);
+      setProfile(user);
       setAxiosToken(token);
+      setIsAuthenticated(true);
 
-      await loadProfile();
+      console.log("Logged in user:", user); // ✅ check role in console
 
       navigate("/dashboard");
     } catch (err) {
@@ -81,12 +89,16 @@ export const AuthProvider = ({ children }) => {
       );
 
       const token = res.data.token;
+      const user = res.data.user;
 
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       setToken(token);
+      setProfile(user);
       setAxiosToken(token);
+      setIsAuthenticated(true);
 
-      await loadProfile();
+      console.log("Signed up user:", user); // ✅ check role in console
 
       navigate("/dashboard");
     } catch (err) {
@@ -104,6 +116,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       setProfile(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data)); // update localStorage
     } catch (err) {
       console.error(err);
       throw err;
@@ -113,6 +126,7 @@ export const AuthProvider = ({ children }) => {
   // Logout
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
     setProfile(null);
     setIsAuthenticated(false);

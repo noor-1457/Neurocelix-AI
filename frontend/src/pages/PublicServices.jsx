@@ -21,15 +21,14 @@ const PublicServices = () => {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-2xl font-semibold animate-pulse">
-          Loading Services...
-        </h1>
-      </div>
-    );
-  }
+ if (loading) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-gray-500 text-lg">Loading...</p>
+    </div>
+  );
+}
 
   return (
     <div className="pt-28 px-6 md:px-20 bg-gradient-to-br from-[#DDA0DD] to-[#8F00FF] min-h-screen pb-20">

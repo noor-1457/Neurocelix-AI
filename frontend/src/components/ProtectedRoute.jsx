@@ -1,22 +1,30 @@
 // src/components/ProtectedRoute.jsx
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { isAuthenticated, profile, loading } = useContext(AuthContext);
 
-  // Loading check, optional - show nothing or spinner
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+        <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading...</p>
+      </div>
+    );
   }
 
-  // If user not authenticated, redirect to login
+  // login nahi hai
   if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/auth" />;
   }
 
-  // Else render the children components
+  // agar user hai to home bhej do
+  if (profile?.role !== "admin") {
+    return <Navigate to="/" />;
+  }
+
   return children;
 };
 

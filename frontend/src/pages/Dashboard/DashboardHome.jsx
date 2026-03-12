@@ -25,7 +25,12 @@ const DashboardHome = () => {
     fetchStats();
   }, []);
 
-  if (!stats) return <p className="text-center mt-10">Loading...</p>;
+  if (!stats) return (
+    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-gray-500 text-sm">Loading...</p>
+    </div>
+  );
 
   // Prepare charts
   const revenueData = {
@@ -59,28 +64,28 @@ const DashboardHome = () => {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        <motion.div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}}>
-          <h2 className="text-gray-500">Users</h2>
+        <motion.div className="bg-blue-400 text-white p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}}>
+          <h2 className="text-white">Users</h2>
           <p className="text-2xl font-bold">{stats.users}</p>
         </motion.div>
 
-        <motion.div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.1}}>
-          <h2 className="text-gray-500">Blogs</h2>
+        <motion.div className="bg-green-400 text-white p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.1}}>
+          <h2 className="text-white">Blogs</h2>
           <p className="text-2xl font-bold">{stats.blogs}</p>
         </motion.div>
 
-        <motion.div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.2}}>
-          <h2 className="text-gray-500">Contacts</h2>
+        <motion.div className="bg-yellow-400 text-white p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.2}}>
+          <h2 className="text-white">Contacts</h2>
           <p className="text-2xl font-bold">{stats.contacts}</p>
         </motion.div>
 
-        <motion.div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.3}}>
-          <h2 className="text-gray-500">Services</h2>
+        <motion.div className="bg-purple-400 text-white p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.3}}>
+          <h2 className="text-white">Services</h2>
           <p className="text-2xl font-bold">{stats.services}</p>
         </motion.div>
 
-        <motion.div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.4}}>
-          <h2 className="text-gray-500">Case Studies</h2>
+        <motion.div className="bg-pink-400 text-white p-6 rounded-xl shadow" initial={{y: -20, opacity:0}} animate={{y:0, opacity:1}} transition={{delay:0.4}}>
+          <h2 className="text-white">Case Studies</h2>
           <p className="text-2xl font-bold">{stats.caseStudies}</p>
         </motion.div>
       </div>

@@ -28,7 +28,7 @@ const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
               >
                 <td className="px-4 py-3">
                   <img
-                    src={blog.image || "https://via.placeholder.com/50"}
+                    src={blog.image}
                     alt={blog.title}
                     className="w-12 h-12 rounded-lg object-cover border"
                   />

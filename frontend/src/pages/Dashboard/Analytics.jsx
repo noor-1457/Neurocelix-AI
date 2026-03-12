@@ -21,7 +21,12 @@ const Analytics = () => {
     fetchStats();
   }, []);
 
-  if (!stats) return <p className="text-center mt-10">Loading analytics...</p>;
+  if (!stats) return (
+    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-gray-500 text-sm">Loading...</p>
+    </div>
+  );
 
   return (
     <div className="p-6">

@@ -2,17 +2,25 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import { motion } from "framer-motion";
 import {
-  Chart as ChartJS,
+   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
-  Title,
+  Filler,       // <-- Import Filler
   Tooltip,
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Filler,       // <-- Register Filler
+  Tooltip,
+  Legend
+);
 
 const AnalyticsCharts = ({ revenueData, analyticsData }) => {
   return (

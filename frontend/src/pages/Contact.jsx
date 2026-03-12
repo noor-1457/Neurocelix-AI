@@ -5,7 +5,6 @@ import {
   Mail,
   Phone,
   User,
-  MessageSquare,
   MapPin,
   Clock,
 } from "lucide-react";

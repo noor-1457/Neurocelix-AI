@@ -83,11 +83,10 @@ const BlogDetail = () => {
         {/* Image */}
         <img
           src={
-            blog.image ||
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995"
+            blog.image
           }
           alt={blog.title}
-          className="rounded-lg w-full h-64 object-cover mb-6"
+          className="rounded-lg w-full h-80 object-start mb-6"
         />
 
         {/* Category */}

@@ -18,6 +18,9 @@ const ContactTable = () => {
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this contact?"))
+      return;
+
     try {
       await axios.delete(`http://localhost:5000/api/contact/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +36,7 @@ const ContactTable = () => {
       await axios.put(
         `http://localhost:5000/api/contact/${id}`,
         { status },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       fetchContacts();
     } catch (err) {
@@ -96,7 +99,7 @@ const ContactTable = () => {
                 <td className="p-3">
                   <button
                     onClick={() => handleDelete(contact._id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                   >
                     Delete
                   </button>

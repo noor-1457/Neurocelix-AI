@@ -22,9 +22,14 @@ const BlogList = () => {
     fetchBlogs();
   }, []);
 
-  if (loading) {
-    return <p className="text-center text-white mt-20">Loading Blogs...</p>;
-  }
+ if (loading) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-gray-500 text-lg">Loading...</p>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">

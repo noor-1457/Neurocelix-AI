@@ -18,10 +18,10 @@ import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import FAQ from "./pages/FAQ";
-import Users from "./pages/Dashboard/Users";
 import Blogs from "./pages/Dashboard/Blogs";
 import Contacts from "./pages/Dashboard/Contacts";
 import Services from "./pages/Dashboard/Services";
+import CaseStudiesDashboard from "./pages/Dashboard/CaseStudiesDashboard";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -33,9 +33,9 @@ function App() {
 
   if (loading) {
     return (
-      <div className="h-screen flex flex-col justify-center items-center bg-black">
-        <h1 className="text-4xl font-bold text-white mb-5">Neurocelix AI</h1>
-        <div className="w-16 h-16 border-4 border-t-[#800000] border-gray-300 rounded-full animate-spin"></div>
+      <div className="h-screen flex flex-col justify-center items-center bg-white">
+        <h1 className="text-4xl font-bold text-gray-700 mb-5">Neurocelix AI</h1>
+        <div className="w-16 h-16 border-4 border-t-purple-600 border-gray-300 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -70,10 +70,10 @@ function App() {
           >
             <Route index element={<DashboardHome />} />
             <Route path="analytics" element={<Analytics />} />
-            <Route path="users" element={<Users />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="contacts" element={<Contacts />} />
             <Route path="services-private" element={<Services />} />
+            <Route path="case-studies" element={<CaseStudiesDashboard />} />
             <Route path="profile" element={<Profile />} />
           </Route>
         </Routes>
