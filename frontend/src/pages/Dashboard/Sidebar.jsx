@@ -9,6 +9,7 @@ import {
   LogOut,
   CircleUserRound,
   Box,
+<<<<<<< Updated upstream
   BarChart3,
   X
 } from "lucide-react";
@@ -33,6 +34,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     }
   };
 
+=======
+} from "lucide-react";
+
+const Sidebar = ({ isOpen, dark, setDark }) => {
+>>>>>>> Stashed changes
   return (
     <>
       {/* Overlay (mobile only) */}
@@ -68,6 +74,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </button>
           </div>
 
+<<<<<<< Updated upstream
           {/* Menu */}
           <nav className="flex flex-col gap-1 flex-1 overflow-y-auto">
 
@@ -115,6 +122,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
       </aside>
     </>
+=======
+        <button
+          onClick={() => setDark(!dark)}
+          className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
+        >
+          {dark ? "☀" : "🌙"}
+        </button>
+
+        <button className="flex items-center gap-3 text-red-500 mt-10">
+          <LogOut size={20} />
+          {isOpen && "Logout"}
+        </button>
+      </nav>
+    </motion.div>
+>>>>>>> Stashed changes
   );
 };
 

@@ -24,8 +24,21 @@ import Services from "./pages/Dashboard/Services";
 import CaseStudiesDashboard from "./pages/Dashboard/CaseStudiesDashboard";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  // Global dark mode state
+  const [dark, setDark] = useState(localStorage.getItem("dark") === "true");
 
+  // Apply dark class to <html>
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("dark", dark);
+  }, [dark]);
+
+  // Loading screen
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -33,9 +46,15 @@ function App() {
 
   if (loading) {
     return (
+<<<<<<< Updated upstream
       <div className="h-screen flex flex-col justify-center items-center bg-white">
         <h1 className="text-4xl font-bold text-gray-700 mb-5">Neurocelix AI</h1>
         <div className="w-16 h-16 border-4 border-t-purple-600 border-gray-300 rounded-full animate-spin"></div>
+=======
+      <div className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900 text-black dark:text-white">
+        <h1 className="text-4xl font-bold mb-5">Neurocelix AI</h1>
+        <div className="w-16 h-16 border-4 border-t-[#800000] border-gray-300 rounded-full animate-spin"></div>
+>>>>>>> Stashed changes
       </div>
     );
   }
@@ -45,7 +64,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public Layout */}
-          <Route element={<PublicLayout />}>
+          <Route element={<PublicLayout dark={dark} setDark={setDark} />}>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -64,7 +83,7 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardLayout />
+                <DashboardLayout dark={dark} setDark={setDark} />
               </ProtectedRoute>
             }
           >

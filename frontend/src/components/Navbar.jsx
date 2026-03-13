@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ dark, setDark }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
@@ -17,20 +17,24 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
-      <div className=" max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 shadow-md transition-colors duration-500 ${
+        dark ? "bg-gray-800" : "bg-white"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-[#8F00FF] transition">
+        <Link to="/" className="text-2xl font-bold text-[#8F00FF]">
           Neurocelix AI
         </Link>
 
-        {/* Centered Links */}
-        <div className="hidden lg:flex space-x-8 mx-auto">
+        {/* Desktop Links */}
+        <div className="hidden lg:flex space-x-8">
           {navLinks.map((link, index) => (
             <Link
               key={index}
               to={link.path}
-              className="text-[#8F00FF] font-medium hover:text-[#8F00FF] transition duration-300 relative group"
+              className="text-[#8F00FF] font-medium hover:text-[#8F00FF] transition relative group"
             >
               {link.name}
               <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#8F00FF] transition-all duration-300 group-hover:w-full"></span>
@@ -38,11 +42,18 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Login Button */}
-        <div className="hidden lg:flex">
+        {/* Desktop Dark Mode Toggle & Login */}
+        <div className="hidden lg:flex items-center space-x-4">
+          <button
+            onClick={() => setDark(!dark)}
+            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
+          >
+            {dark ? "☀" : "🌙"}
+          </button>
+
           <Link
             to="/auth"
-            className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white hover:bg-[#8F00FF] transition duration-300"
+            className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white hover:bg-[#8F00FF] transition-colors"
           >
             Login
           </Link>
@@ -51,7 +62,7 @@ export default function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-black"
+          className="lg:hidden text-black dark:text-white"
         >
           {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
@@ -59,31 +70,32 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-white px-6 pb-6 space-y-4 transition-all duration-500">
+        <div className="lg:hidden px-6 pb-6 space-y-4 transition-all duration-500 bg-white dark:bg-gray-800">
           {navLinks.map((link, index) => (
             <Link
               key={index}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="block text-gray-700 hover:text-[#800000] transition"
+              className="block text-gray-700 dark:text-gray-200 hover:text-[#800000] transition-colors"
             >
               {link.name}
             </Link>
           ))}
 
           <Link
-            to="/dashboard"
-            className="block text-gray-700 hover:text-[#800000]"
-          >
-            Dashboard
-          </Link>
-
-          <Link
-            to="/login"
-            className="block px-4 py-2 bg-black text-white rounded-lg hover:bg-[#800000] transition"
+            to="/auth"
+            className="block px-4 py-2 bg-[#8F00FF] text-white rounded-lg hover:bg-[#800000] transition-colors"
           >
             Login
           </Link>
+
+          {/* Mobile Dark Mode Toggle */}
+          <button
+            onClick={() => setDark(!dark)}
+            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors"
+          >
+            {dark ? "☀" : "🌙"}
+          </button>
         </div>
       )}
     </nav>

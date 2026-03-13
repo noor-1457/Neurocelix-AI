@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useOutletContext } from "react-router-dom";
 
 function FAQ() {
+  const { dark } = useOutletContext(); // global dark mode
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openId, setOpenId] = useState(null); // Track which FAQ is open
+  const [openId, setOpenId] = useState(null);
 
   /* Fetch FAQ Data */
   useEffect(() => {
@@ -21,6 +23,7 @@ function FAQ() {
   }, []);
 
   if (loading) {
+<<<<<<< Updated upstream
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-3">
       <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
@@ -28,16 +31,36 @@ function FAQ() {
     </div>
   );
 }
+=======
+    return (
+      <div
+        className={`h-screen flex items-center justify-center text-xl transition-colors duration-300 ${
+          dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+        }`}
+      >
+        Loading FAQs...
+      </div>
+    );
+  }
+>>>>>>> Stashed changes
 
   const toggleFAQ = (id) => {
     setOpenId(openId === id ? null : id);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-5">
+    <div
+      className={`min-h-screen py-16 px-5 transition-colors duration-300 ${
+        dark ? "bg-gray-900" : "bg-gray-50"
+      }`}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Heading */}
-        <h1 className="text-5xl font-bold text-[#8F00FF] text-center pt-10 mb-14">
+        <h1
+          className={`text-5xl font-bold text-center pt-10 mb-14 transition-colors duration-300 ${
+            dark ? "text-purple-400" : "text-[#8F00FF]"
+          }`}
+        >
           Frequently Asked Questions
         </h1>
 
@@ -48,7 +71,11 @@ function FAQ() {
             .map((faq) => (
               <div
                 key={faq._id}
-                className="bg-white shadow-lg rounded-2xl p-6 transition hover:shadow-xl"
+                className={`rounded-2xl p-6 transition-all duration-300 shadow-lg ${
+                  dark
+                    ? "bg-gray-800 text-gray-200 hover:shadow-2xl border border-gray-700"
+                    : "bg-white text-gray-800 hover:shadow-xl border border-gray-200"
+                }`}
               >
                 <div
                   className="flex justify-between items-center cursor-pointer"
@@ -56,7 +83,7 @@ function FAQ() {
                 >
                   <span className="text-xl font-semibold">{faq.question}</span>
                   <ChevronDown
-                    className={`w-5 h-5 text-purple-600 transform transition-transform duration-300 ${
+                    className={`w-5 h-5 text-purple-500 transform transition-transform duration-300 ${
                       openId === faq._id ? "rotate-180" : ""
                     }`}
                   />
@@ -64,10 +91,18 @@ function FAQ() {
 
                 {openId === faq._id && (
                   <>
-                    <p className="mt-4 text-gray-600 leading-relaxed">
+                    <p
+                      className={`mt-4 leading-relaxed transition-colors duration-300 ${
+                        dark ? "text-gray-300" : "text-gray-600"
+                      }`}
+                    >
                       {faq.answer}
                     </p>
-                    <div className="mt-3 text-sm text-gray-400">
+                    <div
+                      className={`mt-3 text-sm transition-colors duration-300 ${
+                        dark ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
                       Category: {faq.category}
                     </div>
                   </>

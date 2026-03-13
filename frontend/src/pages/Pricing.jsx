@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
 
 const Pricing = () => {
+  const { dark } = useOutletContext(); // global dark mode
   const [pricingPlans, setPricingPlans] = useState([]);
   const [isYearly, setIsYearly] = useState(false);
 
@@ -23,19 +25,33 @@ const Pricing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+    <div
+      className={`min-h-screen py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${
+        dark ? "bg-gray-900" : "bg-gray-100"
+      }`}
+    >
+      <h1
+        className={`text-4xl font-bold text-center mb-8 transition-colors duration-300 ${
+          dark ? "text-white" : "text-gray-900"
+        }`}
+      >
         Pricing Plans
       </h1>
 
       {/* Toggle */}
-      <div className="flex justify-center mb-12">
-        <span className="mr-4 text-gray-700 dark:text-gray-300">Monthly</span>
+      <div className="flex justify-center mb-12 items-center">
+        <span
+          className={`mr-4 transition-colors ${dark ? "text-gray-300" : "text-gray-700"}`}
+        >
+          Monthly
+        </span>
 
         <button
           onClick={togglePricing}
           className={`relative inline-flex items-center h-6 rounded-full w-12 transition-colors ${
-            isYearly ? "bg-blue-600" : "bg-gray-300 dark:bg-gray-700"
+            isYearly
+              ? "bg-blue-600"
+              : `bg-gray-300 ${dark ? "dark:bg-gray-700" : ""}`
           }`}
         >
           <span
@@ -45,7 +61,11 @@ const Pricing = () => {
           ></span>
         </button>
 
-        <span className="ml-4 text-gray-700 dark:text-gray-300">Yearly</span>
+        <span
+          className={`ml-4 transition-colors ${dark ? "text-gray-300" : "text-gray-700"}`}
+        >
+          Yearly
+        </span>
       </div>
 
       {/* Pricing Cards */}
@@ -53,16 +73,14 @@ const Pricing = () => {
         {pricingPlans.map((plan) => (
           <motion.div
             key={plan._id}
-            className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-2xl transition-shadow cursor-pointer ${
-              plan.highlighted ? "border-2 border-blue-600 scale-105" : ""
-            }`}
+            className={`rounded-lg p-8 text-center shadow-lg hover:shadow-2xl cursor-pointer transition-transform transform ${
+              plan.highlighted ? "scale-105 border-2 border-blue-600" : ""
+            } ${dark ? "bg-gray-800 text-gray-200" : "bg-white text-gray-900"}`}
             whileHover={{ scale: 1.05 }}
           >
-            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-              {plan.name}
-            </h2>
+            <h2 className="text-2xl font-bold mb-4">{plan.name}</h2>
 
-            <p className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-white">
+            <p className="text-4xl font-extrabold mb-4">
               ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
             </p>
 
@@ -72,13 +90,11 @@ const Pricing = () => {
 
             <ul className="mb-6 space-y-2">
               {plan.features.map((feature, index) => (
-                <li key={index} className="text-gray-700 dark:text-gray-200">
-                  {feature}
-                </li>
+                <li key={index}>{feature}</li>
               ))}
             </ul>
 
-            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-md transition-colors">
+            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-md transition-transform transform hover:scale-105">
               Choose Plan
             </button>
           </motion.div>
@@ -87,11 +103,16 @@ const Pricing = () => {
 
       {/* Feature Table */}
       <div className="mt-16 max-w-5xl mx-auto overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+        <table
+          className={`min-w-full rounded-lg overflow-hidden transition-colors duration-300 ${
+            dark ? "bg-gray-800 text-gray-200" : "bg-white text-gray-900"
+          }`}
+        >
           <thead>
-            <tr className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
+            <tr
+              className={`transition-colors duration-300 ${dark ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-900"}`}
+            >
               <th className="py-3 px-6 text-left">Feature</th>
-
               {pricingPlans.map((plan) => (
                 <th key={plan._id} className="py-3 px-6 text-center">
                   {plan.name}
@@ -104,10 +125,11 @@ const Pricing = () => {
             {pricingPlans[0]?.features.map((feature, idx) => (
               <tr
                 key={idx}
-                className="border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
+                className={`border-b transition-colors duration-300 ${
+                  dark ? "border-gray-700" : "border-gray-200"
+                }`}
               >
                 <td className="py-3 px-6">{feature}</td>
-
                 {pricingPlans.map((plan) => (
                   <td key={plan._id} className="py-3 px-6 text-center">
                     {plan.features[idx] || "-"}

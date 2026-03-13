@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import { motion } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
 
 const BlogList = () => {
+  const { dark } = useOutletContext(); // global dark mode
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +24,7 @@ const BlogList = () => {
     fetchBlogs();
   }, []);
 
+<<<<<<< Updated upstream
  if (loading) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-3">
@@ -30,11 +33,30 @@ const BlogList = () => {
     </div>
   );
 }
+=======
+  if (loading) {
+    return (
+      <p
+        className={`text-center mt-20 text-xl transition-colors duration-300 ${
+          dark ? "text-gray-200" : "text-gray-800"
+        }`}
+      >
+        Loading Blogs...
+      </p>
+    );
+  }
+>>>>>>> Stashed changes
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
+    <div
+      className={`min-h-screen py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${
+        dark ? "bg-gray-900" : "bg-gray-100"
+      }`}
+    >
       <motion.h1
-        className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white"
+        className={`text-4xl font-bold text-center mb-12 transition-colors duration-300 ${
+          dark ? "text-white" : "text-gray-900"
+        }`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -44,7 +66,7 @@ const BlogList = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {blogs.map((blog) => (
-          <BlogCard key={blog._id} blog={blog} />
+          <BlogCard key={blog._id} blog={blog} dark={dark} />
         ))}
       </div>
     </div>

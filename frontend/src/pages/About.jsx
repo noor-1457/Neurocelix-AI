@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
 
 const About = () => {
+  // Get global dark mode from layout
+  const { dark } = useOutletContext();
+
   return (
-    <div className="pt-28 px-6 md:px-20">
+    <div className="pt-28 px-6 md:px-20 transition-colors duration-500 bg-white dark:bg-gray-900 text-black dark:text-gray-200">
       {/* HEADER SECTION */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -13,7 +17,9 @@ const About = () => {
         <h1 className="text-5xl font-bold mb-4">
           About <span className="text-[#8F00FF]">Neurocelix</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-gray-600 dark:text-black">
+        <p
+          className={`max-w-2xl mx-auto ${dark ? "text-gray-300" : "text-gray-600"}`}
+        >
           We build AI-powered automation systems and scalable digital solutions
           to help businesses grow smarter and faster.
         </p>
@@ -21,33 +27,30 @@ const About = () => {
 
       {/* MISSION & VISION */}
       <div className="grid md:grid-cols-2 gap-10 mb-20">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-gray-800
-                     transition duration-300 border border-gray-200"
-        >
-          <h2 className="text-2xl font-semibold mb-4 text-[#8F00FF]">
-            Our Mission
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            To empower organizations with intelligent automation and data-driven
-            solutions that reduce complexity and maximize impact.
-          </p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="p-10 rounded-2xl shadow-lg bg-white dark:bg-gray-800
-                     transition duration-300 border border-gray-200"
-        >
-          <h2 className="text-2xl font-semibold mb-4 text-[#8F00FF]">
-            Our Vision
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            To become a global leader in AI innovation by delivering
-            transformative digital experiences that shape the future.
-          </p>
-        </motion.div>
+        {[
+          {
+            title: "Our Mission",
+            text: "To empower organizations with intelligent automation and data-driven solutions that reduce complexity and maximize impact.",
+          },
+          {
+            title: "Our Vision",
+            text: "To become a global leader in AI innovation by delivering transformative digital experiences that shape the future.",
+          },
+        ].map((item, index) => (
+          <motion.div
+            key={index}
+            whileHover={{ scale: 1.05 }}
+            className={`p-10 rounded-2xl shadow-lg transition duration-300 border 
+              ${dark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}
+          >
+            <h2 className="text-2xl font-semibold mb-4 text-[#8F00FF]">
+              {item.title}
+            </h2>
+            <p className={dark ? "text-gray-300" : "text-gray-600"}>
+              {item.text}
+            </p>
+          </motion.div>
+        ))}
       </div>
 
       {/* TIMELINE SECTION */}
@@ -77,7 +80,13 @@ const About = () => {
               <div className="text-[#8F00FF] font-bold text-xl">
                 {item.year}
               </div>
-              <div className="flex-1 border-l-2 border-[#8F00FF] pl-6 text-gray-600 dark:text-black">
+              <div
+                className={`flex-1 border-l-2 pl-6 ${
+                  dark
+                    ? "border-[#8F00FF] text-gray-300"
+                    : "border-[#8F00FF] text-gray-600"
+                }`}
+              >
                 {item.text}
               </div>
             </motion.div>
@@ -94,15 +103,18 @@ const About = () => {
             (role, index) => (
               <motion.div
                 key={index}
-                whileHover={{ y: -10 }}
-                className="p-8 rounded-2xl shadow-lg bg-white dark:bg-gray-800
-                           text-center transition duration-300"
+                whileHover={{ y: -10, scale: 1.03 }}
+                className={`p-8 rounded-2xl shadow-lg text-center transition duration-300
+                  ${dark ? "bg-gray-800" : "bg-white"}`}
               >
-                {/* <div className="w-24 h-24 mx-auto rounded-full bg-gray-300 mb-6"></div> */}
-                <h3 className="text-xl font-semibold mb-2 text-white">
+                <h3
+                  className={`text-xl font-semibold mb-2 ${dark ? "text-white" : "text-black"}`}
+                >
                   Team Member
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400">{role}</p>
+                <p className={dark ? "text-gray-400" : "text-gray-500"}>
+                  {role}
+                </p>
               </motion.div>
             ),
           )}
