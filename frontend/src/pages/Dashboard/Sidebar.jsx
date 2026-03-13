@@ -1,142 +1,86 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import {
-  Home,
-  BarChart2,
-  User,
-  FileText,
-  LogOut,
-  CircleUserRound,
-  Box,
-<<<<<<< Updated upstream
-  BarChart3,
-  X
-} from "lucide-react";
+import { Home, BarChart2, User, FileText, LogOut, X } from "lucide-react";
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { logout, profile } = useContext(AuthContext);
+const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
   const location = useLocation();
 
-  if (profile?.role !== "admin") return null;
+  const handleClose = () => setIsOpen(false);
 
-  const linkClass = (path) =>
-    `flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-all duration-300
-    ${
-      location.pathname === path
-        ? "bg-purple-100 text-purple-600"
-        : "hover:bg-purple-100 hover:text-purple-600"
-    }`;
+  const navLinks = [
+    { name: "Home", path: "/dashboard", icon: <Home size={20} /> },
+    {
+      name: "Analytics",
+      path: "/dashboard/analytics",
+      icon: <BarChart2 size={20} />,
+    },
+    { name: "Profile", path: "/dashboard/profile", icon: <User size={20} /> },
+    { name: "Blogs", path: "/dashboard/blogs", icon: <FileText size={20} /> },
+  ];
 
-  const handleClose = () => {
-    if (window.innerWidth < 1024) {
-      setIsOpen(false);
-    }
-  };
-
-=======
-} from "lucide-react";
-
-const Sidebar = ({ isOpen, dark, setDark }) => {
->>>>>>> Stashed changes
   return (
     <>
-      {/* Overlay (mobile only) */}
+      {/* Overlay (mobile) */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-          onClick={() => setIsOpen(false)}
+          onClick={handleClose}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-[250px] bg-white shadow-lg z-50
+        className={`fixed lg:static top-0 left-0 h-screen w-[250px] bg-white dark:bg-gray-900 shadow-lg z-50
         transform transition-transform duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="flex flex-col h-full p-4">
-
           {/* Header */}
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" onClick={handleClose}>
-              <h2 className="text-xl font-bold text-purple-600">
-                Codecelix
-              </h2>
+          <div className="flex justify-between items-center mb-8">
+            <Link to="/dashboard" onClick={handleClose}>
+              <h2 className="text-2xl font-bold text-purple-600">Codecelix</h2>
             </Link>
-
-            <button
-              className="lg:hidden"
-              onClick={() => setIsOpen(false)}
-            >
-              <X size={22} />
+            <button className="lg:hidden p-2" onClick={handleClose}>
+              <X size={22} className="text-gray-700 dark:text-white" />
             </button>
           </div>
 
-<<<<<<< Updated upstream
-          {/* Menu */}
-          <nav className="flex flex-col gap-1 flex-1 overflow-y-auto">
-
-            <Link to="/dashboard" onClick={handleClose} className={linkClass("/dashboard")}>
-              <Home size={20} />
-              Overview
-            </Link>
-
-            <Link to="/dashboard/analytics" onClick={handleClose} className={linkClass("/dashboard/analytics")}>
-              <BarChart2 size={20} />
-              Analytics
-            </Link>
-
-            <Link to="/dashboard/blogs" onClick={handleClose} className={linkClass("/dashboard/blogs")}>
-              <FileText size={20} />
-              Blogs
-            </Link>
-
-            <Link to="/dashboard/services-private" onClick={handleClose} className={linkClass("/dashboard/services-private")}>
-              <Box size={20} />
-              Services
-            </Link>
-
-            <Link to="/dashboard/case-studies" onClick={handleClose} className={linkClass("/dashboard/case-studies")}>
-              <BarChart3 size={20} />
-              Case Studies
-            </Link>
-
-            <Link to="/dashboard/contacts" onClick={handleClose} className={linkClass("/dashboard/contacts")}>
-              <CircleUserRound size={20} />
-              Contacts
-            </Link>
-
+          {/* Navigation Links */}
+          <nav className="flex-1 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={handleClose}
+                className={`flex items-center gap-3 p-3 rounded-md transition-colors
+                  ${
+                    location.pathname === link.path
+                      ? "bg-purple-100 dark:bg-purple-700 text-purple-700 dark:text-white"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+              >
+                {link.icon}
+                <span>{link.name}</span>
+              </Link>
+            ))}
           </nav>
 
-          {/* Logout */}
+          {/* Dark/Light Toggle */}
           <button
-            onClick={logout}
-            className="flex items-center gap-3 px-3 py-2 mt-4 rounded-lg text-red-500 hover:bg-red-100 transition-all duration-300"
+            onClick={() => setDark(!dark)}
+            className="mt-6 px-3 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white w-full transition-colors hover:opacity-90"
           >
+            {dark ? "☀ Light Mode" : "🌙 Dark Mode"}
+          </button>
+
+          {/* Logout */}
+          <button className="flex items-center gap-3 text-red-500 mt-6 p-3 rounded-md hover:bg-red-50 dark:hover:bg-red-700 transition-colors">
             <LogOut size={20} />
             Logout
           </button>
-
         </div>
       </aside>
     </>
-=======
-        <button
-          onClick={() => setDark(!dark)}
-          className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
-        >
-          {dark ? "☀" : "🌙"}
-        </button>
-
-        <button className="flex items-center gap-3 text-red-500 mt-10">
-          <LogOut size={20} />
-          {isOpen && "Logout"}
-        </button>
-      </nav>
-    </motion.div>
->>>>>>> Stashed changes
   );
 };
 

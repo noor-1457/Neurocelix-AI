@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-<<<<<<< Updated upstream
-import {
-  Mail,
-  Phone,
-  User,
-  MapPin,
-  Clock,
-} from "lucide-react";
-=======
 import { Mail, Phone, User, MapPin, Clock } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
->>>>>>> Stashed changes
 
 const Contact = () => {
   const { dark } = useOutletContext(); // global dark mode

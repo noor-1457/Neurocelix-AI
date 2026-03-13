@@ -131,39 +131,6 @@ function Home() {
             </button>
           </motion.div>
         </div>
-<<<<<<< Updated upstream
-      </section>
-      {/* SERVICES */}
-     <section className="flex justify-center gap-10 p-20 flex-wrap bg-white dark:bg-gray-800 text-pink-500 dark:text-white">
-  {[
-    { icon: <Activity className="w-12 h-12 mx-auto mb-5" />, title: "AI Solutions" },
-    { icon: <Cpu className="w-12 h-12 mx-auto mb-5" />, title: "Automation" },
-    { icon: <BarChart2 className="w-12 h-12 mx-auto mb-5" />, title: "Data Analytics" },
-  ].map((item, i) => (
-    <div
-      key={i}
-      className="w-[280px] bg-white/10 backdrop-blur-xl 
-                 p-10 rounded-2xl text-center shadow-xl 
-                 transition duration-300 hover:-translate-y-3 
-                 hover:bg-[#8F00FF] hover:text-white"
-    >
-      {item.icon}
-      <h3 className="text-xl font-semibold">{item.title}</h3>
-    </div>
-  ))}
-</section>
-
-{/* STATS */}
-<section className="flex justify-center gap-12 p-20 flex-wrap bg-gray-100 dark:bg-gray-800 text-pink-500 dark:text-white">
-  {[
-    { icon: <Users className="w-10 h-10 mx-auto mb-2" />, value: 1000, label: "Users" },
-    { icon: <Folder className="w-10 h-10 mx-auto mb-2" />, value: 250, label: "Projects" },
-    { icon: <Handshake className="w-10 h-10 mx-auto mb-2" />, value: 120, label: "Clients" },
-  ].map((stat, idx) => (
-    <StatCard key={idx} {...stat} />
-  ))}
-</section>
-=======
 
         {/* Floating Blobs */}
         <div className="absolute -top-20 -left-20 w-72 h-72 bg-purple-500 rounded-full opacity-30 animate-pulse blur-3xl"></div>
@@ -221,7 +188,6 @@ function Home() {
         ))}
       </section>
 
->>>>>>> Stashed changes
       {/* VIDEO MODAL */}
       {open && (
         <div

@@ -23,15 +23,6 @@ function FAQ() {
   }, []);
 
   if (loading) {
-<<<<<<< Updated upstream
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
-      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="text-gray-500 text-lg">Loading...</p>
-    </div>
-  );
-}
-=======
     return (
       <div
         className={`h-screen flex items-center justify-center text-xl transition-colors duration-300 ${
@@ -42,7 +33,6 @@ function FAQ() {
       </div>
     );
   }
->>>>>>> Stashed changes
 
   const toggleFAQ = (id) => {
     setOpenId(openId === id ? null : id);

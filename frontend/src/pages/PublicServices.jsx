@@ -23,16 +23,6 @@ const PublicServices = () => {
       });
   }, []);
 
-<<<<<<< Updated upstream
- if (loading) {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-3">
-      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="text-gray-500 text-lg">Loading...</p>
-    </div>
-  );
-}
-=======
   if (loading) {
     return (
       <div
@@ -46,7 +36,6 @@ const PublicServices = () => {
       </div>
     );
   }
->>>>>>> Stashed changes
 
   return (
     <div

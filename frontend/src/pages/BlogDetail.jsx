@@ -90,15 +90,9 @@ const BlogDetail = () => {
 
         {/* Image */}
         <img
-          src={
-            blog.image
-          }
+          src={blog.image}
           alt={blog.title}
-<<<<<<< Updated upstream
-          className="rounded-lg w-full h-80 object-start mb-6"
-=======
           className="rounded-lg w-full h-64 object-cover mb-6 shadow-lg"
->>>>>>> Stashed changes
         />
 
         {/* Category Badge */}

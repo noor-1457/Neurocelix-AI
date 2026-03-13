@@ -46,15 +46,9 @@ function App() {
 
   if (loading) {
     return (
-<<<<<<< Updated upstream
       <div className="h-screen flex flex-col justify-center items-center bg-white">
         <h1 className="text-4xl font-bold text-gray-700 mb-5">Neurocelix AI</h1>
         <div className="w-16 h-16 border-4 border-t-purple-600 border-gray-300 rounded-full animate-spin"></div>
-=======
-      <div className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900 text-black dark:text-white">
-        <h1 className="text-4xl font-bold mb-5">Neurocelix AI</h1>
-        <div className="w-16 h-16 border-4 border-t-[#800000] border-gray-300 rounded-full animate-spin"></div>
->>>>>>> Stashed changes
       </div>
     );
   }
