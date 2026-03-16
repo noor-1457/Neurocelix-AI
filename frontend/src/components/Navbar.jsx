@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X,Sun,Moon } from "lucide-react";
 
 export default function Navbar({ dark, setDark }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,9 +46,9 @@ export default function Navbar({ dark, setDark }) {
         <div className="hidden lg:flex items-center space-x-4">
           <button
             onClick={() => setDark(!dark)}
-            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
+            className="px-3 py-1 rounded-md bg-purple-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
           >
-            {dark ? "☀" : "🌙"}
+            {dark ? <Sun /> : <Moon />}
           </button>
 
           <Link

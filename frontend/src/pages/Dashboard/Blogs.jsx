@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BlogTable from "../../components/dashboard/BlogTable";
 import axios from "axios";
 
+
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,35 +72,37 @@ const Blogs = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Blogs</h1>
+      <h1 className="text-xl md:text-2xl font-bold mb-6 dark:text-white">
+  Blogs
+</h1>
 
       <BlogTable blogs={blogs} onEdit={handleEdit} onDelete={handleDelete} />
 
       {/* Edit Modal */}
       {editingBlog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 bg-opacity-50 overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-130">
             <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Edit Blog</h3>
             <input
               type="text"
               placeholder="Title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md"
             />
             <input
               type="text"
               placeholder="Category"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md"
             />
             <input
               type="text"
               placeholder="Author"
               value={formData.author}
               onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-              className="w-full mb-4 px-3 py-2 border rounded-md"
+              className="w-full mb-4 px-3 py-2 border border-gray-400 rounded-md"
             />
             <div className="flex justify-end gap-2">
               <button

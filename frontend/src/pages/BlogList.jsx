@@ -24,17 +24,20 @@ const BlogList = () => {
     fetchBlogs();
   }, []);
 
-  if (loading) {
-    return (
-      <p
-        className={`text-center mt-20 text-xl transition-colors duration-300 ${
-          dark ? "text-gray-200" : "text-gray-800"
-        }`}
-      >
-        Loading Blogs...
+ if (loading) {
+  return (
+    <div
+      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
+        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+      }`}
+    >
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+        Loading...
       </p>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div

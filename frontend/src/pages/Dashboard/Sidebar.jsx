@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, BarChart2, User, FileText, LogOut, X } from "lucide-react";
+import { Home, BarChart2, LogOut, X,BarChart3, FileText, Briefcase, CircleUserRound } from "lucide-react";
 
 const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
   const location = useLocation();
@@ -8,14 +8,16 @@ const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
   const handleClose = () => setIsOpen(false);
 
   const navLinks = [
-    { name: "Home", path: "/dashboard", icon: <Home size={20} /> },
+    { name: "Overview", path: "/dashboard", icon: <Home size={20} /> },
     {
       name: "Analytics",
       path: "/dashboard/analytics",
       icon: <BarChart2 size={20} />,
     },
-    { name: "Profile", path: "/dashboard/profile", icon: <User size={20} /> },
-    { name: "Blogs", path: "/dashboard/blogs", icon: <FileText size={20} /> },
+  { name: "Blogs", path: "/dashboard/blogs", icon: <FileText size={20} /> },
+  { name: "Case Studies", path: "/dashboard/case-studies", icon: <BarChart3 size={20} /> },
+  { name: "Services", path: "/dashboard/services-private", icon: <Briefcase size={20} /> },
+  { name: "Contact", path: "/dashboard/contacts", icon: <CircleUserRound size={20} /> },
   ];
 
   return (

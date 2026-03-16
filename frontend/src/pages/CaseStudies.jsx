@@ -22,18 +22,19 @@ const CaseStudies = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div
-        className={`flex justify-center items-center h-screen transition-colors duration-500 ${
-          dark ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-800"
-        }`}
-      >
-        <h1 className="text-xl font-semibold animate-pulse">
-          Loading Case Studies...
-        </h1>
-      </div>
-    );
-  }
+  return (
+    <div
+      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
+        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+      }`}
+    >
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+        Loading...
+      </p>
+    </div>
+  );
+}
 
   return (
     <div

@@ -7,23 +7,39 @@ const Pricing = () => {
   const { dark } = useOutletContext(); // global dark mode
   const [pricingPlans, setPricingPlans] = useState([]);
   const [isYearly, setIsYearly] = useState(false);
+   const [loading, setLoading] = useState(true);
 
   const togglePricing = () => setIsYearly(!isYearly);
 
   // API Call
   useEffect(() => {
-    const fetchPricing = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/pricing");
-        setPricingPlans(res.data);
-      } catch (error) {
-        console.error("Pricing API Error:", error);
-      }
-    };
+  const fetchPricing = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/pricing");
+      setPricingPlans(res.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchPricing();
-  }, []);
-
+  fetchPricing();
+}, []);
+ if (loading) {
+  return (
+    <div
+      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
+        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+      }`}
+    >
+      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+        Loading...
+      </p>
+    </div>
+  );
+}
   return (
     <div
       className={`min-h-screen py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${

@@ -16,7 +16,6 @@ const CaseStudiesDashboard = () => {
     category: "",
     results: "",
     tags: "",
-    images: ""
   });
 
   const token = localStorage.getItem("token");
@@ -39,7 +38,7 @@ const CaseStudiesDashboard = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -52,7 +51,6 @@ const CaseStudiesDashboard = () => {
       category: "",
       results: "",
       tags: "",
-      images: ""
     });
     setOpenModal(true);
   };
@@ -67,7 +65,6 @@ const CaseStudiesDashboard = () => {
       category: study.category || "",
       results: study.results?.join(", ") || "",
       tags: study.tags?.join(", ") || "",
-      images: study.images?.join(", ") || ""
     });
 
     setOpenModal(true);
@@ -90,11 +87,6 @@ const CaseStudiesDashboard = () => {
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
-
-      images: formData.images
-        .split(",")
-        .map((i) => i.trim())
-        .filter(Boolean)
     };
 
     try {
@@ -103,17 +95,13 @@ const CaseStudiesDashboard = () => {
           `http://localhost:5000/api/casestudies/${editingId}`,
           payload,
           {
-            headers: { Authorization: `Bearer ${token}` }
-          }
+            headers: { Authorization: `Bearer ${token}` },
+          },
         );
       } else {
-        await axios.post(
-          "http://localhost:5000/api/casestudies",
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
+        await axios.post("http://localhost:5000/api/casestudies", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }
 
       setOpenModal(false);
@@ -129,8 +117,8 @@ const CaseStudiesDashboard = () => {
     try {
       await axios.delete(`http://localhost:5000/api/casestudies/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       fetchCaseStudies();
@@ -149,7 +137,6 @@ const CaseStudiesDashboard = () => {
 
   return (
     <div className="p-8">
-
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Case Studies</h1>
 
@@ -164,7 +151,7 @@ const CaseStudiesDashboard = () => {
 
       <div className="overflow-x-auto bg-white rounded-xl shadow">
         <table className="w-full text-left">
-          <thead className="bg-gray-50 text-gray-600 text-sm">
+          <thead className="bg-purple-300 text-black text-sm">
             <tr>
               <th className="p-4">Title</th>
               <th className="p-4">Client</th>
@@ -177,11 +164,10 @@ const CaseStudiesDashboard = () => {
 
           <tbody>
             {caseStudies.map((study) => (
-              <tr key={study._id} className="border-t hover:bg-gray-50">
-
+              <tr key={study._id} className="hover:bg-gray-50">
                 <td className="p-4 font-medium">{study.title}</td>
 
-                <td className="p-4">{study.client}</td>
+                <td className="p-4 font-medium text-nowrap text-gray-600">{study.client}</td>
 
                 <td className="p-4">
                   <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">
@@ -225,7 +211,6 @@ const CaseStudiesDashboard = () => {
                     <Trash2 size={22} />
                   </button>
                 </td>
-
               </tr>
             ))}
           </tbody>
@@ -233,99 +218,83 @@ const CaseStudiesDashboard = () => {
       </div>
 
       {openModal && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-130 shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105">
+    <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+      {editingId ? "Edit Case Study" : "Add Case Study"}
+    </h2>
 
-          <div className="bg-white p-6 rounded-xl w-[420px]">
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input
+        name="title"
+        placeholder="Title"
+        value={formData.title}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+        required
+      />
 
-            <h2 className="text-xl font-bold mb-4">
-              {editingId ? "Edit Case Study" : "Add Case Study"}
-            </h2>
+      <textarea
+        name="description"
+        placeholder="Description"
+        value={formData.description}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+        required
+      />
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+      <input
+        name="client"
+        placeholder="Client"
+        value={formData.client}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+      />
 
-              <input
-                name="title"
-                placeholder="Title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-                required
-              />
+      <input
+        name="category"
+        placeholder="Category"
+        value={formData.category}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+      />
 
-              <textarea
-                name="description"
-                placeholder="Description"
-                value={formData.description}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-                required
-              />
+      <input
+        name="results"
+        placeholder="Results (comma separated)"
+        value={formData.results}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+      />
 
-              <input
-                name="client"
-                placeholder="Client"
-                value={formData.client}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
+      <input
+        name="tags"
+        placeholder="Tags (comma separated)"
+        value={formData.tags}
+        onChange={handleChange}
+        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
+      />
 
-              <input
-                name="category"
-                placeholder="Category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
+      <div className="flex justify-end gap-3 pt-3">
+        <button
+          type="button"
+          onClick={() => setOpenModal(false)}
+          className="px-4 py-2 border border-gray-400 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          Cancel
+        </button>
 
-              <input
-                name="results"
-                placeholder="Results (comma separated)"
-                value={formData.results}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-
-              <input
-                name="tags"
-                placeholder="Tags (comma separated)"
-                value={formData.tags}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-
-              <input
-                name="images"
-                placeholder="Image URLs (comma separated)"
-                value={formData.images}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-
-              <div className="flex justify-end gap-3 pt-3">
-
-                <button
-                  type="button"
-                  onClick={() => setOpenModal(false)}
-                  className="px-4 py-2 border rounded"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-purple-600 text-white rounded"
-                >
-                  {editingId ? "Update" : "Create"}
-                </button>
-
-              </div>
-
-            </form>
-
-          </div>
-        </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 active:scale-95 transition-transform"
+        >
+          {editingId ? "Update" : "Create"}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
       )}
-
     </div>
   );
 };
