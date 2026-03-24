@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { SquarePen, Trash2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
+import CaseStudiesTable from "../../components/dashboard/CaseStudiesTable";
 
 const CaseStudiesDashboard = () => {
   const [caseStudies, setCaseStudies] = useState([]);
@@ -82,7 +83,6 @@ const CaseStudiesDashboard = () => {
         .split(",")
         .map((r) => r.trim())
         .filter(Boolean),
-
       tags: formData.tags
         .split(",")
         .map((t) => t.trim())
@@ -96,7 +96,7 @@ const CaseStudiesDashboard = () => {
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
+          }
         );
       } else {
         await axios.post("http://localhost:5000/api/casestudies", payload, {
@@ -136,166 +136,120 @@ const CaseStudiesDashboard = () => {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Case Studies</h1>
+    <div className="md:p-6">
 
-        <button
-          onClick={openAddModal}
-          className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
-        >
-          <Plus size={18} />
-          Add Case Study
-        </button>
-      </div>
+  {/* Header */}
+  <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+    
+    <h1 className="text-xl md:text-2xl font-bold">Case Studies</h1>
 
-      <div className="overflow-x-auto bg-white rounded-xl shadow">
-        <table className="w-full text-left">
-          <thead className="bg-purple-300 text-black text-sm">
-            <tr>
-              <th className="p-4">Title</th>
-              <th className="p-4">Client</th>
-              <th className="p-4">Category</th>
-              <th className="p-4">Results</th>
-              <th className="p-4">Tags</th>
-              <th className="p-4 text-center">Actions</th>
-            </tr>
-          </thead>
+    <button
+      onClick={openAddModal}
+      className="flex items-center justify-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto"
+    >
+      <Plus size={18} />
+      Add Case Study
+    </button>
 
-          <tbody>
-            {caseStudies.map((study) => (
-              <tr key={study._id} className="hover:bg-gray-50">
-                <td className="p-4 font-medium">{study.title}</td>
-
-                <td className="p-4 font-medium text-nowrap text-gray-600">{study.client}</td>
-
-                <td className="p-4">
-                  <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">
-                    {study.category}
-                  </span>
-                </td>
-
-                <td className="p-4">
-                  {study.results?.slice(0, 2).map((r, i) => (
-                    <div key={i} className="text-sm text-gray-600">
-                      • {r}
-                    </div>
-                  ))}
-                </td>
-
-                <td className="p-4">
-                  <div className="flex flex-wrap gap-1">
-                    {study.tags?.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="text-xs bg-gray-100 px-2 py-1 rounded"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-
-                <td className="p-4 flex gap-3 justify-center">
-                  <button
-                    onClick={() => openEditModal(study)}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <SquarePen size={22} />
-                  </button>
-
-                  <button
-                    onClick={() => deleteCaseStudy(study._id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 size={22} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {openModal && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-130 shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105">
-    <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-      {editingId ? "Edit Case Study" : "Add Case Study"}
-    </h2>
-
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <input
-        name="title"
-        placeholder="Title"
-        value={formData.title}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-        required
-      />
-
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={formData.description}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-        required
-      />
-
-      <input
-        name="client"
-        placeholder="Client"
-        value={formData.client}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-      />
-
-      <input
-        name="category"
-        placeholder="Category"
-        value={formData.category}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-      />
-
-      <input
-        name="results"
-        placeholder="Results (comma separated)"
-        value={formData.results}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-      />
-
-      <input
-        name="tags"
-        placeholder="Tags (comma separated)"
-        value={formData.tags}
-        onChange={handleChange}
-        className="w-full border-gray-300 dark:border-gray-600 border p-2 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
-      />
-
-      <div className="flex justify-end gap-3 pt-3">
-        <button
-          type="button"
-          onClick={() => setOpenModal(false)}
-          className="px-4 py-2 border border-gray-400 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="submit"
-          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 active:scale-95 transition-transform"
-        >
-          {editingId ? "Update" : "Create"}
-        </button>
-      </div>
-    </form>
   </div>
-</div>
-      )}
+
+  {/* Table Component */}
+  <div className="overflow-x-auto">
+    <CaseStudiesTable
+      caseStudies={caseStudies}
+      openEditModal={openEditModal}
+      deleteCaseStudy={deleteCaseStudy}
+    />
+  </div>
+
+  {/* Modal */}
+  {openModal && (
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+      
+      <div className="bg-white dark:bg-gray-800 p-5 md:p-6 rounded-xl w-full max-w-lg shadow-lg">
+
+        <h2 className="text-lg md:text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+          {editingId ? "Edit Case Study" : "Add Case Study"}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+
+          <input
+            name="title"
+            placeholder="Title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          />
+
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required
+          />
+
+          <input
+            name="client"
+            placeholder="Client"
+            value={formData.client}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <input
+            name="category"
+            placeholder="Category"
+            value={formData.category}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <input
+            name="results"
+            placeholder="Results (comma separated)"
+            value={formData.results}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <input
+            name="tags"
+            placeholder="Tags (comma separated)"
+            value={formData.tags}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-3">
+
+            <button
+              type="button"
+              onClick={() => setOpenModal(false)}
+              className="px-4 py-2 border rounded w-full sm:w-auto"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 w-full sm:w-auto"
+            >
+              {editingId ? "Update" : "Create"}
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
+  )}
+</div>
   );
 };
 

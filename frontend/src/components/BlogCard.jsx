@@ -21,8 +21,11 @@ const BlogCard = ({ blog }) => {
       <div className="relative">
         <img
           src={
-            blog.image ||
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995"
+            blog.image?.startsWith("http")
+              ? blog.image
+              : blog.image?.startsWith("/uploads")
+                ? `http://localhost:5000${blog.image}`
+                : `http://localhost:5000/uploads/${blog.image}`
           }
           alt={blog.title}
           className="w-full h-52 object-cover"

@@ -12,7 +12,7 @@ const DashboardLayout = () => {
       <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        className="z-30 bg-black/40 backdrop-blur-sm"
+        className="z-20 bg-black/40 backdrop-blur-sm"
       />
 
       {/* Main Content Area */}
@@ -20,11 +20,11 @@ const DashboardLayout = () => {
         {/* Topbar */}
         <Topbar
           setIsOpen={setIsOpen}
-          className="z-30 bg-black/40 backdrop-blur-sm"
+          className="z-20 bg-black/40 backdrop-blur-sm"
         />
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto relative z-30">
+        <main className="flex-1 p-6 overflow-y-auto relative">
           <Outlet />
         </main>
       </div>

@@ -90,7 +90,13 @@ const BlogDetail = () => {
 
         {/* Image */}
         <img
-          src={blog.image}
+          src={
+            blog.image?.startsWith("http")
+              ? blog.image
+              : blog.image?.startsWith("/uploads")
+                ? `http://localhost:5000${blog.image}`
+                : `http://localhost:5000/uploads/${blog.image}`
+          }
           alt={blog.title}
           className="rounded-lg w-full h-64 object-cover mb-6 shadow-lg"
         />

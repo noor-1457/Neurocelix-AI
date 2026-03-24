@@ -1,8 +1,19 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, BarChart2, LogOut, X,BarChart3, FileText, Briefcase, CircleUserRound } from "lucide-react";
+import {
+  Home,
+  BarChart2,
+  LogOut,
+  X,
+  BarChart3,
+  FileText,
+  Briefcase,
+  CircleUserRound,
+} from "lucide-react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
+  const { logout } = useContext(AuthContext);
   const location = useLocation();
 
   const handleClose = () => setIsOpen(false);
@@ -14,10 +25,22 @@ const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
       path: "/dashboard/analytics",
       icon: <BarChart2 size={20} />,
     },
-  { name: "Blogs", path: "/dashboard/blogs", icon: <FileText size={20} /> },
-  { name: "Case Studies", path: "/dashboard/case-studies", icon: <BarChart3 size={20} /> },
-  { name: "Services", path: "/dashboard/services-private", icon: <Briefcase size={20} /> },
-  { name: "Contact", path: "/dashboard/contacts", icon: <CircleUserRound size={20} /> },
+    { name: "Blogs", path: "/dashboard/blogs", icon: <FileText size={20} /> },
+    {
+      name: "Case Studies",
+      path: "/dashboard/case-studies",
+      icon: <BarChart3 size={20} />,
+    },
+    {
+      name: "Services",
+      path: "/dashboard/services-private",
+      icon: <Briefcase size={20} />,
+    },
+    {
+      name: "Contact",
+      path: "/dashboard/contacts",
+      icon: <CircleUserRound size={20} />,
+    },
   ];
 
   return (
@@ -32,7 +55,7 @@ const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-[250px] bg-white dark:bg-gray-900 shadow-lg z-50
+        className={`fixed lg:static top-0 left-0 h-screen w-64 bg-white dark:bg-gray-900 shadow-lg z-50
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
@@ -76,7 +99,10 @@ const Sidebar = ({ isOpen, setIsOpen, dark, setDark }) => {
           </button>
 
           {/* Logout */}
-          <button className="flex items-center gap-3 text-red-500 mt-6 p-3 rounded-md hover:bg-red-50 dark:hover:bg-red-700 transition-colors">
+          <button
+            onClick={logout}
+            className="flex items-center gap-3 text-red-500 mt-6 p-3 rounded-md hover:bg-red-50 dark:hover:bg-red-700 transition-colors"
+          >
             <LogOut size={20} />
             Logout
           </button>
