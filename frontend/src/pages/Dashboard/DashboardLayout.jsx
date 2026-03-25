@@ -1,30 +1,38 @@
-import React, { useState } from "react";
+// src/pages/Dashboard/DashboardLayout.jsx
+import React, { useState, useContext, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { Outlet } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { dark } = useContext(AuthContext);
+
+  // Ensure <html> has dark class for Tailwind
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [dark]);
 
   return (
-    <div className="relative flex h-screen bg-purple-50 dark:bg-gray-900 transition-all">
+    <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        className="z-20 bg-black/40 backdrop-blur-sm"
-      />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen relative">
+      {/* Main Content */}
+      <div
+        className={`flex-1 flex flex-col min-h-screen transition-all
+          ${dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"}`}
+      >
         {/* Topbar */}
-        <Topbar
-          setIsOpen={setIsOpen}
-          className="z-20 bg-black/40 backdrop-blur-sm"
-        />
+        <Topbar setIsOpen={setIsOpen} />
 
-        {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto relative">
+        {/* Page Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
         </main>
       </div>

@@ -1,13 +1,24 @@
 import React from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 
-const CaseStudiesTable = ({ caseStudies, openEditModal, deleteCaseStudy }) => {
+const CaseStudiesTable = ({
+  caseStudies,
+  openEditModal,
+  deleteCaseStudy,
+  dark,
+}) => {
   return (
     <>
       {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow">
-        <table className="w-full text-left min-w-[800px]">
-          <thead className="bg-gray-100 text-black text-sm">
+      <div
+        className={`hidden md:block overflow-x-auto rounded-xl shadow ${
+          dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+        }`}
+      >
+        <table className="min-w-full border-collapse">
+          <thead
+            className={`${dark ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-black"} text-sm`}
+          >
             <tr>
               <th className="p-4">Title</th>
               <th className="p-4">Client</th>
@@ -17,43 +28,48 @@ const CaseStudiesTable = ({ caseStudies, openEditModal, deleteCaseStudy }) => {
               <th className="p-4 text-center">Actions</th>
             </tr>
           </thead>
-
           <tbody>
             {caseStudies.map((study) => (
-              <tr key={study._id} className="border-t">
+              <tr
+                key={study._id}
+                className={`border-t ${
+                  dark
+                    ? "border-purple-700 hover:bg-purple-700 hover:text-white"
+                    : "hover:bg-gray-50"
+                }`}
+              >
                 <td className="p-4 font-medium">{study.title}</td>
-
-                <td className="p-4 text-gray-600 whitespace-nowrap">
+                <td
+                  className={`${dark ? "text-gray-300" : "text-gray-600"} p-4 whitespace-nowrap`}
+                >
                   {study.client}
                 </td>
-
                 <td className="p-4">
                   <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">
                     {study.category}
                   </span>
                 </td>
-
-                <td className="p-4">
+                <td
+                  className={`${dark ? "text-gray-300" : "text-gray-600"} p-4`}
+                >
                   {study.results?.slice(0, 2).map((r, i) => (
-                    <div key={i} className="text-sm text-gray-600">
-                      • {r}
-                    </div>
+                    <div key={i}>• {r}</div>
                   ))}
                 </td>
-
-                <td className="p-4">
-                  <div className="flex flex-wrap gap-1">
-                    {study.tags?.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="text-xs bg-gray-100 px-2 py-1 rounded"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                <td className="p-4 font-medium">
+                  {study.tags?.map((tag, i) => (
+                    <span
+                      key={i}
+                      className={`text-xs px-2 py-1 rounded ${
+                        dark
+                          ? "bg-purple-700 text-purple-100"
+                          : "bg-purple-100 text-purple-700"
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </td>
-
                 <td className="p-4 flex gap-3 justify-center">
                   <button
                     onClick={() => openEditModal(study)}
@@ -80,37 +96,42 @@ const CaseStudiesTable = ({ caseStudies, openEditModal, deleteCaseStudy }) => {
         {caseStudies.map((study) => (
           <div
             key={study._id}
-            className="bg-white shadow rounded-xl p-4 space-y-2"
+            className={`rounded-xl p-4 shadow space-y-2 ${
+              dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+            }`}
           >
             <h3 className="font-semibold text-lg">{study.title}</h3>
-
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Client:</span> {study.client}
+            <p
+              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
+            >
+              Client: {study.client}
             </p>
-
             <p>
               <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">
                 {study.category}
               </span>
             </p>
-
-            <div className="text-sm text-gray-600">
+            <div
+              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
+            >
               {study.results?.slice(0, 2).map((r, i) => (
                 <div key={i}>• {r}</div>
               ))}
             </div>
-
             <div className="flex flex-wrap gap-1">
               {study.tags?.map((tag, i) => (
                 <span
                   key={i}
-                  className="text-xs bg-gray-100 px-2 py-1 rounded"
+                  className={`text-xs px-2 py-1 rounded ${
+                    dark
+                      ? "bg-purple-700 text-purple-100"
+                      : "bg-purple-100 text-purple-700"
+                  }`}
                 >
                   {tag}
                 </span>
               ))}
             </div>
-
             <div className="flex gap-4 pt-2">
               <button
                 onClick={() => openEditModal(study)}
@@ -118,7 +139,6 @@ const CaseStudiesTable = ({ caseStudies, openEditModal, deleteCaseStudy }) => {
               >
                 <SquarePen size={20} />
               </button>
-
               <button
                 onClick={() => deleteCaseStudy(study._id)}
                 className="text-red-600 hover:text-red-800"

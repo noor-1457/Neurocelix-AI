@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   LineChart,
   Line,
@@ -8,48 +8,91 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { AuthContext } from "../../context/AuthContext"; // assuming you have dark mode here
 
 const AnalyticsCharts = ({ revenueData, analyticsData }) => {
-  // Recharts format
-  const formattedRevenue = revenueData.map(r => ({
+  const { dark } = useContext(AuthContext);
+
+  const formattedRevenue = revenueData.map((r) => ({
     month: r.month,
     revenue: r.revenue,
   }));
 
-  const formattedAnalytics = analyticsData.map(a => ({
+  const formattedAnalytics = analyticsData.map((a) => ({
     day: a.day,
     visits: a.visits,
   }));
 
+  const gridColor = dark ? "#374151" : "#e5e7eb"; // gray-700 for dark, gray-200 for light
+  const axisColor = dark ? "#D1D5DB" : "#1F2937"; // text-gray-300 for dark, gray-800 for light
+  const tooltipStyle = {
+    backgroundColor: dark ? "#1F2937" : "#fff",
+    color: dark ? "#fff" : "#000",
+    border: "1px solid",
+    borderColor: dark ? "#374151" : "#E5E7EB",
+    borderRadius: "6px",
+    padding: "8px",
+  };
+
   return (
     <div className="space-y-6">
       {/* Revenue Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">Monthly Revenue</h2>
+      <div
+        className={`p-4 sm:p-6 rounded-xl shadow ${
+          dark ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <h2
+          className={`text-lg font-semibold mb-4 ${
+            dark ? "text-white" : "text-gray-900"
+          }`}
+        >
+          Monthly Revenue
+        </h2>
         <div className="w-full h-[300px] sm:h-[350px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={formattedRevenue}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="revenue" stroke="#3B82F6" strokeWidth={3} />
+              <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
+              <XAxis dataKey="month" stroke={axisColor} />
+              <YAxis stroke={axisColor} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Line
+                type="monotone"
+                dataKey="revenue"
+                stroke="#3B82F6"
+                strokeWidth={3}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Analytics Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">Weekly Visits</h2>
+      <div
+        className={`p-4 sm:p-6 rounded-xl shadow ${
+          dark ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <h2
+          className={`text-lg font-semibold mb-4 ${
+            dark ? "text-white" : "text-gray-900"
+          }`}
+        >
+          Weekly Visits
+        </h2>
         <div className="w-full h-[300px] sm:h-[350px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={formattedAnalytics}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="visits" stroke="#10B981" strokeWidth={3} />
+              <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
+              <XAxis dataKey="day" stroke={axisColor} />
+              <YAxis stroke={axisColor} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Line
+                type="monotone"
+                dataKey="visits"
+                stroke="#10B981"
+                strokeWidth={3}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>

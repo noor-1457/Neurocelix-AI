@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../context/AuthContext"; // assuming you have dark mode here
 
 import {
   LineChart,
@@ -9,12 +10,13 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 
 const DashboardHome = () => {
   const [stats, setStats] = useState(null);
   const token = localStorage.getItem("token");
+  const { dark } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -23,7 +25,7 @@ const DashboardHome = () => {
           "http://localhost:5000/api/dashboard/stats",
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
         setStats(res.data);
       } catch (err) {
@@ -36,13 +38,12 @@ const DashboardHome = () => {
 
   if (!stats)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3 dark:bg-gray-900">
         <div className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-300 text-sm">Loading...</p>
       </div>
     );
 
-  // Recharts format data
   const revenueData = stats.revenue.map((r) => ({
     month: r.month,
     revenue: r.revenue,
@@ -55,73 +56,54 @@ const DashboardHome = () => {
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
-
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-        
-        <motion.div
-          className="bg-blue-400 text-white p-5 rounded-xl shadow min-h-[110px]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-        >
-          <h2 className="text-sm sm:text-base">Users</h2>
-          <p className="text-2xl sm:text-3xl font-bold">{stats.users}</p>
+        <motion.div className="bg-blue-500 dark:bg-blue-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+          <h2>Users</h2>
+          <p className="text-2xl font-bold">{stats.users}</p>
         </motion.div>
 
-        <motion.div
-          className="bg-green-400 text-white p-5 rounded-xl shadow min-h-[110px]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <h2 className="text-sm sm:text-base">Blogs</h2>
-          <p className="text-2xl sm:text-3xl font-bold">{stats.blogs}</p>
+        <motion.div className="bg-green-500 dark:bg-green-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+          <h2>Blogs</h2>
+          <p className="text-2xl font-bold">{stats.blogs}</p>
         </motion.div>
 
-        <motion.div
-          className="bg-yellow-400 text-white p-5 rounded-xl shadow min-h-[110px]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h2 className="text-sm sm:text-base">Contacts</h2>
-          <p className="text-2xl sm:text-3xl font-bold">{stats.contacts}</p>
+        <motion.div className="bg-yellow-500 dark:bg-yellow-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+          <h2>Contacts</h2>
+          <p className="text-2xl font-bold">{stats.contacts}</p>
         </motion.div>
 
-        <motion.div
-          className="bg-purple-400 text-white p-5 rounded-xl shadow min-h-[110px]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h2 className="text-sm sm:text-base">Services</h2>
-          <p className="text-2xl sm:text-3xl font-bold">{stats.services}</p>
+        <motion.div className="bg-purple-500 dark:bg-purple-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+          <h2>Services</h2>
+          <p className="text-2xl font-bold">{stats.services}</p>
         </motion.div>
 
-        <motion.div
-          className="bg-pink-400 text-white p-5 rounded-xl shadow min-h-[110px]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <h2 className="text-sm sm:text-base">Case Studies</h2>
-          <p className="text-2xl sm:text-3xl font-bold">{stats.caseStudies}</p>
+        <motion.div className="bg-pink-500 dark:bg-pink-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+          <h2>Case Studies</h2>
+          <p className="text-2xl font-bold">{stats.caseStudies}</p>
         </motion.div>
-
       </div>
 
       {/* Revenue Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-        <h2 className="text-base sm:text-lg font-semibold mb-4">
+      <div
+        className={`p-4 sm:p-6 rounded-xl shadow ${
+          dark ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <h2
+          className={`text-lg font-semibold mb-4 ${
+            dark ? "text-white" : "text-gray-900"
+          }`}
+        >
           Monthly Revenue
         </h2>
 
-        <div className="w-full h-[300px] sm:h-[350px]">
+        <div className="w-full h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+              <XAxis dataKey="month" stroke="#888" />
+              <YAxis stroke="#888" />
               <Tooltip />
               <Line
                 type="monotone"
@@ -135,17 +117,25 @@ const DashboardHome = () => {
       </div>
 
       {/* Analytics Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-        <h2 className="text-base sm:text-lg font-semibold mb-4">
+      <div
+        className={`p-4 sm:p-6 rounded-xl shadow ${
+          dark ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <h2
+          className={`text-lg font-semibold mb-4 ${
+            dark ? "text-white" : "text-gray-900"
+          }`}
+        >
           Weekly Visits
         </h2>
 
-        <div className="w-full h-[300px] sm:h-[350px]">
+        <div className="w-full h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={analyticsData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+              <XAxis dataKey="day" stroke="#888" />
+              <YAxis stroke="#888" />
               <Tooltip />
               <Line
                 type="monotone"
@@ -157,7 +147,6 @@ const DashboardHome = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
     </div>
   );
 };

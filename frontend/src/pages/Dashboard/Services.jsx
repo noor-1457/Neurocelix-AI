@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import ServiceTable from "../../components/dashboard/ServiceTable";
+import { AuthContext } from "../../context/AuthContext";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -18,6 +19,7 @@ const Services = () => {
   });
 
   const token = localStorage.getItem("token");
+  const { dark } = useContext(AuthContext);
 
   const fetchServices = async () => {
     setLoading(true);
@@ -60,6 +62,7 @@ const Services = () => {
       features: service.features ? service.features.join(", ") : "",
     });
   };
+
   const handleSave = async () => {
     try {
       const payload = {
@@ -82,6 +85,7 @@ const Services = () => {
       console.error(err);
     }
   };
+
   const handleAdd = async () => {
     try {
       const payload = {
@@ -91,7 +95,9 @@ const Services = () => {
       const res = await axios.post(
         `http://localhost:5000/api/services`,
         payload,
-        { headers: { Authorization: `Bearer ${token}` } },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
 
       setServices((prev) => [res.data, ...prev]);
@@ -113,7 +119,9 @@ const Services = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[200px] gap-3">
         <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+          Loading...
+        </p>
       </div>
     );
   }
@@ -122,13 +130,12 @@ const Services = () => {
     <>
       {/* Header with Add button */}
       <motion.div
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
+        className={`p-4 md:p-6 rounded-xl shadow mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3
+          ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <h1 className="text-lg md:text-2xl font-bold dark:text-white">
-          Services
-        </h1>
+        <h1 className="text-lg md:text-2xl font-bold">{`Services`}</h1>
         <button
           onClick={() => setAddingService(true)}
           className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto justify-center"
@@ -148,10 +155,10 @@ const Services = () => {
       {/* Edit Modal */}
       {editingService && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg">
-            <h3 className="text-xl font-semibold mb-4 dark:text-white">
-              Edit Service
-            </h3>
+          <div
+            className={`p-6 rounded-xl shadow-lg w-full max-w-lg transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+          >
+            <h3 className="text-xl font-semibold mb-4">{`Edit Service`}</h3>
             <input
               type="text"
               placeholder="Title"
@@ -159,7 +166,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <input
               type="text"
@@ -168,7 +175,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <input
               type="text"
@@ -177,9 +184,8 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, icon: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
-
             <input
               type="text"
               placeholder="Features (comma separated)"
@@ -187,7 +193,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, features: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <textarea
               placeholder="Description"
@@ -195,7 +201,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full mb-4 px-3 py-2 border rounded-md"
+              className={`w-full mb-4 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <div className="flex justify-end gap-2">
               <button
@@ -206,7 +212,7 @@ const Services = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
                 Save
               </button>
@@ -218,10 +224,10 @@ const Services = () => {
       {/* Add Modal */}
       {addingService && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg">
-            <h3 className="text-xl font-semibold mb-4 dark:text-white">
-              Add Service
-            </h3>
+          <div
+            className={`p-6 rounded-xl shadow-lg w-full max-w-lg transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+          >
+            <h3 className="text-xl font-semibold mb-4">Add Service</h3>
             <input
               type="text"
               placeholder="Title"
@@ -229,7 +235,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <input
               type="text"
@@ -238,7 +244,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <input
               type="text"
@@ -247,9 +253,8 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, icon: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
-
             <input
               type="text"
               placeholder="Features (comma separated)"
@@ -257,7 +262,7 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, features: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <textarea
               placeholder="Description"
@@ -265,13 +270,19 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full mb-4 px-3 py-2 border rounded-md"
+              className={`w-full mb-4 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
             />
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {
                   setAddingService(false);
-                  setFormData({ title: "", category: "", description: "" });
+                  setFormData({
+                    title: "",
+                    category: "",
+                    description: "",
+                    icon: "",
+                    features: "",
+                  });
                 }}
                 className="px-4 py-2 bg-gray-400 text-white rounded"
               >

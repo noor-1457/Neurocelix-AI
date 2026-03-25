@@ -11,10 +11,20 @@ export const AuthProvider = ({ children }) => {
   // Auth state
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [profile, setProfile] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
+    JSON.parse(localStorage.getItem("user")) || null,
   );
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [loading, setLoading] = useState(true);
+
+  // 🔥 DARK MODE STATE (ADD THIS)
+  const [dark, setDark] = useState(
+    JSON.parse(localStorage.getItem("theme")) || false,
+  );
+
+  // 🔥 SAVE THEME IN LOCALSTORAGE
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(dark));
+  }, [dark]);
 
   // Set token in axios header
   const setAxiosToken = (token) => {
@@ -31,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.get("http://localhost:5000/api/auth/profile");
 
       setProfile(res.data);
-      localStorage.setItem("user", JSON.stringify(res.data)); // save user including role
+      localStorage.setItem("user", JSON.stringify(res.data));
       setIsAuthenticated(true);
     } catch (err) {
       console.error(err);
@@ -56,37 +66,10 @@ export const AuthProvider = ({ children }) => {
   // Login
   const login = async (email, password) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password }
-      );
-
-      const token = res.data.token;
-      const user = res.data.user;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user)); // save user including role
-      setToken(token);
-      setProfile(user);
-      setAxiosToken(token);
-      setIsAuthenticated(true);
-
-      console.log("Logged in user:", user); // ✅ check role in console
-
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err.response?.data?.message || err.message);
-      throw err;
-    }
-  };
-
-  // Signup
-  const signup = async (name, email, password) => {
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        { name, email, password }
-      );
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+      });
 
       const token = res.data.token;
       const user = res.data.user;
@@ -98,7 +81,31 @@ export const AuthProvider = ({ children }) => {
       setAxiosToken(token);
       setIsAuthenticated(true);
 
-      console.log("Signed up user:", user); // ✅ check role in console
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err.response?.data?.message || err.message);
+      throw err;
+    }
+  };
+
+  // Signup
+  const signup = async (name, email, password) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        name,
+        email,
+        password,
+      });
+
+      const token = res.data.token;
+      const user = res.data.user;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      setToken(token);
+      setProfile(user);
+      setAxiosToken(token);
+      setIsAuthenticated(true);
 
       navigate("/dashboard");
     } catch (err) {
@@ -112,11 +119,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.put(
         "http://localhost:5000/api/auth/profile",
-        data
+        data,
       );
 
       setProfile(res.data);
-      localStorage.setItem("user", JSON.stringify(res.data)); // update localStorage
+      localStorage.setItem("user", JSON.stringify(res.data));
     } catch (err) {
       console.error(err);
       throw err;
@@ -145,6 +152,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         logout,
         updateProfile,
+        dark, // ✅ ADD THIS
+        setDark, // ✅ ADD THIS
       }}
     >
       {children}

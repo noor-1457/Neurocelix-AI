@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import ContactTable from "../../components/dashboard/ContactTable";
-
+import { AuthContext } from "../../context/AuthContext";
 
 const Contact = () => {
   const [contacts, setContacts] = useState([]);
+  const { dark } = useContext(AuthContext);
   const token = localStorage.getItem("token");
 
   const fetchContacts = async () => {
@@ -40,17 +41,22 @@ const Contact = () => {
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow"
+      className={`p-4 md:p-6 rounded-xl shadow transition-colors
+        ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2 className="text-lg md:text-xl font-semibold mb-4 dark:text-white">
+      <h2
+        className={`text-lg md:text-xl font-semibold mb-4 ${dark ? "text-white" : "text-gray-900"}`}
+      >
         Contacts
       </h2>
 
+      {/* Contact Table */}
       <ContactTable
         contacts={contacts}
         handleDelete={handleDelete}
+        dark={dark}
       />
     </motion.div>
   );

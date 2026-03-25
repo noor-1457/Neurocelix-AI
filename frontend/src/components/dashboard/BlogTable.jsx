@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 import axios from "axios";
 
-const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
+const BlogTable = ({ blogs = [], onEdit, onDelete, dark }) => {
   const [editingBlog, setEditingBlog] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -67,15 +67,25 @@ const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
   };
 
   return (
-    <div className="md:bg-white dark:bg-gray-800 shadow rounded-xl">
-      <h2 className="text-2xl p-5 font-semibold text-gray-900 dark:text-white">
+    <div
+      className={`hidden md:block overflow-x-auto rounded-xl shadow ${
+        dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+      }`}
+    >
+      <h2
+        className={`text-2xl p-5 font-semibold ${
+          dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+        } `}
+      >
         Blogs List
       </h2>
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full border-collapse">
-          <thead className="bg-gray-100 dark:bg-gray-700">
+          <thead
+            className={`${dark ? "bg-gray-800 text-white" : "bg-gray-50 text-gray-900"}`}
+          >
             <tr>
               <th className="text-left px-4 py-2">Image</th>
               <th className="text-left px-4 py-2">Title</th>
@@ -91,7 +101,11 @@ const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
             {blogs.map((blog) => (
               <tr
                 key={blog._id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                className={`${
+                  dark
+                    ? "hover:bg-purple-700 text-white"
+                    : "hover:bg-gray-50 text-gray-900"
+                }`}
               >
                 <td className="px-4 py-3">
                   <img
@@ -107,35 +121,28 @@ const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
                   />
                 </td>
 
-                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                  {blog.title}
-                </td>
-
-                <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                  {blog.category}
-                </td>
-
-                <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                  {blog.author}
-                </td>
-
+                <td className="px-4 py-3 font-medium">{blog.title}</td>
+                <td className="px-4 py-3">{blog.category}</td>
+                <td className="px-4 py-3">{blog.author}</td>
                 <td className="px-4 py-3">
-                    <div className="flex flex-wrap gap-2">
-                      {blog.tags?.map((f, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full"
-                        >
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </td>
-
+                  <div className="flex flex-wrap gap-2">
+                    {blog.tags?.map((f, i) => (
+                      <span
+                        key={i}
+                        className={`px-2 py-1 text-xs rounded-full ${
+                          dark
+                            ? "bg-purple-600 text-white"
+                            : "bg-purple-100 text-purple-700"
+                        }`}
+                      >
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+                </td>
                 <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </td>
-
                 <td className="px-4 py-3 flex justify-center items-center gap-2">
                   <button
                     onClick={() => openEdit(blog)}
@@ -181,16 +188,16 @@ const BlogTable = ({ blogs = [], onEdit, onDelete }) => {
                   {blog.category} • {blog.author}
                 </p>
 
-                 <div className="flex flex-wrap gap-2 mt-2">
-                {blog.tags?.map((f, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full"
-                  >
-                    {f}
-                  </span>
-                ))}
-              </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {blog.tags?.map((f, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full"
+                    >
+                      {f}
+                    </span>
+                  ))}
+                </div>
 
                 <p className="text-xs text-gray-400">
                   {new Date(blog.createdAt).toLocaleDateString()}
