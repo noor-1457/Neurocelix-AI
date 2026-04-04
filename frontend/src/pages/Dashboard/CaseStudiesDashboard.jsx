@@ -1,15 +1,26 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { Plus } from "lucide-react";
 import CaseStudiesTable from "../../components/dashboard/CaseStudiesTable";
 import { AuthContext } from "../../context/AuthContext";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCaseStudies,
+  addCaseStudy,
+  updateCaseStudy,
+  deleteCaseStudy,
+} from "../../features/caseStudies/caseStudySlice";
+
 const CaseStudiesDashboard = () => {
-  const [caseStudies, setCaseStudies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const { caseStudies, loading } = useSelector((state) => state.caseStudies);
+
+  const { dark } = useContext(AuthContext);
 
   const [openModal, setOpenModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -19,25 +30,10 @@ const CaseStudiesDashboard = () => {
     tags: "",
   });
 
-  const { dark } = useContext(AuthContext); // 🔥 Dark mode state
-  const token = localStorage.getItem("token");
-
-  const fetchCaseStudies = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get("http://localhost:5000/api/casestudies", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setCaseStudies(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-    setLoading(false);
-  };
-
+  // FETCH
   useEffect(() => {
-    fetchCaseStudies();
-  }, []);
+    dispatch(fetchCaseStudies());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,6 +54,7 @@ const CaseStudiesDashboard = () => {
 
   const openEditModal = (study) => {
     setEditingId(study._id);
+
     setFormData({
       title: study.title || "",
       description: study.description || "",
@@ -66,11 +63,14 @@ const CaseStudiesDashboard = () => {
       results: study.results?.join(", ") || "",
       tags: study.tags?.join(", ") || "",
     });
+
     setOpenModal(true);
   };
 
-  const handleSubmit = async (e) => {
+  // SUBMIT
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     const payload = {
       title: formData.title,
       description: formData.description,
@@ -86,125 +86,117 @@ const CaseStudiesDashboard = () => {
         .filter(Boolean),
     };
 
-    try {
-      if (editingId) {
-        await axios.put(
-          `http://localhost:5000/api/casestudies/${editingId}`,
-          payload,
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
-      } else {
-        await axios.post("http://localhost:5000/api/casestudies", payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-      setOpenModal(false);
-      fetchCaseStudies();
-    } catch (error) {
-      console.log(error);
+    if (editingId) {
+      dispatch(updateCaseStudy({ id: editingId, data: payload }));
+    } else {
+      dispatch(addCaseStudy(payload));
     }
+
+    setOpenModal(false);
   };
 
-  const deleteCaseStudy = async (id) => {
+  const handleDelete = (id) => {
     if (!window.confirm("Delete this case study?")) return;
-    try {
-      await axios.delete(`http://localhost:5000/api/casestudies/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      fetchCaseStudies();
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(deleteCaseStudy(id));
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="w-14 h-14 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className={dark ? "text-gray-400 mt-2" : "text-gray-600 mt-2"}>
-          Loading...
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <div
-      className={`md:p-6 ${dark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}
-    >
-      {/* Header */}
-      <div
-        className={`p-4 md:p-6 rounded-xl shadow mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 ${dark ? "bg-gray-800" : "bg-white"}`}
-      >
-        <h1 className="text-xl md:text-2xl font-bold">Case Studies</h1>
+    <div className={`md:p-6 ${dark ? "bg-gray-900 text-white" : ""}`}>
+      {/* HEADER */}
+      <div className="p-4 md:p-6 rounded-xl shadow mb-4 bg-white flex justify-between">
+        <h1 className="text-2xl font-bold">Case Studies</h1>
+
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto"
+          className="flex gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg"
         >
           <Plus size={18} /> Add Case Study
         </button>
       </div>
 
-      {/* Table */}
       <CaseStudiesTable
         caseStudies={caseStudies}
         openEditModal={openEditModal}
-        deleteCaseStudy={deleteCaseStudy}
-        dark={dark} // pass dark mode
+        deleteCaseStudy={handleDelete}
+        dark={dark}
       />
 
-      {/* Modal */}
       {openModal && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div
-            className={`p-5 md:p-6 rounded-xl w-full max-w-lg shadow-lg transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+            className={`rounded-xl shadow-lg p-6 w-full max-w-lg ${
+              dark ? "bg-gray-800 text-white" : "bg-white"
+            }`}
           >
-            <h2 className="text-lg md:text-xl font-bold mb-4">
+            <h2 className="text-xl font-semibold mb-4">
               {editingId ? "Edit Case Study" : "Add Case Study"}
             </h2>
+
             <form onSubmit={handleSubmit} className="space-y-3">
-              {[
-                "title",
-                "description",
-                "client",
-                "category",
-                "results",
-                "tags",
-              ].map((field) =>
-                field === "description" ? (
-                  <textarea
-                    key={field}
-                    name={field}
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    className={`w-full border p-2 rounded ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-                    required
-                  />
-                ) : (
-                  <input
-                    key={field}
-                    name={field}
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    className={`w-full border p-2 rounded ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-                  />
-                ),
-              )}
-              <div className="flex flex-col sm:flex-row justify-end gap-3 pt-3">
+              <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Title"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                name="client"
+                value={formData.client}
+                onChange={handleChange}
+                placeholder="Client"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="Category"
+                className="w-full border p-2 rounded"
+              />
+
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Description"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                name="results"
+                value={formData.results}
+                onChange={handleChange}
+                placeholder="Results (comma separated)"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                name="tags"
+                value={formData.tags}
+                onChange={handleChange}
+                placeholder="Tags (comma separated)"
+                className="w-full border p-2 rounded"
+              />
+
+              <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setOpenModal(false)}
-                  className={`px-4 py-2 border rounded w-full sm:w-auto ${dark ? "border-gray-600 text-white" : ""}`}
+                  className="px-4 py-2 bg-gray-400 text-white rounded"
                 >
                   Cancel
                 </button>
+
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 w-full sm:w-auto"
+                  className="px-4 py-2 bg-purple-600 text-white rounded"
                 >
-                  {editingId ? "Update" : "Create"}
+                  {editingId ? "Update" : "Add"}
                 </button>
               </div>
             </form>

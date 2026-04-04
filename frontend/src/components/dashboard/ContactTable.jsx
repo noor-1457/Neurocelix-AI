@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Trash2 } from "lucide-react";
 
-const ContactTable = ({ contacts, handleDelete, dark }) => {
+const ContactTable = ({ contacts, handleDelete, dark, deletingIds = [] }) => {
+  const [hoveredId, setHoveredId] = useState(null);
+
   return (
     <>
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full border-separate border-spacing-y-3">
           <thead>
-            <tr
-              className={`text-left ${dark ? "text-gray-300" : "text-gray-600"}`}
-            >
+            <tr className={`text-left ${dark ? "text-gray-300" : "text-gray-600"}`}>
               <th className="p-3">Name</th>
               <th className="p-3">Email</th>
               <th className="p-3">Phone</th>
@@ -22,39 +22,45 @@ const ContactTable = ({ contacts, handleDelete, dark }) => {
 
           <tbody>
             {contacts.length > 0 ? (
-              contacts.map((contact) => (
-                <tr
-                  key={contact._id}
-                  className={`shadow-sm rounded-lg transition-colors
-                    ${dark ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-white text-gray-900 hover:bg-gray-100"}`}
-                >
-                  <td className="p-4 font-bold rounded-l-lg">{contact.name}</td>
-                  <td
-                    className={`p-4 ${dark ? "text-gray-200" : "text-gray-700"}`}
+              contacts.map((contact) => {
+                const isDeleting = deletingIds.includes(contact._id);
+                return (
+                  <tr
+                    key={contact._id}
+                    className={`shadow-sm rounded-lg transition-colors ${
+                      dark
+                        ? "bg-gray-700 text-white hover:bg-gray-600"
+                        : "bg-white text-gray-900 hover:bg-gray-100"
+                    }`}
+                    onMouseEnter={() => setHoveredId(contact._id)}
+                    onMouseLeave={() => setHoveredId(null)}
                   >
-                    {contact.email}
-                  </td>
-                  <td className="p-4">{contact.phone || "-"}</td>
-                  <td className="p-4">{contact.subject}</td>
-                  <td
-                    className={`p-4 ${dark ? "text-gray-400" : "text-gray-500"}`}
-                  >
-                    {new Date(contact.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="p-4 text-center rounded-r-lg">
-                    <button
-                      onClick={() => handleDelete(contact._id)}
-                      className={`transition-colors ${
-                        dark
-                          ? "text-red-400 hover:text-red-500"
-                          : "text-red-500 hover:text-red-600"
-                      }`}
-                    >
-                      <Trash2 size={22} />
-                    </button>
-                  </td>
-                </tr>
-              ))
+                    <td className="p-4 font-bold rounded-l-lg">{contact.name}</td>
+                    <td className={`p-4 ${dark ? "text-gray-200" : "text-gray-700"}`}>
+                      {contact.email}
+                    </td>
+                    <td className="p-4">{contact.phone || "-"}</td>
+                    <td className="p-4">{contact.subject}</td>
+                    <td className={`p-4 ${dark ? "text-gray-400" : "text-gray-500"}`}>
+                      {new Date(contact.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-4 text-center rounded-r-lg">
+                      <button
+                        onClick={() => handleDelete(contact._id)}
+                        disabled={isDeleting}
+                        className={`transition-colors flex items-center justify-center gap-1 ${
+                          dark
+                            ? "text-red-400 hover:text-red-500"
+                            : "text-red-500 hover:text-red-600"
+                        } ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
+                      >
+                        <Trash2 size={22} />
+                        {isDeleting && <span className="text-xs">Deleting...</span>}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td
@@ -72,45 +78,44 @@ const ContactTable = ({ contacts, handleDelete, dark }) => {
       {/* Mobile Cards */}
       <div className="grid gap-4 md:hidden">
         {contacts.length > 0 ? (
-          contacts.map((contact) => (
-            <div
-              key={contact._id}
-              className={`rounded-lg p-4 shadow transition-colors
-                ${dark ? "bg-gray-700 text-white" : "bg-white text-gray-900"}`}
-            >
-              <h3 className="font-semibold">{contact.name}</h3>
-              <p
-                className={`${dark ? "text-gray-200" : "text-gray-500"} text-sm`}
+          contacts.map((contact) => {
+            const isDeleting = deletingIds.includes(contact._id);
+            return (
+              <div
+                key={contact._id}
+                className={`rounded-lg p-4 shadow transition-colors ${
+                  dark ? "bg-gray-700 text-white" : "bg-white text-gray-900"
+                }`}
               >
-                {contact.email}
-              </p>
-              <p
-                className={`${dark ? "text-gray-200" : "text-gray-500"} text-sm`}
-              >
-                {contact.phone || "-"}
-              </p>
-              <p
-                className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm mt-1`}
-              >
-                {contact.subject}
-              </p>
-              <p
-                className={`${dark ? "text-gray-400" : "text-gray-400"} text-xs mt-2`}
-              >
-                {new Date(contact.createdAt).toLocaleDateString()}
-              </p>
-              <button
-                onClick={() => handleDelete(contact._id)}
-                className="mt-3 w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          ))
+                <h3 className="font-semibold">{contact.name}</h3>
+                <p className={`${dark ? "text-gray-200" : "text-gray-500"} text-sm`}>
+                  {contact.email}
+                </p>
+                <p className={`${dark ? "text-gray-200" : "text-gray-500"} text-sm`}>
+                  {contact.phone || "-"}
+                </p>
+                <p className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm mt-1`}>
+                  {contact.subject}
+                </p>
+                <p className={`${dark ? "text-gray-400" : "text-gray-400"} text-xs mt-2`}>
+                  {new Date(contact.createdAt).toLocaleDateString()}
+                </p>
+                <button
+                  onClick={() => handleDelete(contact._id)}
+                  disabled={isDeleting}
+                  className={`mt-3 w-full py-2 rounded transition-colors ${
+                    isDeleting
+                      ? "bg-red-400 cursor-not-allowed"
+                      : "bg-red-500 hover:bg-red-600 text-white"
+                  }`}
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            );
+          })
         ) : (
-          <p
-            className={`text-center ${dark ? "text-gray-400" : "text-gray-500"}`}
-          >
+          <p className={`text-center ${dark ? "text-gray-400" : "text-gray-500"}`}>
             No contacts found
           </p>
         )}

@@ -9,6 +9,7 @@ const CaseStudiesTable = ({
 }) => {
   return (
     <>
+
       {/* Desktop Table */}
       <div
         className={`hidden md:block overflow-x-auto rounded-xl shadow ${
@@ -17,7 +18,9 @@ const CaseStudiesTable = ({
       >
         <table className="min-w-full border-collapse">
           <thead
-            className={`${dark ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-black"} text-sm`}
+            className={`${
+              dark ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-black"
+            } text-sm`}
           >
             <tr>
               <th className="p-4">Title</th>
@@ -28,6 +31,7 @@ const CaseStudiesTable = ({
               <th className="p-4 text-center">Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {caseStudies.map((study) => (
               <tr
@@ -39,28 +43,32 @@ const CaseStudiesTable = ({
                 }`}
               >
                 <td className="p-4 font-medium">{study.title}</td>
+
                 <td
-                  className={`${dark ? "text-gray-300" : "text-gray-600"} p-4 whitespace-nowrap`}
+                  className={`p-4 whitespace-nowrap ${
+                    dark ? "text-gray-300" : "text-gray-600"
+                  }`}
                 >
                   {study.client}
                 </td>
+
                 <td className="p-4">
                   <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">
                     {study.category}
                   </span>
                 </td>
-                <td
-                  className={`${dark ? "text-gray-300" : "text-gray-600"} p-4`}
-                >
+
+                <td className={`p-4 ${dark ? "text-gray-300" : "text-gray-600"}`}>
                   {study.results?.slice(0, 2).map((r, i) => (
                     <div key={i}>• {r}</div>
                   ))}
                 </td>
+
                 <td className="p-4 font-medium">
                   {study.tags?.map((tag, i) => (
                     <span
                       key={i}
-                      className={`text-xs px-2 py-1 rounded ${
+                      className={`text-xs px-2 py-1 mx-1 rounded ${
                         dark
                           ? "bg-purple-700 text-purple-100"
                           : "bg-purple-100 text-purple-700"
@@ -70,6 +78,7 @@ const CaseStudiesTable = ({
                     </span>
                   ))}
                 </td>
+
                 <td className="p-4 flex gap-3 justify-center">
                   <button
                     onClick={() => openEditModal(study)}
@@ -91,7 +100,7 @@ const CaseStudiesTable = ({
         </table>
       </div>
 
-      {/* Mobile Card Layout */}
+      {/* Mobile Cards */}
       <div className="md:hidden space-y-4">
         {caseStudies.map((study) => (
           <div
@@ -101,24 +110,22 @@ const CaseStudiesTable = ({
             }`}
           >
             <h3 className="font-semibold text-lg">{study.title}</h3>
-            <p
-              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
-            >
+
+            <p className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}>
               Client: {study.client}
             </p>
-            <p>
-              <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">
-                {study.category}
-              </span>
-            </p>
-            <div
-              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
-            >
+
+            <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">
+              {study.category}
+            </span>
+
+            <div className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}>
               {study.results?.slice(0, 2).map((r, i) => (
                 <div key={i}>• {r}</div>
               ))}
             </div>
-            <div className="flex flex-wrap gap-1">
+
+            <div className="flex flex-wrap gap-2">
               {study.tags?.map((tag, i) => (
                 <span
                   key={i}
@@ -132,6 +139,7 @@ const CaseStudiesTable = ({
                 </span>
               ))}
             </div>
+
             <div className="flex gap-4 pt-2">
               <button
                 onClick={() => openEditModal(study)}
@@ -139,6 +147,7 @@ const CaseStudiesTable = ({
               >
                 <SquarePen size={20} />
               </button>
+
               <button
                 onClick={() => deleteCaseStudy(study._id)}
                 className="text-red-600 hover:text-red-800"

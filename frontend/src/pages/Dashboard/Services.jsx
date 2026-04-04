@@ -1,15 +1,29 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import ServiceTable from "../../components/dashboard/ServiceTable";
 import { AuthContext } from "../../context/AuthContext";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addService,
+  updateService,
+  deleteService,
+  resetServiceState,
+  fetchServices,
+} from "../../features/services/serviceSlice";
+
 const Services = () => {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { services, loading, error, success } = useSelector(
+    (state) => state.services,
+  );
+
+  const { dark } = useContext(AuthContext);
+
   const [editingService, setEditingService] = useState(null);
   const [addingService, setAddingService] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,91 +32,18 @@ const Services = () => {
     features: "",
   });
 
-  const token = localStorage.getItem("token");
-  const { dark } = useContext(AuthContext);
-
-  const fetchServices = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get("http://localhost:5000/api/services", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setServices(res.data);
-    } catch (err) {
-      console.error(err);
-      setServices([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // FETCH SERVICES
   useEffect(() => {
-    fetchServices();
-  }, []);
+    dispatch(fetchServices());
+  }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this service?")) return;
-    try {
-      await axios.delete(`http://localhost:5000/api/services/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setServices((prev) => prev.filter((s) => s._id !== id));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleEdit = (service) => {
-    setEditingService(service);
-    setFormData({
-      title: service.title,
-      description: service.description,
-      category: service.category || "",
-      icon: service.icon || "",
-      features: service.features ? service.features.join(", ") : "",
-    });
-  };
-
-  const handleSave = async () => {
-    try {
-      const payload = {
-        ...formData,
-        features: formData.features.split(",").map((f) => f.trim()),
-      };
-
-      const res = await axios.put(
-        `http://localhost:5000/api/services/${editingService._id}`,
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      setServices((prev) =>
-        prev.map((s) => (s._id === res.data._id ? res.data : s)),
-      );
-
+  // RESET STATE AFTER SUCCESS
+  useEffect(() => {
+    if (success) {
+      dispatch(fetchServices());
+      dispatch(resetServiceState());
       setEditingService(null);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleAdd = async () => {
-    try {
-      const payload = {
-        ...formData,
-        features: formData.features.split(",").map((f) => f.trim()),
-      };
-      const res = await axios.post(
-        `http://localhost:5000/api/services`,
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-
-      setServices((prev) => [res.data, ...prev]);
       setAddingService(false);
-
       setFormData({
         title: "",
         description: "",
@@ -110,124 +51,91 @@ const Services = () => {
         icon: "",
         features: "",
       });
-    } catch (err) {
-      console.error(err);
+    }
+  }, [success, dispatch]);
+
+  // DELETE
+  const handleDelete = (id) => {
+    if (!window.confirm("Delete this service?")) return;
+    dispatch(deleteService(id));
+  };
+
+  // EDIT OPEN
+  const handleEdit = (service) => {
+    setEditingService(service);
+    setFormData({
+      title: service.title,
+      description: service.description,
+      category: service.category || "",
+      icon: service.icon || "",
+      features: service.features?.join(", ") || "",
+    });
+    setAddingService(true); // open modal
+  };
+
+  // ADD OR UPDATE
+  const handleSubmit = () => {
+    const payload = {
+      ...formData,
+      features: formData.features.split(",").map((f) => f.trim()),
+    };
+
+    if (editingService) {
+      // UPDATE
+      dispatch(updateService({ id: editingService._id, data: payload }));
+    } else {
+      // ADD
+      dispatch(addService(payload));
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[200px] gap-3">
-        <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
-          Loading...
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
     <>
-      {/* Header with Add button */}
       <motion.div
-        className={`p-4 md:p-6 rounded-xl shadow mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3
-          ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className={`p-4 md:p-6 rounded-xl shadow mb-4 flex justify-between ${
+          dark ? "bg-gray-800 text-white" : "bg-white"
+        }`}
       >
-        <h1 className="text-lg md:text-2xl font-bold">{`Services`}</h1>
+        <h1 className="text-xl font-bold">Services</h1>
+
         <button
-          onClick={() => setAddingService(true)}
-          className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full sm:w-auto justify-center"
+          onClick={() => {
+            setAddingService(true);
+            setEditingService(null);
+            setFormData({
+              title: "",
+              description: "",
+              category: "",
+              icon: "",
+              features: "",
+            });
+          }}
+          className="flex gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg"
         >
-          <Plus size={18} />
-          Add Service
+          <Plus size={18} /> Add Service
         </button>
       </motion.div>
 
-      {/* Service Table */}
       <ServiceTable
         services={services}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
+        handleDelete={(id) => dispatch(deleteService(id))}
+        handleUpdate={(id, data) => dispatch(updateService({ id, data }))}
       />
 
-      {/* Edit Modal */}
-      {editingService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div
-            className={`p-6 rounded-xl shadow-lg w-full max-w-lg transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-          >
-            <h3 className="text-xl font-semibold mb-4">{`Edit Service`}</h3>
-            <input
-              type="text"
-              placeholder="Title"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
-            <input
-              type="text"
-              placeholder="Category"
-              value={formData.category}
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.target.value })
-              }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
-            <input
-              type="text"
-              placeholder="Icon (e.g. Smartphone)"
-              value={formData.icon}
-              onChange={(e) =>
-                setFormData({ ...formData, icon: e.target.value })
-              }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
-            <input
-              type="text"
-              placeholder="Features (comma separated)"
-              value={formData.features}
-              onChange={(e) =>
-                setFormData({ ...formData, features: e.target.value })
-              }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
-            <textarea
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              className={`w-full mb-4 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setEditingService(null)}
-                className="px-4 py-2 bg-gray-400 text-white rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Add Modal */}
+      {/* MODAL */}
       {addingService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div
-            className={`p-6 rounded-xl shadow-lg w-full max-w-lg transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+            className={`bg-white p-6 rounded-xl w-full max-w-md ${
+              dark ? "bg-gray-800 text-white" : "bg-white text-black"
+            }`}
           >
-            <h3 className="text-xl font-semibold mb-4">Add Service</h3>
+            <h2 className="text-lg font-bold mb-4">
+              {editingService ? "Edit Service" : "Add Service"}
+            </h2>
+
             <input
               type="text"
               placeholder="Title"
@@ -235,8 +143,19 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+              className="w-full mb-2 p-2 border rounded"
             />
+
+            <input
+              type="text"
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              className="w-full mb-2 p-2 border rounded"
+            />
+
             <input
               type="text"
               placeholder="Category"
@@ -244,17 +163,19 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+              className="w-full mb-2 p-2 border rounded"
             />
+
             <input
               type="text"
-              placeholder="Icon (e.g. Smartphone)"
+              placeholder="Icon"
               value={formData.icon}
               onChange={(e) =>
                 setFormData({ ...formData, icon: e.target.value })
               }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+              className="w-full mb-2 p-2 border rounded"
             />
+
             <input
               type="text"
               placeholder="Features (comma separated)"
@@ -262,37 +183,23 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, features: e.target.value })
               }
-              className={`w-full mb-3 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+              className="w-full mb-4 p-2 border rounded"
             />
-            <textarea
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              className={`w-full mb-4 px-3 py-2 border rounded-md ${dark ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
+
+            {error && <p className="text-red-500 mb-2">{error}</p>}
+
             <div className="flex justify-end gap-2">
               <button
-                onClick={() => {
-                  setAddingService(false);
-                  setFormData({
-                    title: "",
-                    category: "",
-                    description: "",
-                    icon: "",
-                    features: "",
-                  });
-                }}
-                className="px-4 py-2 bg-gray-400 text-white rounded"
+                onClick={() => setAddingService(false)}
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
               >
                 Cancel
               </button>
               <button
-                onClick={handleAdd}
-                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                onClick={handleSubmit}
+                className="px-4 py-2 rounded bg-purple-600 text-white hover:bg-purple-700"
               >
-                Create
+                {editingService ? "Save Changes" : "Add Service"}
               </button>
             </div>
           </div>

@@ -55,7 +55,7 @@ export default function Navbar({ dark, setDark }) {
             to="/auth"
             className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white hover:bg-[#8F00FF] transition-colors"
           >
-            Login
+            Admin
           </Link>
         </div>
 

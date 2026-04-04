@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import { Mail, Phone, User, MapPin, Clock } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sendContactMessage,
+  resetContactState,
+} from ".././features/contact/contactSlice";
+
 const Contact = () => {
-  const { dark } = useOutletContext(); // global dark mode
+  const { dark } = useOutletContext();
+
+  const dispatch = useDispatch();
+
+  const { loading, contacts, error, success } = useSelector(
+  (state) => state.contacts
+);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,53 +27,52 @@ const Contact = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  /* ========= VALIDATION ========= */
 
   const validate = () => {
     let newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
+
+    if (!formData.name.trim()) newErrors.name = "Name required";
+    if (!formData.email.trim()) newErrors.email = "Email required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid email";
-    if (!formData.subject.trim()) newErrors.subject = "Subject is required";
-    if (!formData.message.trim()) newErrors.message = "Message is required";
+
+    if (!formData.subject.trim())
+      newErrors.subject = "Subject required";
+
+    if (!formData.message.trim())
+      newErrors.message = "Message required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  /* ========= INPUT CHANGE ========= */
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleSubmit = async (e) => {
+  /* ========= SUBMIT ========= */
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!validate()) return;
-    try {
-      setLoading(true);
-      const res = await axios.post(
-        "http://localhost:5000/api/contact",
-        formData,
-      );
-      if (res.status === 201) {
-        setSuccess(true);
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        });
-        setTimeout(() => setSuccess(false), 3000);
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
+
+    dispatch(sendContactMessage(formData));
   };
+
+  /* ========= SUCCESS RESET ========= */
+
+ useEffect(() => {
+  if (success) {
+    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setTimeout(() => dispatch(resetContactState()), 3000);
+  }
+}, [success, dispatch]);
+  /* ========= CONTACT INFO ========= */
 
   const contactInfo = [
     {
@@ -91,46 +102,22 @@ const Contact = () => {
   ];
 
   return (
-    <div
-      className={`min-h-screen py-24 px-6 transition-colors duration-300 ${dark ? "bg-gray-900" : "bg-gray-100"}`}
-    >
+    <div className={`min-h-screen py-24 px-6 ${dark ? "bg-gray-900" : "bg-gray-100"}`}>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        {/* LEFT SIDE */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="space-y-8"
-        >
-          <h1
-            className={`text-4xl font-bold transition-colors ${dark ? "text-white" : "text-gray-900"}`}
-          >
+
+        {/* LEFT */}
+        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}>
+          <h1 className={`text-4xl font-bold ${dark ? "text-white" : "text-gray-900"}`}>
             Let's Talk 👋
           </h1>
-          <p
-            className={`text-gray-600 transition-colors ${dark ? "dark:text-gray-300" : ""}`}
-          >
-            Have a project idea or need help with development? Our team is ready
-            to help you build something amazing.
-          </p>
 
-          <div className="space-y-4">
+          <div className="space-y-4 mt-8">
             {contactInfo.map((item, idx) => (
-              <div
-                key={idx}
-                className={`flex items-center gap-4 p-4 rounded-xl shadow hover:shadow-lg transition transform ${dark ? "bg-gray-800" : "bg-white"}`}
-              >
+              <div key={idx} className={`${dark ? "bg-gray-800" : "bg-white"} p-4 rounded-xl shadow flex gap-4`}>
                 <div className={`p-3 rounded-lg ${item.bg}`}>{item.icon}</div>
                 <div>
-                  <p
-                    className={`font-semibold transition-colors ${dark ? "text-white" : "text-gray-800"}`}
-                  >
-                    {item.label}
-                  </p>
-                  <p
-                    className={`text-sm transition-colors ${dark ? "text-gray-300" : "text-gray-500"}`}
-                  >
-                    {item.value}
-                  </p>
+                  <p className="font-semibold">{item.label}</p>
+                  <p className="text-sm">{item.value}</p>
                 </div>
               </div>
             ))}
@@ -141,67 +128,41 @@ const Contact = () => {
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
-          className={`p-10 rounded-2xl shadow-2xl transition-colors ${dark ? "bg-gray-800" : "bg-white"}`}
+          className={`${dark ? "bg-gray-800" : "bg-white"} p-10 rounded-2xl shadow-2xl`}
         >
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="flex items-center border rounded-lg overflow-hidden dark:border-gray-600">
-              <User className="ml-3 text-gray-400" size={18} />
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`w-full p-3 outline-none transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-              />
-            </div>
 
-            <div className="flex items-center border rounded-lg overflow-hidden dark:border-gray-600">
-              <Mail className="ml-3 text-gray-400" size={18} />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full p-3 outline-none transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-              />
-            </div>
+            <input name="name" placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <div className="flex items-center border rounded-lg overflow-hidden dark:border-gray-600">
-              <Phone className="ml-3 text-gray-400" size={18} />
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={`w-full p-3 outline-none transition-colors ${dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-              />
-            </div>
+            <input name="email" placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <input
-              type="text"
-              name="subject"
-              placeholder="Subject"
+            <input name="phone" placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
+
+            <input name="subject" placeholder="Subject"
               value={formData.subject}
               onChange={handleChange}
-              className={`w-full p-3 rounded-lg border transition-colors ${dark ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
-            />
+              className="w-full p-3 border rounded-lg" />
 
-            <textarea
-              name="message"
+            <textarea name="message"
               rows="5"
               placeholder="Your Message"
               value={formData.message}
               onChange={handleChange}
-              className={`w-full p-3 rounded-lg border transition-colors ${dark ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300 text-gray-900"}`}
+              className="w-full p-3 border rounded-lg"
             />
 
             <button
-              type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white py-3 rounded-lg font-semibold transition transform hover:scale-105"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg"
             >
               {loading ? "Sending..." : "Send Message"}
             </button>
@@ -211,6 +172,7 @@ const Contact = () => {
                 Message sent successfully 🎉
               </p>
             )}
+
           </form>
         </motion.div>
       </div>

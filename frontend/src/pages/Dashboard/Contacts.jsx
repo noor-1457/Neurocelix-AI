@@ -1,43 +1,36 @@
-import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import React, { useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import ContactTable from "../../components/dashboard/ContactTable";
 import { AuthContext } from "../../context/AuthContext";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchContacts,
+  deleteContact,
+} from "../../features/contact/contactSlice";
+
 const Contact = () => {
-  const [contacts, setContacts] = useState([]);
   const { dark } = useContext(AuthContext);
-  const token = localStorage.getItem("token");
 
-  const fetchContacts = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/contact", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setContacts(res.data);
-    } catch (err) {
-      console.error("Error fetching contacts:", err);
-    }
-  };
+  const dispatch = useDispatch();
 
-  const handleDelete = async (id) => {
+  const { contacts, loading } = useSelector(
+    (state) => state.contacts
+  );
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this contact?"))
       return;
 
-    try {
-      await axios.delete(`http://localhost:5000/api/contact/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setContacts((prev) => prev.filter((c) => c._id !== id));
-    } catch (err) {
-      console.error("Error deleting contact:", err);
-    }
+    dispatch(deleteContact(id));
   };
 
-  useEffect(() => {
-    fetchContacts();
-  }, []);
+  if (loading)
+    return <p className="text-center py-10">Loading...</p>;
 
   return (
     <motion.div
@@ -46,13 +39,10 @@ const Contact = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2
-        className={`text-lg md:text-xl font-semibold mb-4 ${dark ? "text-white" : "text-gray-900"}`}
-      >
+      <h2 className="text-lg md:text-xl font-semibold mb-4">
         Contacts
       </h2>
 
-      {/* Contact Table */}
       <ContactTable
         contacts={contacts}
         handleDelete={handleDelete}

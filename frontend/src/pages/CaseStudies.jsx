@@ -1,45 +1,45 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCaseStudies } from ".././features/caseStudies/caseStudySlice";
 
 const CaseStudies = () => {
-  const { dark } = useOutletContext(); // get dark mode from layout
-  const [caseStudies, setCaseStudies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { dark } = useOutletContext();
+
+  const dispatch = useDispatch();
+
+  const { caseStudies, loading } = useSelector(
+    (state) => state.caseStudies
+  );
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/casestudies")
-      .then((res) => {
-        setCaseStudies(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, []);
+    dispatch(fetchCaseStudies());
+  }, [dispatch]);
+
+  /* ========= LOADING ========= */
 
   if (loading) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
-        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
-      }`}
-    >
-      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
-        Loading...
-      </p>
-    </div>
-  );
-}
+    return (
+      <div
+        className={`flex flex-col items-center justify-center min-h-screen gap-3 ${
+          dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+        }`}
+      >
+        <div className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm">Loading...</p>
+      </div>
+    );
+  }
+
+  /* ========= UI ========= */
 
   return (
     <div
       className={`pt-28 px-6 md:px-20 pb-10 min-h-screen transition-colors duration-500 ${
-        dark ? "bg-gray-900" : "bg-gradient-to-br from-[#DDA0DD] to-[#8F00FF]"
+        dark
+          ? "bg-gray-900"
+          : "bg-gradient-to-br from-[#DDA0DD] to-[#8F00FF]"
       }`}
     >
       {/* Heading */}
@@ -50,18 +50,11 @@ const CaseStudies = () => {
         viewport={{ once: true }}
         className="text-center mb-16"
       >
-        <h2
-          className={`text-4xl font-bold mb-4 transition-colors duration-300 ${
-            dark ? "text-white" : "text-black"
-          }`}
-        >
+        <h2 className="text-4xl font-bold mb-4">
           Our Case Studies
         </h2>
-        <p
-          className={`max-w-2xl mx-auto transition-colors duration-300 ${
-            dark ? "text-gray-300" : "text-black"
-          }`}
-        >
+
+        <p className="max-w-2xl mx-auto">
           Real-world success stories showcasing measurable business impact.
         </p>
       </motion.div>
@@ -77,62 +70,35 @@ const CaseStudies = () => {
             whileHover={{ y: -6 }}
             transition={{ duration: 0.5, delay: index * 0.15 }}
             viewport={{ once: true }}
-            className={`p-8 rounded-2xl shadow-lg border transition duration-300 ${
+            className={`p-8 rounded-2xl shadow-lg border ${
               dark
                 ? "bg-gray-800 border-gray-700 hover:border-purple-500"
                 : "bg-white border-gray-200 hover:border-pink-600"
             }`}
           >
-            {/* Title */}
-            <h3
-              className={`text-xl font-semibold mb-2 transition-colors duration-300 ${
-                dark ? "text-white" : "text-gray-800"
-              }`}
-            >
+            <h3 className="text-xl font-semibold mb-2">
               {study.title}
             </h3>
 
-            {/* Category */}
-            <p
-              className={`text-sm font-medium mb-1 transition-colors duration-300 ${
-                dark ? "text-purple-400" : "text-purple-700"
-              }`}
-            >
+            <p className="text-sm font-medium mb-1">
               Category: {study.category}
             </p>
 
-            {/* Client */}
-            <p
-              className={`text-sm mb-4 transition-colors duration-300 ${
-                dark ? "text-gray-300" : "text-gray-500"
-              }`}
-            >
+            <p className="text-sm mb-4">
               Client: {study.client}
             </p>
 
-            {/* Description */}
-            <p
-              className={`text-sm mb-4 transition-colors duration-300 ${
-                dark ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
+            <p className="text-sm mb-4">
               {study.description}
             </p>
 
             {/* Results */}
             <div className="mb-4">
-              <h4
-                className={`font-semibold text-sm mb-2 transition-colors duration-300 ${
-                  dark ? "text-white" : "text-gray-800"
-                }`}
-              >
+              <h4 className="font-semibold text-sm mb-2">
                 Key Results:
               </h4>
-              <ul
-                className={`list-disc list-inside text-sm space-y-1 transition-colors duration-300 ${
-                  dark ? "text-gray-300" : "text-gray-600"
-                }`}
-              >
+
+              <ul className="list-disc list-inside text-sm space-y-1">
                 {study.results?.map((result, i) => (
                   <li key={i}>{result}</li>
                 ))}
@@ -144,7 +110,7 @@ const CaseStudies = () => {
               {study.tags?.map((tag, i) => (
                 <span
                   key={i}
-                  className={`text-xs px-3 py-1 rounded-full font-medium transition-colors duration-300 ${
+                  className={`text-xs px-3 py-1 rounded-full font-medium ${
                     dark
                       ? "bg-purple-700 text-white"
                       : "bg-purple-100 text-purple-700"

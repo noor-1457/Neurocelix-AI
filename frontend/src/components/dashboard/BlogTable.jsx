@@ -1,161 +1,142 @@
 import React, { useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateBlog } from "../../features/blogs/blogSlice";
 
-const BlogTable = ({ blogs = [], onEdit, onDelete, dark }) => {
+const BlogTable = ({ blogs = [], onDelete, dark }) => {
+  const dispatch = useDispatch();
+
   const [editingBlog, setEditingBlog] = useState(null);
+
   const [formData, setFormData] = useState({
     title: "",
     category: "",
     author: "",
     content: "",
     excerpt: "",
-    tags: [],
+    tags: "",
     image: "",
-    imageFile: null, // actual file for upload
+    imageFile: null,
   });
 
-  const token = localStorage.getItem("token");
-
-  // ─── Open Edit Modal
   const openEdit = (blog) => {
     setEditingBlog(blog);
+
     setFormData({
-      title: blog.title,
-      category: blog.category,
-      author: blog.author,
-      content: blog.content,
-      excerpt: blog.excerpt,
-      tags: blog.tags || [],
-      image: blog.image,
+      title: blog.title || "",
+      category: blog.category || "",
+      author: blog.author || "",
+      content: blog.content || "",
+      excerpt: blog.excerpt || "",
+      tags: blog.tags?.join(", ") || "",
+      image: blog.image || "",
       imageFile: null,
     });
   };
 
-  // ─── Save Edited Blog
-  const handleSave = async () => {
-    try {
-      const data = new FormData();
-      data.append("title", formData.title);
-      data.append("category", formData.category);
-      data.append("author", formData.author);
-      data.append("content", formData.content);
-      data.append("excerpt", formData.excerpt);
-      data.append("tags", JSON.stringify(formData.tags));
+  const handleSave = () => {
+    if (!editingBlog) return;
 
-      if (formData.imageFile) {
-        data.append("image", formData.imageFile);
-      }
+    const data = new FormData();
 
-      const res = await axios.put(
-        `http://localhost:5000/api/blogs/${editingBlog._id}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+    data.append("title", formData.title);
+    data.append("category", formData.category);
+    data.append("author", formData.author);
+    data.append("content", formData.content);
+    data.append("excerpt", formData.excerpt || formData.content.slice(0, 150));
 
-      onEdit(res.data); // update parent state
-      setEditingBlog(null);
-    } catch (err) {
-      console.error("Error updating blog:", err);
-      alert("Failed to update blog.");
+    const tagsArray = formData.tags
+      ? formData.tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : [];
+
+    tagsArray.forEach((tag) => {
+      data.append("tags[]", tag);
+    });
+
+    if (formData.imageFile) {
+      data.append("image", formData.imageFile);
     }
+
+    dispatch(
+      updateBlog({
+        id: editingBlog._id,
+        blogData: data,
+      }),
+    );
+
+    setEditingBlog(null);
   };
 
   return (
-    <div
-      className={`hidden md:block overflow-x-auto rounded-xl shadow ${
-        dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-      }`}
-    >
-      <h2
-        className={`text-2xl p-5 font-semibold ${
+    <div>
+      {/* ================= DESKTOP TABLE ================= */}
+      <div
+        className={`hidden md:block overflow-x-auto rounded-xl shadow ${
           dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-        } `}
+        }`}
       >
-        Blogs List
-      </h2>
+        <h2 className="text-2xl p-5 font-semibold">Blogs List</h2>
 
-      {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full border-collapse">
-          <thead
-            className={`${dark ? "bg-gray-800 text-white" : "bg-gray-50 text-gray-900"}`}
-          >
+          <thead className={`${dark ? "bg-gray-800" : "bg-gray-50"}`}>
             <tr>
-              <th className="text-left px-4 py-2">Image</th>
-              <th className="text-left px-4 py-2">Title</th>
-              <th className="text-left px-4 py-2">Category</th>
-              <th className="text-left px-4 py-2">Author</th>
-              <th className="text-left px-4 py-2">Tags</th>
-              <th className="text-left px-4 py-2">Created</th>
-              <th className="text-left px-4 py-2">Action</th>
+              <th className="px-4 py-2">Image</th>
+              <th className="px-4 py-2">Title</th>
+              <th className="px-4 py-2">Category</th>
+              <th className="px-4 py-2">Author</th>
+              <th className="px-4 py-2">Tags</th>
+              <th className="px-4 py-2">Created</th>
+              <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {blogs.map((blog) => (
-              <tr
-                key={blog._id}
-                className={`${
-                  dark
-                    ? "hover:bg-purple-700 text-white"
-                    : "hover:bg-gray-50 text-gray-900"
-                }`}
-              >
+              <tr key={blog._id}>
                 <td className="px-4 py-3">
                   <img
                     src={
                       blog.image?.startsWith("http")
                         ? blog.image
-                        : blog.image?.startsWith("/uploads")
-                          ? `http://localhost:5000${blog.image}`
-                          : `http://localhost:5000/uploads/${blog.image}`
+                        : `http://localhost:5000${blog.image}`
                     }
-                    alt={blog.title}
-                    className="w-12 h-12 rounded-lg object-cover border"
+                    className="w-12 h-12 object-cover rounded"
                   />
                 </td>
 
-                <td className="px-4 py-3 font-medium">{blog.title}</td>
+                <td className="px-4 py-3">{blog.title}</td>
                 <td className="px-4 py-3">{blog.category}</td>
                 <td className="px-4 py-3">{blog.author}</td>
-                <td className="px-4 py-3">
-                  <div className="flex flex-wrap gap-2">
-                    {blog.tags?.map((f, i) => (
-                      <span
-                        key={i}
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          dark
-                            ? "bg-purple-600 text-white"
-                            : "bg-purple-100 text-purple-700"
-                        }`}
-                      >
-                        {f}
-                      </span>
-                    ))}
-                  </div>
+
+                <td className="p-4 font-medium">
+                  {blog.tags?.map((tag, i) => (
+                    <span
+                      key={i}
+                      className={`text-xs px-2 py-1 mx-1 rounded ${
+                        dark
+                          ? "bg-purple-700 text-purple-100"
+                          : "bg-purple-100 text-purple-700"
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </td>
-                <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
+
+                <td className="px-4 py-3">
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </td>
-                <td className="px-4 py-3 flex justify-center items-center gap-2">
-                  <button
-                    onClick={() => openEdit(blog)}
-                    className="text-blue-600 hover:text-blue-700"
-                  >
-                    <SquarePen size={22} />
+
+                <td className="px-4 py-3 flex gap-2">
+                  <button onClick={() => openEdit(blog)}>
+                    <SquarePen size={20} />
                   </button>
 
-                  <button
-                    onClick={() => onDelete(blog._id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 size={22} />
+                  <button onClick={() => onDelete(blog._id)}>
+                    <Trash2 size={20} />
                   </button>
                 </td>
               </tr>
@@ -164,145 +145,115 @@ const BlogTable = ({ blogs = [], onEdit, onDelete, dark }) => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
-      <div className="grid gap-4 md:hidden px-2">
+      {/* ================= MOBILE CARDS ================= */}
+      <div className="md:hidden space-y-4">
         {blogs.map((blog) => (
           <div
             key={blog._id}
-            className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-300"
+            className={`p-4 rounded-xl shadow ${
+              dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+            }`}
           >
-            {/* Top Section */}
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-3">
               <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-16 h-16 rounded-xl object-cover"
+                src={
+                  blog.image?.startsWith("http")
+                    ? blog.image
+                    : `http://localhost:5000${blog.image}`
+                }
+                className="w-16 h-16 object-cover rounded"
               />
 
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-1">
-                  {blog.title}
-                </h3>
-
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {blog.category} • {blog.author}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {blog.tags?.map((f, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full"
-                    >
-                      {f}
-                    </span>
-                  ))}
-                </div>
-
-                <p className="text-xs text-gray-400">
-                  {new Date(blog.createdAt).toLocaleDateString()}
-                </p>
+                <h3 className="font-semibold text-lg">{blog.title}</h3>
+                <p className="text-sm opacity-70">{blog.category}</p>
+                <p className="text-sm">By {blog.author}</p>
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={() => openEdit(blog)}
-                className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-              >
-                Edit
+            <div className="mt-3 flex flex-wrap gap-2">
+              {blog.tags?.map((tag, i) => (
+                <span
+                  key={i}
+                  className={`text-xs px-2 py-1 rounded ${
+                    dark
+                      ? "bg-purple-700 text-purple-100"
+                      : "bg-purple-100 text-purple-700"
+                  }`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <p className="text-xs mt-2 opacity-70">
+              {new Date(blog.createdAt).toLocaleDateString()}
+            </p>
+
+            <div className="flex justify-end gap-3 mt-3">
+              <button onClick={() => openEdit(blog)}>
+                <SquarePen size={20} />
               </button>
 
-              <button
-                onClick={() => onDelete(blog._id)}
-                className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
-              >
-                Delete
+              <button onClick={() => onDelete(blog._id)}>
+                <Trash2 size={20} />
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      {blogs.length === 0 && (
-        <p className="text-center py-6 text-gray-500 dark:text-gray-300">
-          No blogs found
-        </p>
-      )}
-
-      {/* Edit Modal */}
+      {/* ================= EDIT MODAL ================= */}
       {editingBlog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              Edit Blog
-            </h3>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-lg">
+            <h3 className="text-xl font-semibold mb-4">Edit Blog</h3>
 
             <input
-              type="text"
-              placeholder="Title"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border rounded"
+              placeholder="Title"
             />
 
             <input
-              type="text"
-              placeholder="Category"
               value={formData.category}
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border rounded"
+              placeholder="Category"
             />
 
             <input
-              type="text"
-              placeholder="Author"
               value={formData.author}
               onChange={(e) =>
                 setFormData({ ...formData, author: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border rounded"
+              placeholder="Author"
             />
 
             <textarea
-              placeholder="Content"
               value={formData.content}
               onChange={(e) =>
                 setFormData({ ...formData, content: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border rounded"
               rows={4}
             />
 
-            <textarea
-              placeholder="Excerpt"
-              value={formData.excerpt}
-              onChange={(e) =>
-                setFormData({ ...formData, excerpt: e.target.value })
-              }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
-              rows={2}
-            />
-
             <input
-              type="text"
-              placeholder="Tags (comma separated)"
-              value={formData.tags.join(", ")}
+              value={formData.tags}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  tags: e.target.value.split(",").map((tag) => tag.trim()),
-                })
+                setFormData({ ...formData, tags: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className="w-full mb-3 px-3 py-2 border rounded"
+              placeholder="Tags (comma separated)"
             />
 
-            {/* Image Upload */}
             <input
               type="file"
               accept="image/*"
@@ -316,29 +267,23 @@ const BlogTable = ({ blogs = [], onEdit, onDelete, dark }) => {
                   });
                 }
               }}
-              className="mb-3 w-full text-sm"
             />
 
-            {/* Image Preview */}
             {formData.image && (
-              <img
-                src={formData.image}
-                alt="Preview"
-                className="w-32 h-32 object-cover rounded mb-3"
-              />
+              <img src={formData.image} className="w-28 mt-3 rounded" />
             )}
 
-            <div className="flex flex-col sm:flex-row justify-end gap-2">
+            <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={() => setEditingBlog(null)}
-                className="px-4 py-2 bg-gray-400 rounded-md hover:bg-gray-500 text-white w-full sm:w-auto"
+                className="px-4 py-2 bg-gray-400 text-white rounded"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-600 rounded-md hover:bg-blue-700 text-white w-full sm:w-auto"
+                className="px-4 py-2 bg-blue-600 text-white rounded"
               >
                 Save
               </button>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import {
   Activity,
   Cpu,
@@ -123,12 +123,11 @@ function Home() {
             <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform">
               Get Started
             </button>
-            <button
-              onClick={() => setOpen(true)}
-              className="px-8 py-3 rounded-lg bg-white/90 dark:bg-gray-800 text-black dark:text-white font-semibold shadow-lg hover:scale-105 transition-transform"
-            >
-              Watch Demo
-            </button>
+            <Link to="/auth">
+              <button className="px-8 py-3 rounded-lg bg-white/90 dark:bg-gray-800 text-black dark:text-white font-semibold shadow-lg hover:scale-105 transition-transform">
+                Admin Login
+              </button>
+            </Link>
           </motion.div>
         </div>
 
