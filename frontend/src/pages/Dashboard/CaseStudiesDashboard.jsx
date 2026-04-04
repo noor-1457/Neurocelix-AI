@@ -105,15 +105,20 @@ const CaseStudiesDashboard = () => {
   return (
     <div className={`md:p-6 ${dark ? "bg-gray-900 text-white" : ""}`}>
       {/* HEADER */}
-      <div className="p-4 md:p-6 rounded-xl shadow mb-4 bg-white flex justify-between">
-        <h1 className="text-2xl font-bold">Case Studies</h1>
+      <div className="p-4 md:p-6 rounded-xl shadow mb-4 bg-white">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Title */}
+          <h1 className="text-xl md:text-2xl font-bold">Case Studies</h1>
 
-        <button
-          onClick={openAddModal}
-          className="flex gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg"
-        >
-          <Plus size={18} /> Add Case Study
-        </button>
+          {/* Button */}
+          <button
+            onClick={openAddModal}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full sm:w-auto"
+          >
+            <Plus size={18} />
+            Add Case Study
+          </button>
+        </div>
       </div>
 
       <CaseStudiesTable

@@ -35,11 +35,11 @@ const ServiceTable = ({
     setOpenModal(true);
   };
   const confirmDelete = (id) => {
-  const ok = window.confirm("Are you sure you want to delete this service?");
-  if (!ok) return;
+    const ok = window.confirm("Are you sure you want to delete this service?");
+    if (!ok) return;
 
-  handleDelete(id);
-};
+    handleDelete(id);
+  };
 
   // ─── SUBMIT UPDATE
   const handleSubmit = () => {
@@ -69,9 +69,7 @@ const ServiceTable = ({
         <table className="w-full">
           <thead
             className={
-              dark
-                ? "bg-gray-700 text-gray-300"
-                : "bg-gray-50 text-gray-600"
+              dark ? "bg-gray-700 text-gray-300" : "bg-gray-50 text-gray-600"
             }
           >
             <tr>
@@ -117,20 +115,22 @@ const ServiceTable = ({
                     : "-"}
                 </td>
 
-                <td className="p-4 flex justify-center gap-2">
-                  <button
-                    onClick={() => handleEdit(service)}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <SquarePen size={20} />
-                  </button>
+                <td className="p-4 text-center">
+                  <div className="flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => handleEdit(service)}
+                      className="text-blue-600 hover:text-blue-800 transition"
+                    >
+                      <SquarePen size={20} />
+                    </button>
 
-                  <button
-                    onClick={() => confirmDelete(service._id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 size={20} />
-                  </button>
+                    <button
+                      onClick={() => confirmDelete(service._id)}
+                      className="text-red-600 hover:text-red-800 transition"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -161,17 +161,17 @@ const ServiceTable = ({
               ))}
             </div>
 
-            <div className="flex gap-2 mt-3">
+            <div className="flex sm:hidden gap-2 mt-3">
               <button
-                onClick={() => handleEdit(service)}
-                className="flex-1 py-2 bg-purple-600 text-white rounded-lg"
+                onClick={() => openEdit(blog)}
+                className="flex-1 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium"
               >
                 Edit
               </button>
 
               <button
-                onClick={() => confirmDelete(service._id)}
-                className="flex-1 py-2 bg-pink-500 text-white rounded-lg"
+                onClick={() => onDelete(blog._id)}
+                className="flex-1 py-2 rounded-lg bg-red-500 text-white text-sm font-medium"
               >
                 Delete
               </button>
@@ -187,9 +187,7 @@ const ServiceTable = ({
             className={`p-6 rounded-xl w-full max-w-md
             ${dark ? "bg-gray-800 text-white" : "bg-white"}`}
           >
-            <h3 className="text-lg font-semibold mb-4">
-              Edit Service
-            </h3>
+            <h3 className="text-lg font-semibold mb-4">Edit Service</h3>
 
             {["title", "category", "icon"].map((field) => (
               <input

@@ -130,14 +130,22 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </td>
 
-                <td className="px-4 py-3 flex gap-2">
-                  <button onClick={() => openEdit(blog)}>
-                    <SquarePen size={20} />
-                  </button>
+                <td className="px-4 py-3 text-center">
+                  <div className="flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => openEdit(blog)}
+                      className="text-blue-600 hover:text-blue-800 transition"
+                    >
+                      <SquarePen size={20} />
+                    </button>
 
-                  <button onClick={() => onDelete(blog._id)}>
-                    <Trash2 size={20} />
-                  </button>
+                    <button
+                      onClick={() => onDelete(blog._id)}
+                      className="text-red-600 hover:text-red-800 transition"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -190,13 +198,19 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
               {new Date(blog.createdAt).toLocaleDateString()}
             </p>
 
-            <div className="flex justify-end gap-3 mt-3">
-              <button onClick={() => openEdit(blog)}>
-                <SquarePen size={20} />
+            <div className="flex sm:hidden gap-2 mt-3">
+              <button
+                onClick={() => openEdit(blog)}
+                className="flex-1 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium"
+              >
+                Edit
               </button>
 
-              <button onClick={() => onDelete(blog._id)}>
-                <Trash2 size={20} />
+              <button
+                onClick={() => onDelete(blog._id)}
+                className="flex-1 py-2 rounded-lg bg-red-500 text-white text-sm font-medium"
+              >
+                Delete
               </button>
             </div>
           </div>

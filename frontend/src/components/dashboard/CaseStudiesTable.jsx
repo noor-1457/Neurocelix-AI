@@ -9,7 +9,6 @@ const CaseStudiesTable = ({
 }) => {
   return (
     <>
-
       {/* Desktop Table */}
       <div
         className={`hidden md:block overflow-x-auto rounded-xl shadow ${
@@ -58,7 +57,9 @@ const CaseStudiesTable = ({
                   </span>
                 </td>
 
-                <td className={`p-4 ${dark ? "text-gray-300" : "text-gray-600"}`}>
+                <td
+                  className={`p-4 ${dark ? "text-gray-300" : "text-gray-600"}`}
+                >
                   {study.results?.slice(0, 2).map((r, i) => (
                     <div key={i}>• {r}</div>
                   ))}
@@ -79,20 +80,22 @@ const CaseStudiesTable = ({
                   ))}
                 </td>
 
-                <td className="p-4 flex gap-3 justify-center">
-                  <button
-                    onClick={() => openEditModal(study)}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <SquarePen size={20} />
-                  </button>
+                <td className="p-4 text-center">
+                  <div className="flex justify-center items-center gap-3">
+                    <button
+                      onClick={() => openEditModal(study)}
+                      className="text-blue-600 hover:text-blue-800 transition"
+                    >
+                      <SquarePen size={20} />
+                    </button>
 
-                  <button
-                    onClick={() => deleteCaseStudy(study._id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 size={20} />
-                  </button>
+                    <button
+                      onClick={() => deleteCaseStudy(study._id)}
+                      className="text-red-600 hover:text-red-800 transition"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -111,7 +114,9 @@ const CaseStudiesTable = ({
           >
             <h3 className="font-semibold text-lg">{study.title}</h3>
 
-            <p className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}>
+            <p
+              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
+            >
               Client: {study.client}
             </p>
 
@@ -119,7 +124,9 @@ const CaseStudiesTable = ({
               {study.category}
             </span>
 
-            <div className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}>
+            <div
+              className={`${dark ? "text-gray-300" : "text-gray-600"} text-sm`}
+            >
               {study.results?.slice(0, 2).map((r, i) => (
                 <div key={i}>• {r}</div>
               ))}
@@ -140,19 +147,19 @@ const CaseStudiesTable = ({
               ))}
             </div>
 
-            <div className="flex gap-4 pt-2">
+             <div className="flex sm:hidden gap-2 mt-3">
               <button
-                onClick={() => openEditModal(study)}
-                className="text-blue-600 hover:text-blue-800"
+                onClick={() => openEdit(blog)}
+                className="flex-1 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium"
               >
-                <SquarePen size={20} />
+                Edit
               </button>
 
               <button
-                onClick={() => deleteCaseStudy(study._id)}
-                className="text-red-600 hover:text-red-800"
+                onClick={() => onDelete(blog._id)}
+                className="flex-1 py-2 rounded-lg bg-red-500 text-white text-sm font-medium"
               >
-                <Trash2 size={20} />
+                Delete
               </button>
             </div>
           </div>

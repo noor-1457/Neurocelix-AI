@@ -94,28 +94,33 @@ const Services = () => {
   return (
     <>
       <motion.div
-        className={`p-4 md:p-6 rounded-xl shadow mb-4 flex justify-between ${
+        className={`p-4 md:p-6 rounded-xl shadow mb-4 ${
           dark ? "bg-gray-800 text-white" : "bg-white"
         }`}
       >
-        <h1 className="text-xl font-bold">Services</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Title */}
+          <h1 className="text-xl md:text-2xl font-bold">Services</h1>
 
-        <button
-          onClick={() => {
-            setAddingService(true);
-            setEditingService(null);
-            setFormData({
-              title: "",
-              description: "",
-              category: "",
-              icon: "",
-              features: "",
-            });
-          }}
-          className="flex gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg"
-        >
-          <Plus size={18} /> Add Service
-        </button>
+          {/* Add Service Button */}
+          <button
+            onClick={() => {
+              setAddingService(true);
+              setEditingService(null);
+              setFormData({
+                title: "",
+                description: "",
+                category: "",
+                icon: "",
+                features: "",
+              });
+            }}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full sm:w-auto"
+          >
+            <Plus size={18} />
+            Add Service
+          </button>
+        </div>
       </motion.div>
 
       <ServiceTable
