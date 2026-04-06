@@ -163,14 +163,14 @@ const ServiceTable = ({
 
             <div className="flex sm:hidden gap-2 mt-3">
               <button
-                onClick={() => openEdit(blog)}
+                onClick={() => handleEdit(service)}
                 className="flex-1 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium"
               >
                 Edit
               </button>
 
               <button
-                onClick={() => onDelete(blog._id)}
+                onClick={() => confirmDelete(service._id)}
                 className="flex-1 py-2 rounded-lg bg-red-500 text-white text-sm font-medium"
               >
                 Delete
