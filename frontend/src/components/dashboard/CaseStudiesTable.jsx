@@ -149,14 +149,14 @@ const CaseStudiesTable = ({
 
              <div className="flex sm:hidden gap-2 mt-3">
               <button
-                onClick={() => openEdit(blog)}
+                onClick={() => openEditModal(study)}
                 className="flex-1 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium"
               >
                 Edit
               </button>
 
               <button
-                onClick={() => onDelete(blog._id)}
+                onClick={() => deleteCaseStudy(study._id)}
                 className="flex-1 py-2 rounded-lg bg-red-500 text-white text-sm font-medium"
               >
                 Delete

@@ -29,8 +29,14 @@ const Contact = () => {
     dispatch(deleteContact(id));
   };
 
-  if (loading)
-    return <p className="text-center py-10">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+        <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <motion.div
