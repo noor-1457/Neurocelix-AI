@@ -23,19 +23,19 @@ function FAQ() {
   }, []);
 
   if (loading) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
-        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
-      }`}
-    >
-      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
-        Loading...
-      </p>
-    </div>
-  );
-}
+    return (
+      <div
+        className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
+          dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+        }`}
+      >
+        <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+          Loading...
+        </p>
+      </div>
+    );
+  }
   const toggleFAQ = (id) => {
     setOpenId(openId === id ? null : id);
   };
@@ -50,7 +50,7 @@ function FAQ() {
         {/* Heading */}
         <h1
           className={`text-5xl font-bold text-center pt-10 mb-14 transition-colors duration-300 ${
-            dark ? "text-purple-400" : "text-[#8F00FF]"
+            dark ? "text-white" : "text-gray-800"
           }`}
         >
           Frequently Asked Questions

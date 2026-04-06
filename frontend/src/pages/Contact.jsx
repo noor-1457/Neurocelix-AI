@@ -15,8 +15,8 @@ const Contact = () => {
   const dispatch = useDispatch();
 
   const { loading, contacts, error, success } = useSelector(
-  (state) => state.contacts
-);
+    (state) => state.contacts,
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -38,11 +38,9 @@ const Contact = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid email";
 
-    if (!formData.subject.trim())
-      newErrors.subject = "Subject required";
+    if (!formData.subject.trim()) newErrors.subject = "Subject required";
 
-    if (!formData.message.trim())
-      newErrors.message = "Message required";
+    if (!formData.message.trim()) newErrors.message = "Message required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -66,12 +64,12 @@ const Contact = () => {
 
   /* ========= SUCCESS RESET ========= */
 
- useEffect(() => {
-  if (success) {
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    setTimeout(() => dispatch(resetContactState()), 3000);
-  }
-}, [success, dispatch]);
+  useEffect(() => {
+    if (success) {
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setTimeout(() => dispatch(resetContactState()), 3000);
+    }
+  }, [success, dispatch]);
   /* ========= CONTACT INFO ========= */
 
   const contactInfo = [
@@ -102,22 +100,39 @@ const Contact = () => {
   ];
 
   return (
-    <div className={`min-h-screen py-24 px-6 ${dark ? "bg-gray-900" : "bg-gray-100"}`}>
+    <div
+      className={`min-h-screen py-24 px-6 ${dark ? "bg-gray-900" : "bg-gray-100"}`}
+    >
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-
         {/* LEFT */}
-        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className={`text-4xl font-bold ${dark ? "text-white" : "text-gray-900"}`}>
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <h1
+            className={`text-4xl font-bold ${dark ? "text-white" : "text-gray-900"}`}
+          >
             Let's Talk 👋
           </h1>
 
           <div className="space-y-4 mt-8">
             {contactInfo.map((item, idx) => (
-              <div key={idx} className={`${dark ? "bg-gray-800" : "bg-white"} p-4 rounded-xl shadow flex gap-4`}>
+              <div
+                key={idx}
+                className={`${dark ? "bg-gray-800" : "bg-white"} p-4 rounded-xl shadow flex gap-4`}
+              >
                 <div className={`p-3 rounded-lg ${item.bg}`}>{item.icon}</div>
                 <div>
-                  <p className="font-semibold">{item.label}</p>
-                  <p className="text-sm">{item.value}</p>
+                  <p
+                    className={`font-semibold ${dark ? "text-white" : "text-gray-900"}`}
+                  >
+                    {item.label}
+                  </p>
+                  <p
+                    className={`text-sm ${dark ? "text-gray-300" : "text-gray-600"}`}
+                  >
+                    {item.value}
+                  </p>
                 </div>
               </div>
             ))}
@@ -130,29 +145,44 @@ const Contact = () => {
           animate={{ opacity: 1, x: 0 }}
           className={`${dark ? "bg-gray-800" : "bg-white"} p-10 rounded-2xl shadow-2xl`}
         >
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            <input name="name" placeholder="Full Name"
+          <form
+            onSubmit={handleSubmit}
+            className={`space-y-5 ${dark ? "text-white" : "text-gray-900"}`}
+          >
+            <input
+              name="name"
+              placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg" />
+              className="w-full p-3 border rounded-lg"
+            />
 
-            <input name="email" placeholder="Email"
+            <input
+              name="email"
+              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg" />
+              className="w-full p-3 border rounded-lg"
+            />
 
-            <input name="phone" placeholder="Phone"
+            <input
+              name="phone"
+              placeholder="Phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg" />
+              className="w-full p-3 border rounded-lg"
+            />
 
-            <input name="subject" placeholder="Subject"
+            <input
+              name="subject"
+              placeholder="Subject"
               value={formData.subject}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg" />
+              className="w-full p-3 border rounded-lg"
+            />
 
-            <textarea name="message"
+            <textarea
+              name="message"
               rows="5"
               placeholder="Your Message"
               value={formData.message}
@@ -172,7 +202,6 @@ const Contact = () => {
                 Message sent successfully 🎉
               </p>
             )}
-
           </form>
         </motion.div>
       </div>

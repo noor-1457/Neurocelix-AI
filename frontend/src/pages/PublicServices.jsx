@@ -23,25 +23,25 @@ const PublicServices = () => {
       });
   }, []);
 
- if (loading) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
-        dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
-      }`}
-    >
-      <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
-        Loading...
-      </p>
-    </div>
-  );
-}
+  if (loading) {
+    return (
+      <div
+        className={`flex flex-col items-center justify-center min-h-screen gap-3 transition-colors duration-300 ${
+          dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+        }`}
+      >
+        <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+          Loading...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
       className={`pt-28 px-6 md:px-20 min-h-screen pb-20 transition-colors duration-500 ${
-        dark ? "bg-gray-900" : "bg-gradient-to-br from-[#DDA0DD] to-[#8F00FF]"
+        dark ? "bg-gray-900" : "bg-white/10"
       }`}
     >
       {/* Heading */}
@@ -50,7 +50,7 @@ const PublicServices = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
         className={`text-4xl md:text-5xl font-bold text-center mb-16 ${
-          dark ? "text-white" : "text-white"
+          dark ? "text-white" : "text-gray-800"
         }`}
       >
         Our Professional Services

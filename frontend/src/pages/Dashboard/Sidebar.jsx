@@ -98,17 +98,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             })}
           </nav>
 
-          {/* Dark/Light Toggle */}
-          <button
-            onClick={() => setDark(!dark)}
-            className="mt-6 px-3 py-2 rounded-lg 
-              bg-gray-200 dark:bg-gray-700 
-              text-gray-800 dark:text-gray-100 
-              w-full transition-all duration-200 hover:scale-[1.02]"
-          >
-            {dark ? "☀ Light Mode" : "🌙 Dark Mode"}
-          </button>
-
           {/* Logout */}
           <button
             onClick={logout}

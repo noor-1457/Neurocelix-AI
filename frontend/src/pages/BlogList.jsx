@@ -11,9 +11,7 @@ const BlogList = () => {
 
   const dispatch = useDispatch();
 
-  const { blogs, loading } = useSelector(
-    (state) => state.blogs
-  );
+  const { blogs, loading } = useSelector((state) => state.blogs);
 
   /* ========= FETCH BLOGS ========= */
 

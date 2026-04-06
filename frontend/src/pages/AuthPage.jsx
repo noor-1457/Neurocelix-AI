@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ShieldCheck } from "lucide-react";
 
-const AdminLogin = () => {
+const AuthPage = ({ dark }) => {
   const { login } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
@@ -22,36 +22,41 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-
+    <div
+      className={`min-h-screen flex items-center justify-center ${dark ? "bg-gray-900" : "bg-gray-100"} p-4`}
+    >
       {/* Login Card */}
-      <div className="w-full mt-15 max-w-md bg-white rounded-2xl shadow-xl p-8">
-
+      <div
+        className={`w-full mt-15 max-w-md ${dark ? "bg-gray-800" : "bg-white"} rounded-2xl shadow-xl p-8`}
+      >
         {/* Logo / Header */}
         <div className="flex flex-col items-center mb-6">
           <div className="bg-indigo-100 p-4 rounded-full mb-3">
             <ShieldCheck size={32} className="text-indigo-600" />
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2
+            className={`text-2xl font-bold ${dark ? "text-gray-100" : "text-gray-800"}`}
+          >
             Admin Panel Login
           </h2>
 
-          <p className="text-gray-500 text-sm mt-1">
+          <p
+            className={`text-sm ${dark ? "text-gray-400" : "text-gray-500"} mt-1`}
+          >
             Access dashboard securely
           </p>
         </div>
 
         {/* Error */}
-        {error && (
-          <p className="text-red-500 text-center mb-4">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-
           <div>
-            <label className="text-sm text-gray-600">
+            <label
+              className={`text-sm ${dark ? "text-gray-400" : "text-gray-600"}`}
+            >
               Email Address
             </label>
             <input
@@ -65,7 +70,9 @@ const AdminLogin = () => {
           </div>
 
           <div>
-            <label className="text-sm text-gray-600">
+            <label
+              className={`text-sm ${dark ? "text-gray-400" : "text-gray-600"}`}
+            >
               Password
             </label>
             <input
@@ -86,28 +93,31 @@ const AdminLogin = () => {
           </button>
         </form>
         {/* Demo Credentials */}
-<div className="mt-6 bg-gray-50 border rounded-lg p-4 text-sm text-gray-600">
-  <p className="font-semibold text-gray-700 mb-2">
-    Recruiter Admin Credentials
-  </p>
+        <div
+          className={`mt-6 ${dark ? "bg-gray-600" : "bg-gray-50"} border rounded-lg p-4 text-sm ${dark ? "text-gray-300" : "text-gray-600"}`}
+        >
+          <p
+            className={`font-semibold ${dark ? "text-gray-200" : "text-gray-700"} mb-2`}
+          >
+            Recruiter Admin Credentials
+          </p>
 
-  <p>
-    <span className="font-medium">Email:</span> admin@codecelix.com
-  </p>
+          <p>
+            <span className="font-medium">Email:</span> admin@codecelix.com
+          </p>
 
-  <p>
-    <span className="font-medium">Password:</span> admin123
-  </p>
-</div>
+          <p>
+            <span className="font-medium">Password:</span> admin123
+          </p>
+        </div>
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-400 mt-6">
           © {new Date().getFullYear()} Admin Dashboard
         </p>
-
       </div>
     </div>
   );
 };
 
-export default AdminLogin;
+export default AuthPage;

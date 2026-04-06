@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import { X, Calendar, User, Tag, MessageCircle } from "lucide-react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogById,
-  addComment } from ".././features/blogs/blogSlice";
+import { fetchBlogById, addComment } from ".././features/blogs/blogSlice";
 
 const BlogDetail = () => {
   const { dark } = useOutletContext();
@@ -14,10 +13,7 @@ const BlogDetail = () => {
 
   const dispatch = useDispatch();
 
-  const { selectedBlog: blog, loading } = useSelector(
-    (state) => state.blogs
-  );
-
+  const { selectedBlog: blog, loading } = useSelector((state) => state.blogs);
 
   /* ========= FETCH BLOG ========= */
 
@@ -40,7 +36,7 @@ const BlogDetail = () => {
           email: "guest@example.com",
           comment,
         },
-      })
+      }),
     );
 
     setComment("");
@@ -188,9 +184,7 @@ const BlogDetail = () => {
 
           {/* List */}
           <div className="space-y-4">
-            {blog.comments?.length === 0 && (
-              <p>No comments yet.</p>
-            )}
+            {blog.comments?.length === 0 && <p>No comments yet.</p>}
 
             {blog.comments?.map((c, index) => (
               <motion.div

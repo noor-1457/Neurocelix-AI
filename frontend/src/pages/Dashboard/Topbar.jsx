@@ -37,6 +37,16 @@ const Topbar = ({ setIsOpen }) => {
 
       {/* Right Section */}
       <div className="flex items-center gap-3">
+        {/* Dark/Light Toggle */}
+        <button
+          onClick={() => setDark(!dark)}
+          className=" px-3 py-2 rounded-lg 
+              bg-gray-200 dark:bg-gray-700 
+              text-gray-800 dark:text-gray-100 
+              rounded-full transition-all duration-200 hover:scale-[1.02]"
+        >
+          {dark ? "☀" : "🌙"}
+        </button>
         {/* Profile Image */}
         <img
           src="https://i.pravatar.cc/40"
