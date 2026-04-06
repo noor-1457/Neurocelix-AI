@@ -137,7 +137,9 @@ function Home() {
       </section>
 
       {/* SERVICES SECTION */}
-      <section className="bg-gray-100 dark:bg-gray-800 flex justify-center gap-10 p-20 flex-wrap">
+      <section
+        className={`${dark ? "bg-gray-900" : "bg-gray-100"} flex justify-center gap-10 p-20 flex-wrap`}
+      >
         {[
           {
             icon: <Activity className="w-12 h-12 mx-auto mb-5" />,
@@ -165,7 +167,9 @@ function Home() {
       </section>
 
       {/* STATS SECTION */}
-      <section className="flex justify-center gap-12 p-20 flex-wrap bg-gray-100 dark:bg-gray-800 text-black dark:text-white">
+      <section
+        className={`${dark ? "bg-gray-900" : "bg-gray-100"} flex justify-center gap-12 p-20 flex-wrap text-black dark:text-white`}
+      >
         {[
           {
             icon: <Users className="w-10 h-10 mx-auto mb-2" />,

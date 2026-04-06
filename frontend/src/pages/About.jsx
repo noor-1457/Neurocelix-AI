@@ -6,7 +6,9 @@ const About = () => {
   const { dark } = useOutletContext();
 
   return (
-    <div className="pt-28 px-6 md:px-20 transition-colors duration-500 bg-white dark:bg-gray-900 text-black dark:text-gray-200">
+    <div
+      className={`pt-28 px-6 md:px-20 transition-colors duration-500 text-black ${dark ? "bg-gray-900 text-gray-200" : "bg-white/10 text-black"} dark:text-gray-200`}
+    >
       {/* HEADER SECTION */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}

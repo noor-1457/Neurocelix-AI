@@ -3,13 +3,14 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../../context/AuthContext";
 
 const Profile = () => {
+  const { dark, setDark } = useContext(AuthContext);
   const { profile, updateProfile } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   // Load profile data into form
@@ -19,7 +20,7 @@ const Profile = () => {
         name: profile.name || "",
         email: profile.email || "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       });
     }
   }, [profile]);
@@ -30,7 +31,6 @@ const Profile = () => {
 
   const handleSubmit = async () => {
     try {
-
       if (formData.password && formData.password !== formData.confirmPassword) {
         alert("Passwords do not match");
         return;
@@ -38,11 +38,10 @@ const Profile = () => {
 
       await updateProfile({
         name: formData.name,
-        email: formData.email
+        email: formData.email,
       });
 
       alert("Profile updated successfully");
-
     } catch (err) {
       alert("Profile update failed");
     }
@@ -50,12 +49,11 @@ const Profile = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-
       {/* Profile Header */}
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md flex flex-col md:flex-row items-center gap-6"
+        className={`${dark ? "bg-gray-800" : "bg-white"} p-6 rounded-xl shadow-md flex flex-col md:flex-row items-center gap-6`}
       >
         <div className="relative">
           <img
@@ -75,12 +73,11 @@ const Profile = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
+        className={`${dark ? "bg-gray-800" : "bg-white"} p-6 rounded-xl shadow-md`}
       >
         <h3 className="text-xl font-semibold mb-6">Edit Profile</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
           <input
             type="text"
             name="name"
@@ -98,7 +95,6 @@ const Profile = () => {
             placeholder="Email"
             className="p-3 rounded-lg border dark:bg-gray-900"
           />
-
         </div>
 
         {/* Password section */}
@@ -106,7 +102,6 @@ const Profile = () => {
           <h4 className="text-lg font-semibold mb-4">Change Password</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
             <input
               type="password"
               name="password"
@@ -124,7 +119,6 @@ const Profile = () => {
               placeholder="Confirm Password"
               className="p-3 rounded-lg border dark:bg-gray-900"
             />
-
           </div>
         </div>
 
@@ -136,7 +130,6 @@ const Profile = () => {
         >
           Save Changes
         </motion.button>
-
       </motion.div>
     </div>
   );

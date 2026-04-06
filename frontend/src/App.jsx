@@ -68,7 +68,7 @@ function App() {
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth" element={<AuthPage dark={dark} />} />
             <Route path="/faq" element={<FAQ />} />
           </Route>
 
