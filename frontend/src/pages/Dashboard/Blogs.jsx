@@ -114,13 +114,15 @@ const Blogs = () => {
   }
 
   return (
-    <div className={`md:p-6 ${dark ? "bg-gray-900 text-white" : ""}`}>
+    <div className={`p-4 md:p-6 ${dark ? "bg-gray-900 text-white" : ""}`}>
       {/* HEADER */}
       <div
-        className={`${dark ? "bg-gray-800 " : ""}p-4 md:p-6 rounded-xl shadow mb-4`}
+        className={` ${
+          dark ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+        } rounded-xl shadow mb-4`}
       >
         <div
-          className={` flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`}
+          className={`flex flex-col sm:flex-row p-4 md:p-6 sm:items-center sm:justify-between gap-4`}
         >
           {/* Title */}
           <h1 className="text-xl md:text-2xl font-bold">Blogs</h1>

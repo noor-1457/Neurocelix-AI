@@ -80,7 +80,7 @@ const Services = () => {
   }
 
   return (
-    <div className="">
+    <div className="p-4 md:p-6">
       <motion.div
         className={`p-4 md:p-6 rounded-xl shadow mb-4 ${
           dark ? "bg-gray-800 text-white" : "bg-white"
