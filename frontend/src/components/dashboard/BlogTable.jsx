@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { updateBlog } from "../../features/blogs/blogSlice";
 
 const BlogTable = ({ blogs = [], onDelete, dark }) => {
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const dispatch = useDispatch();
 
   const [editingBlog, setEditingBlog] = useState(null);
@@ -101,7 +102,7 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
                     src={
                       blog.image?.startsWith("http")
                         ? blog.image
-                        : `http://localhost:5000${blog.image}`
+                        : `${SERVER_URL}${blog.image}`
                     }
                     className="w-12 h-12 object-cover rounded"
                   />
@@ -165,10 +166,10 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
             <div className="flex gap-3">
               <img
                 src={
-                  blog.image?.startsWith("http")
-                    ? blog.image
-                    : `http://localhost:5000${blog.image}`
-                }
+                      blog.image?.startsWith("http")
+                        ? blog.image
+                        : `${SERVER_URL}${blog.image}`
+                    }
                 className="w-16 h-16 object-cover rounded"
               />
 

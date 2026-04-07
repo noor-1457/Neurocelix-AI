@@ -7,7 +7,7 @@ const About = () => {
 
   return (
     <div
-      className={`pt-28 px-6 md:px-20 transition-colors duration-500 text-black ${dark ? "bg-gray-900 text-gray-200" : "bg-white/10 text-black"} dark:text-gray-200`}
+      className={`py-25 px-6 md:px-20 transition-colors duration-500 text-black ${dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-black"} dark:text-gray-200`}
     >
       {/* HEADER SECTION */}
       <motion.div

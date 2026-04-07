@@ -152,8 +152,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         logout,
         updateProfile,
-        dark, // ✅ ADD THIS
-        setDark, // ✅ ADD THIS
+        dark, 
+        setDark, 
       }}
     >
       {children}

@@ -43,7 +43,7 @@ const Pricing = () => {
   return (
     <div
       className={`min-h-screen py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${
-        dark ? "bg-gray-900" : "bg-gray-100"
+        dark ? "bg-gray-900" : "bg-gray-50"
       }`}
     >
       <h1

@@ -101,7 +101,7 @@ const Contact = () => {
 
   return (
     <div
-      className={`min-h-screen py-24 px-6 ${dark ? "bg-gray-900" : "bg-gray-100"}`}
+      className={`min-h-screen py-24 px-6 ${dark ? "bg-gray-900" : "bg-gray-50"}`}
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* LEFT */}

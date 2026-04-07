@@ -64,7 +64,7 @@ const AuthPage = ({ dark }) => {
               placeholder="admin@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full mt-1 px-4 py-3 border  ${dark ? "bg-gray-900 text-white" : "bg-gray-100"} rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               required
             />
           </div>
@@ -80,7 +80,7 @@ const AuthPage = ({ dark }) => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full mt-1 px-4 py-3 border  ${dark ? "bg-gray-900 text-white" : "bg-gray-100"} rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               required
             />
           </div>

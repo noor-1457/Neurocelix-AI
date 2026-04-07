@@ -1,23 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const API = "http://localhost:5000/api/blogs";
+import api from "../../api/api";
 
 /* ================= ALL BLOGS ================= */
 export const fetchBlogs = createAsyncThunk(
   "blogs/fetchBlogs",
-  async () => {
-    const res = await axios.get(API);
-    return res.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get("/blogs");
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
 );
 
 /* ================= SINGLE BLOG ================= */
 export const fetchBlogById = createAsyncThunk(
   "blogs/fetchBlogById",
-  async (id) => {
-    const res = await axios.get(`${API}/${id}`);
-    return res.data;
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await api.get(`/blogs/${id}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
 );
 
@@ -26,7 +32,7 @@ export const addBlog = createAsyncThunk(
   "blogs/addBlog",
   async (blogData, { rejectWithValue }) => {
     try {
-      const res = await axios.post(API, blogData);
+      const res = await api.post("/blogs", blogData);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -34,12 +40,12 @@ export const addBlog = createAsyncThunk(
   }
 );
 
-/* ================= UPDATE BLOG ✅ ================= */
+/* ================= UPDATE BLOG ================= */
 export const updateBlog = createAsyncThunk(
   "blogs/updateBlog",
   async ({ id, blogData }, { rejectWithValue }) => {
     try {
-      const res = await axios.put(`${API}/${id}`, blogData);
+      const res = await api.put(`/blogs/${id}`, blogData);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -52,7 +58,7 @@ export const deleteBlog = createAsyncThunk(
   "blogs/deleteBlog",
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API}/${id}`);
+      await api.delete(`/blogs/${id}`);
       return id;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -63,9 +69,13 @@ export const deleteBlog = createAsyncThunk(
 /* ================= ADD COMMENT ================= */
 export const addComment = createAsyncThunk(
   "blogs/addComment",
-  async ({ blogId, comment }) => {
-    const res = await axios.post(`${API}/${blogId}/comment`, comment);
-    return res.data;
+  async ({ blogId, comment }, { rejectWithValue }) => {
+    try {
+      const res = await api.post(`/blogs/${blogId}/comment`, comment);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
 );
 
@@ -92,43 +102,60 @@ const blogSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* FETCH BLOGS */
-      .addCase(fetchBlogs.pending, (state) => { state.loading = true; })
-      .addCase(fetchBlogs.fulfilled, (state, action) => { state.loading = false; state.blogs = action.payload; })
-      .addCase(fetchBlogs.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(fetchBlogs.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchBlogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogs = action.payload;
+      })
+      .addCase(fetchBlogs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* FETCH SINGLE BLOG */
-      .addCase(fetchBlogById.pending, (state) => { state.loading = true; })
-      .addCase(fetchBlogById.fulfilled, (state, action) => { state.loading = false; state.singleBlog = action.payload; })
-      .addCase(fetchBlogById.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(fetchBlogById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchBlogById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleBlog = action.payload;
+      })
+      .addCase(fetchBlogById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* ADD BLOG */
-      .addCase(addBlog.pending, (state) => { state.loading = true; })
       .addCase(addBlog.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
         state.blogs.unshift(action.payload);
       })
-      .addCase(addBlog.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
 
-      /* UPDATE BLOG ✅ */
-      .addCase(updateBlog.pending, (state) => { state.loading = true; })
+      /* UPDATE BLOG */
       .addCase(updateBlog.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        // update blog in blogs array
-        state.blogs = state.blogs.map(blog =>
+
+        state.blogs = state.blogs.map((blog) =>
           blog._id === action.payload._id ? action.payload : blog
         );
-        // update singleBlog if it's the same one
-        if (state.singleBlog && state.singleBlog._id === action.payload._id) {
+
+        if (
+          state.singleBlog &&
+          state.singleBlog._id === action.payload._id
+        ) {
           state.singleBlog = action.payload;
         }
       })
-      .addCase(updateBlog.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
 
       /* DELETE BLOG */
       .addCase(deleteBlog.fulfilled, (state, action) => {
-        state.blogs = state.blogs.filter(blog => blog._id !== action.payload);
+        state.blogs = state.blogs.filter(
+          (blog) => blog._id !== action.payload
+        );
       })
 
       /* ADD COMMENT */
@@ -138,6 +165,5 @@ const blogSlice = createSlice({
   },
 });
 
-/* EXPORT ACTIONS */
 export const { resetBlogState } = blogSlice.actions;
 export default blogSlice.reducer;

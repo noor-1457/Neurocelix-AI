@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 const ServiceTable = ({
   services = [],
   handleDelete,
-  handleUpdate, // 👈 parent dispatch karega
+  handleUpdate, 
 }) => {
   const { dark } = useContext(AuthContext);
 

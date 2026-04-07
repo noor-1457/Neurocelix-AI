@@ -88,7 +88,7 @@ const contactSlice = createSlice({
         state.loading = false;
         state.success = true;
 
-        // 🔥 instant UI update
+        //  instant UI update
         state.contacts.unshift(action.payload);
       })
       .addCase(sendContactMessage.rejected, (state, action) => {
@@ -109,7 +109,7 @@ const contactSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* UPDATE ✅ */
+      /* UPDATE  */
       .addCase(updateContact.pending, (state) => {
         state.loading = true;
       })

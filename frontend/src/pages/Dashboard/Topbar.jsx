@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ChevronLeft, Menu } from "lucide-react";
+import { ChevronLeft, Menu, Sun, Moon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -31,7 +31,7 @@ const Topbar = ({ setIsOpen }) => {
 
         {/* Title (optional) */}
         <h1 className="hidden sm:block font-semibold text-gray-800 dark:text-white">
-          Dashboard
+         Admin Dashboard
         </h1>
       </div>
 
@@ -40,18 +40,23 @@ const Topbar = ({ setIsOpen }) => {
         {/* Dark/Light Toggle */}
         <button
           onClick={() => setDark(!dark)}
-          className=" px-3 py-2 rounded-lg 
-              bg-gray-200 dark:bg-gray-700 
-              text-gray-800 dark:text-gray-100 
-              rounded-full transition-all duration-200 hover:scale-[1.02]"
+          className={`
+    relative flex items-center border justify-center
+    w-11 h-11 rounded-xl
+   ${dark ? "bg-purple-700" : "bg-white"}
+    shadow-md`}
         >
-          {dark ? "☀" : "🌙"}
+          {dark ? (
+            <Sun  className="w-5 h-5 transition-all duration-300 rotate-0" />
+          ) : (
+            <Moon className="w-5 h-5 transition-all duration-300 rotate-0" />
+          )}
         </button>
         {/* Profile Image */}
         <img
           src="https://i.pravatar.cc/40"
           alt="profile"
-          className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover cursor-pointer border"
+          className="w-9 h-9 md:w-12 md:h-12 rounded-full object-cover cursor-pointer border"
           onClick={() => navigate("/dashboard/profile")}
         />
       </div>

@@ -41,7 +41,7 @@ const PublicServices = () => {
   return (
     <div
       className={`pt-28 px-6 md:px-20 min-h-screen pb-20 transition-colors duration-500 ${
-        dark ? "bg-gray-900" : "bg-white/10"
+        dark ? "bg-gray-900" : "bg-gray-50"
       }`}
     >
       {/* Heading */}

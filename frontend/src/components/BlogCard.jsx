@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Calendar, User, MessageCircle, Tag } from "lucide-react";
 
+
 const BlogCard = ({ blog, dark }) => {
+   const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -23,11 +25,13 @@ const BlogCard = ({ blog, dark }) => {
       <div className="relative">
         <img
           src={
-            blog.image?.startsWith("http")
-              ? blog.image
-              : blog.image?.startsWith("/uploads")
-                ? `http://localhost:5000${blog.image}`
-                : `http://localhost:5000/uploads/${blog.image}`
+            blog.image
+              ? blog.image.startsWith("http")
+                ? blog.image // external image
+                : blog.image.startsWith("/uploads")
+                  ? `${SERVER_URL}${blog.image}` // backend upload path
+                  : `${SERVER_URL}/uploads/${blog.image}` // fallback path
+              : "/no-image.png" // agar image na ho
           }
           alt={blog.title}
           className="w-full h-52 object-cover"

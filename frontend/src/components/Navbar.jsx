@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X,Sun,Moon } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 export default function Navbar({ dark, setDark }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function Navbar({ dark, setDark }) {
         dark ? "bg-gray-800" : "bg-white"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-[#8F00FF]">
           Neurocelix AI
@@ -46,9 +46,17 @@ export default function Navbar({ dark, setDark }) {
         <div className="hidden lg:flex items-center space-x-4">
           <button
             onClick={() => setDark(!dark)}
-            className="px-3 py-1 rounded-md bg-purple-200 dark:bg-gray-700 text-black dark:text-white transition-colors hover:cursor-pointer"
+            className={`
+              relative flex items-center border justify-center
+              w-11 h-11 rounded-xl
+             ${dark ? "bg-purple-700" : "bg-white"}
+              shadow-md`}
           >
-            {dark ? <Sun /> : <Moon />}
+            {dark ? (
+              <Sun className="w-5 h-5 transition-all duration-300 rotate-0" />
+            ) : (
+              <Moon className="w-5 h-5 transition-all duration-300 rotate-0" />
+            )}
           </button>
 
           <Link
