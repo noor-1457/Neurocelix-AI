@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../../context/AuthContext";
 
 const Profile = () => {
-  const { dark, setDark } = useContext(AuthContext);
+  const { dark } = useContext(AuthContext);
   const { profile, updateProfile } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  // Load profile data into form
   useEffect(() => {
     if (profile) {
       setFormData({
@@ -48,89 +47,128 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
-      {/* Profile Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`${dark ? "bg-gray-800" : "bg-white"} p-6 rounded-xl shadow-md flex flex-col md:flex-row items-center gap-6`}
-      >
-        <div className="relative">
-          <img
-            src="https://i.pravatar.cc/120"
-            alt="profile"
-            className="w-28 h-28 rounded-full object-cover border-4 border-purple-500"
-          />
-        </div>
+    <div
+      className={`min-h-screen p-6 transition-all duration-500 ${
+        dark ? "bg-gray-950 text-white" : "bg-gray-100 text-black"
+      }`}
+    >
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* Profile Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-6 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-6 border transition-all duration-500 ${
+            dark
+              ? "bg-gray-900/70 border-gray-800 backdrop-blur-xl"
+              : "bg-white border-gray-200"
+          }`}
+        >
+          <div className="relative group">
+            <img
+              src="https://i.pravatar.cc/120"
+              alt="profile"
+              className="w-28 h-28 rounded-full object-cover border-4 border-purple-500 shadow-lg"
+            />
+            <div className="absolute inset-0 rounded-full bg-purple-500/20 opacity-0 group-hover:opacity-100 transition" />
+          </div>
 
-        <div>
-          <h2 className="text-2xl font-bold">{profile?.name}</h2>
-          <p className="text-gray-500">{profile?.email}</p>
-        </div>
-      </motion.div>
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-bold">{profile?.name}</h2>
+            <p className={`${dark ? "text-gray-400" : "text-gray-600"}`}>
+              {profile?.email}
+            </p>
+          </div>
+        </motion.div>
 
-      {/* Profile Form */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className={`${dark ? "bg-gray-800" : "bg-white"} p-6 rounded-xl shadow-md`}
-      >
-        <h3 className="text-xl font-semibold mb-6">Edit Profile</h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="p-3 rounded-lg border dark:bg-gray-900"
-          />
-
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="p-3 rounded-lg border dark:bg-gray-900"
-          />
-        </div>
-
-        {/* Password section */}
-        <div className="mt-8">
-          <h4 className="text-lg font-semibold mb-4">Change Password</h4>
+        {/* Profile Form */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className={`p-8 rounded-2xl shadow-xl border transition-all duration-500 ${
+            dark
+              ? "bg-gray-900/70 border-gray-800 backdrop-blur-xl"
+              : "bg-white border-gray-200"
+          }`}
+        >
+          <h3 className="text-xl font-semibold mb-6">Edit Profile</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
-              type="password"
-              name="password"
-              value={formData.password}
+              type="text"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              placeholder="New Password"
-              className="p-3 rounded-lg border dark:bg-gray-900"
+              placeholder="Full Name"
+              className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 transition ${
+                dark
+                  ? "bg-gray-800 border-gray-700 placeholder-gray-400"
+                  : "bg-gray-50 border-gray-300 placeholder-gray-500"
+              }`}
             />
 
             <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder="Confirm Password"
-              className="p-3 rounded-lg border dark:bg-gray-900"
+              placeholder="Email"
+              className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 transition ${
+                dark
+                  ? "bg-gray-800 border-gray-700 placeholder-gray-400"
+                  : "bg-gray-50 border-gray-300 placeholder-gray-500"
+              }`}
             />
           </div>
-        </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleSubmit}
-          className="mt-8 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-md"
-        >
-          Save Changes
-        </motion.button>
-      </motion.div>
+          {/* Password section */}
+          <div className="mt-10">
+            <h4
+              className={`text-lg font-semibold mb-4 ${
+                dark ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              Change Password
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="New Password"
+                className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 transition ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 placeholder-gray-400"
+                    : "bg-gray-50 border-gray-300 placeholder-gray-500"
+                }`}
+              />
+
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm Password"
+                className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 transition ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 placeholder-gray-400"
+                    : "bg-gray-50 border-gray-300 placeholder-gray-500"
+                }`}
+              />
+            </div>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleSubmit}
+            className="mt-10 w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 transition duration-300 font-medium shadow-lg"
+          >
+            Save Changes
+          </motion.button>
+        </motion.div>
+      </div>
     </div>
   );
 };
