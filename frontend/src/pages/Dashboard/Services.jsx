@@ -119,14 +119,17 @@ const Services = () => {
 
       {/* MODAL */}
       {addingService && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
           <div
-            className={`w-full max-w-md rounded-xl shadow-lg
-      p-4 sm:p-6
-      max-h-[90vh] overflow-y-auto
-      ${dark ? "bg-gray-800 text-white" : "bg-white text-black"}`}
+            className={`w-full max-w-md rounded-xl shadow-2xl
+      p-4 sm:p-6 max-h-[90vh] overflow-y-auto space-y-3
+      ${
+        dark
+          ? "bg-gray-900 border border-gray-700 text-white"
+          : "bg-white text-black"
+      }`}
           >
-            <h2 className="text-lg font-bold mb-4">
+            <h2 className="text-lg font-bold mb-2">
               {editingService ? "Edit Service" : "Add Service"}
             </h2>
 
@@ -137,7 +140,11 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full mb-2 p-2 border rounded"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <input
@@ -147,7 +154,11 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full mb-2 p-2 border rounded"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <input
@@ -157,8 +168,13 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, icon: e.target.value })
               }
-              className="w-full mb-2 p-2 border rounded"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
+
             <input
               type="text"
               placeholder="Description"
@@ -166,8 +182,13 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full mb-2 px-3 py-2 text-lg border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300 focus:ring-2 focus:ring-blue-500"
+              }`}
             />
+
             <input
               type="text"
               placeholder="Features (comma separated)"
@@ -175,21 +196,31 @@ const Services = () => {
               onChange={(e) =>
                 setFormData({ ...formData, features: e.target.value })
               }
-              className="w-full mb-4 p-2 border rounded"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
-            {error && <p className="text-red-500 mb-2">{error}</p>}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
-            <div className="flex justify-end gap-2">
+            {/* Buttons */}
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 onClick={() => setAddingService(false)}
-                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+                className={`px-4 py-2 rounded-lg ${
+                  dark
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2 rounded bg-purple-600 text-white hover:bg-purple-700"
+                className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition"
               >
                 {editingService ? "Save Changes" : "Add Service"}
               </button>

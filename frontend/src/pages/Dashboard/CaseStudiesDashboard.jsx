@@ -142,13 +142,16 @@ const CaseStudiesDashboard = () => {
       />
 
       {openModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          {/* Modal Box */}
           <div
-            className={`rounded-xl shadow-lg p-6 w-full max-w-lg ${
-              dark ? "bg-gray-800 text-white" : "bg-white"
+            className={`rounded-xl shadow-2xl p-6 w-full max-w-lg space-y-3 ${
+              dark
+                ? "bg-gray-900 border border-gray-700 text-white"
+                : "bg-white text-gray-800"
             }`}
           >
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-xl font-semibold mb-2">
               {editingId ? "Edit Case Study" : "Add Case Study"}
             </h2>
 
@@ -158,7 +161,11 @@ const CaseStudiesDashboard = () => {
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Title"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
               <input
@@ -166,7 +173,11 @@ const CaseStudiesDashboard = () => {
                 value={formData.client}
                 onChange={handleChange}
                 placeholder="Client"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
               <input
@@ -174,7 +185,11 @@ const CaseStudiesDashboard = () => {
                 value={formData.category}
                 onChange={handleChange}
                 placeholder="Category"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
               <textarea
@@ -182,7 +197,11 @@ const CaseStudiesDashboard = () => {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Description"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
               <input
@@ -190,7 +209,11 @@ const CaseStudiesDashboard = () => {
                 value={formData.results}
                 onChange={handleChange}
                 placeholder="Results (comma separated)"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
               <input
@@ -198,21 +221,30 @@ const CaseStudiesDashboard = () => {
                 value={formData.tags}
                 onChange={handleChange}
                 placeholder="Tags (comma separated)"
-                className="w-full border p-2 rounded"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
               />
 
+              {/* Buttons */}
               <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setOpenModal(false)}
-                  className="px-4 py-2 bg-gray-400 text-white rounded"
+                  className={`px-4 py-2 rounded-lg ${
+                    dark
+                      ? "bg-gray-700 hover:bg-gray-600 text-white"
+                      : "bg-gray-400 text-white"
+                  }`}
                 >
                   Cancel
                 </button>
 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-purple-600 text-white rounded"
+                  className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition"
                 >
                   {editingId ? "Update" : "Add"}
                 </button>

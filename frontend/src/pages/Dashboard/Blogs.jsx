@@ -145,12 +145,22 @@ const Blogs = () => {
 
       {/* MODAL same as yours */}
       {openModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+          {/* Modal Box */}
+          <div
+            className={`w-full max-w-2xl rounded-xl shadow-2xl p-6 space-y-4 
+      ${
+        dark
+          ? "bg-gray-900 border border-gray-700 text-white"
+          : "bg-white text-gray-800"
+      }`}
+          >
+            {/* Title */}
+            <h2 className="text-xl font-semibold">
               {editingBlog ? "Edit Blog" : "Add Blog"}
-            </h3>
+            </h2>
 
+            {/* Inputs */}
             <input
               type="text"
               placeholder="Title"
@@ -158,7 +168,11 @@ const Blogs = () => {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <input
@@ -168,7 +182,11 @@ const Blogs = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <input
@@ -178,17 +196,25 @@ const Blogs = () => {
               onChange={(e) =>
                 setFormData({ ...formData, author: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <textarea
               placeholder="Content"
+              rows="4"
               value={formData.content}
               onChange={(e) =>
                 setFormData({ ...formData, content: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
-              rows={4}
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
             <input
@@ -198,46 +224,40 @@ const Blogs = () => {
               onChange={(e) =>
                 setFormData({ ...formData, tags: e.target.value })
               }
-              className="w-full mb-3 px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 rounded-lg border ${
+                dark
+                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                  : "bg-white border-gray-300"
+              }`}
             />
 
+            {/* Image Upload */}
             <input
               type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  setFormData({
-                    ...formData,
-                    imageFile: file,
-                    image: URL.createObjectURL(file),
-                  });
-                }
-              }}
-              className="mb-3 w-full text-sm"
+              onChange={(e) =>
+                setFormData({ ...formData, imageFile: e.target.files[0] })
+              }
+              className={`w-full ${dark ? "text-gray-300" : ""}`}
             />
 
-            {formData.image && (
-              <img
-                src={formData.image}
-                alt="Preview"
-                className="w-32 h-32 object-cover rounded mb-3"
-              />
-            )}
-
-            <div className="flex flex-col sm:flex-row justify-end gap-2">
+            {/* Buttons */}
+            <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setOpenModal(false)}
-                className="px-4 py-2 bg-gray-400 rounded-md hover:bg-gray-500 text-white w-full sm:w-auto"
+                className={`px-4 py-2 rounded-lg ${
+                  dark
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-gray-200"
+                }`}
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-600 rounded-md hover:bg-blue-700 text-white w-full sm:w-auto"
+                className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition"
               >
-                Save
+                {editingBlog ? "Update" : "Save"}
               </button>
             </div>
           </div>
