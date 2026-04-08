@@ -71,7 +71,7 @@ export const addComment = createAsyncThunk(
   "blogs/addComment",
   async ({ blogId, comment }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/blogs/${blogId}/comment`, comment);
+      const res = await api.post(`/blogs/${blogId}/comments`, comment);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -159,9 +159,11 @@ const blogSlice = createSlice({
       })
 
       /* ADD COMMENT */
-      .addCase(addComment.fulfilled, (state, action) => {
-        state.singleBlog = action.payload;
-      });
+    .addCase(addComment.fulfilled, (state, action) => {
+  if (state.singleBlog?.comments) {
+    state.singleBlog.comments = action.payload.comments; // ✅ overwrite comments array
+  }
+});
   },
 });
 

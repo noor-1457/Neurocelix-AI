@@ -5,7 +5,7 @@ import { X, Calendar, User, Tag, MessageCircle } from "lucide-react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBlogById, addComment } from "../features/blogs/blogSlice";
-import { SERVER_URL } from "../api/api"; 
+import { SERVER_URL } from "../api/api";
 
 const BlogDetail = () => {
   const { dark } = useOutletContext();
@@ -15,7 +15,7 @@ const BlogDetail = () => {
 
   const { singleBlog: blog, loading } = useSelector((state) => state.blogs);
 
-  const [comment, setComment] = useState(""); 
+  const [comment, setComment] = useState("");
 
   /* ========= FETCH BLOG ========= */
   useEffect(() => {
@@ -23,27 +23,28 @@ const BlogDetail = () => {
   }, [dispatch, id]);
 
   /* ========= ADD COMMENT ========= */
-  const handleCommentSubmit = async (e) => {
-    e.preventDefault();
-    if (!comment.trim()) return;
+  const handleCommentSubmit = async () => {
+  if (!comment.trim()) return;
 
-    await dispatch(
-      addComment({
-        blogId: id,
-        comment: {
-          name: "Guest",
-          email: "guest@example.com",
-          comment,
-        },
-      })
-    );
+  const result = await dispatch(
+    addComment({
+      blogId: id,
+      comment: {
+        name: "Guest",
+        email: "guest@example.com",
+        comment: comment, // ✅ match schema
+      },
+    })
+  );
 
-    setComment("");
-  };
-
+  // Update local state instantly from response
+  if (result.payload?.comments) {
+    setComment(""); // clear textarea
+  }
+};
   /* ========= LOADING ========= */
-   if (loading || !blog) {
-   return (
+  if (loading || !blog) {
+    return (
       <div
         className={`flex flex-col items-center justify-center min-h-screen gap-3 ${
           dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
@@ -68,7 +69,9 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className={`min-h-screen py-24 px-4 ${dark ? "bg-gray-900" : "bg-gray-100"}`}>
+    <div
+      className={`min-h-screen py-24 px-4 ${dark ? "bg-gray-900" : "bg-gray-100"}`}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -95,12 +98,16 @@ const BlogDetail = () => {
         </span>
 
         {/* Title */}
-        <h1 className={`text-3xl font-bold mt-4 mb-4 ${dark ? "text-white" : "text-gray-900"}`}>
+        <h1
+          className={`text-3xl font-bold mt-4 mb-4 ${dark ? "text-white" : "text-gray-900"}`}
+        >
           {blog.title}
         </h1>
 
         {/* Meta */}
-        <div className={`flex flex-wrap gap-6 text-sm mb-6 ${dark ? "text-gray-300" : "text-gray-500"}`}>
+        <div
+          className={`flex flex-wrap gap-6 text-sm mb-6 ${dark ? "text-gray-300" : "text-gray-500"}`}
+        >
           <div className="flex items-center gap-2">
             <User size={16} /> {blog.author}
           </div>
@@ -113,14 +120,19 @@ const BlogDetail = () => {
         </div>
 
         {/* Content */}
-        <p className={`leading-relaxed whitespace-pre-line ${dark ? "text-gray-200" : "text-gray-700"}`}>
+        <p
+          className={`leading-relaxed whitespace-pre-line ${dark ? "text-gray-200" : "text-gray-700"}`}
+        >
           {blog.content}
         </p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mt-6">
           {blog.tags?.map((tag, index) => (
-            <span key={index} className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full ${dark ? "bg-gray-700 text-white" : "bg-gray-200"}`}>
+            <span
+              key={index}
+              className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full ${dark ? "bg-gray-700 text-white" : "bg-gray-200"}`}
+            >
               <Tag size={12} /> {tag}
             </span>
           ))}
@@ -128,23 +140,37 @@ const BlogDetail = () => {
 
         {/* COMMENTS */}
         <div className="mt-12">
-          <h2 className={`text-2xl font-semibold mb-6 ${dark ? "text-white" : "text-gray-900 text-white"}`}>Comments</h2>
+          <h2
+            className={`text-2xl font-semibold mb-6 ${dark ? "text-white" : "text-gray-900 text-white"}`}
+          >
+            Comments
+          </h2>
 
-          {/* Form */}
-          <form onSubmit={handleCommentSubmit} className="mb-8">
+          {/* COMMENTS FORM */}
+          <div className="mb-8">
             <textarea
-              className={`w-full p-3 rounded-md border mb-3 ${dark ? "border-gray-700 bg-gray-700 text-white" : "border-gray-300 bg-white"}`}
+              className={`w-full p-3 rounded-md border mb-3 ${
+                dark
+                  ? "border-gray-700 bg-gray-700 text-white"
+                  : "border-gray-300 bg-white"
+              }`}
               placeholder="Add your comment..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <button className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+            <button
+              type="button" // ✅ prevent form default submit
+              onClick={handleCommentSubmit} // 🔥 call your handler manually
+              className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+            >
               Post Comment
             </button>
-          </form>
+          </div>
 
           {/* List */}
-          <div className={`space-y-4 ${dark ? "bg-gray-800 text-white" : "bg-white"}`}>
+          <div
+            className={`space-y-4 ${dark ? "bg-gray-800 text-white" : "bg-white"}`}
+          >
             {blog.comments?.length === 0 && <p>No comments yet.</p>}
 
             {blog.comments?.map((c, index) => (
