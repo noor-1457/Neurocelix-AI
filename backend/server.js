@@ -19,6 +19,7 @@ app.use('/api/pricing', require('./routes/pricing'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/faq', require('./routes/faq'));
+app.use('/uploads', express.static('uploads'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'OK', message: 'Codecelix API Running' }));
