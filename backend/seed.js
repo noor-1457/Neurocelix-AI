@@ -24,70 +24,70 @@ async function seed() {
 
   // Services
   await Service.insertMany([
-  {
-    title: "AI Automation",
-    description:
-      "Automate your business processes with cutting-edge AI solutions that save time and reduce costs.",
-    icon: "Bot",
-    features: [
-      "Process Automation",
-      "Machine Learning",
-      "Natural Language Processing",
-      "Predictive Analytics",
-    ],
-    category: "AI",
-  },
-  {
-    title: "Cloud Solutions",
-    description:
-      "Scalable cloud infrastructure and migration services for modern enterprises.",
-    icon: "Cloud",
-    features: ["Cloud Migration", "DevOps", "Serverless", "Load Balancing"],
-    category: "Cloud",
-  },
-  {
-    title: "Data Analytics",
-    description:
-      "Transform raw data into actionable insights with our advanced analytics platform.",
-    icon: "BarChart3",
-    features: [
-      "Real-time Analytics",
-      "Data Visualization",
-      "BI Reports",
-      "Data Warehousing",
-    ],
-    category: "Data",
-  },
-  {
-    title: "Cybersecurity",
-    description:
-      "Protect your digital assets with enterprise-grade security solutions.",
-    icon: "ShieldCheck",
-    features: [
-      "Threat Detection",
-      "Penetration Testing",
-      "Compliance",
-      "Security Audits",
-    ],
-    category: "Security",
-  },
-  {
-    title: "Mobile Development",
-    description:
-      "Build powerful cross-platform mobile applications for iOS and Android.",
-    icon: "Smartphone",
-    features: ["React Native", "Flutter", "iOS", "Android"],
-    category: "Development",
-  },
-  {
-    title: "Web Development",
-    description:
-      "Create stunning, high-performance web applications with modern technologies.",
-    icon: "Globe",
-    features: ["React/Next.js", "Node.js", "Performance Optimization", "SEO"],
-    category: "Development",
-  },
-]);
+    {
+      title: "AI Automation",
+      description:
+        "Automate your business processes with cutting-edge AI solutions that save time and reduce costs.",
+      icon: "Bot",
+      features: [
+        "Process Automation",
+        "Machine Learning",
+        "Natural Language Processing",
+        "Predictive Analytics",
+      ],
+      category: "AI",
+    },
+    {
+      title: "Cloud Solutions",
+      description:
+        "Scalable cloud infrastructure and migration services for modern enterprises.",
+      icon: "Cloud",
+      features: ["Cloud Migration", "DevOps", "Serverless", "Load Balancing"],
+      category: "Cloud",
+    },
+    {
+      title: "Data Analytics",
+      description:
+        "Transform raw data into actionable insights with our advanced analytics platform.",
+      icon: "BarChart3",
+      features: [
+        "Real-time Analytics",
+        "Data Visualization",
+        "BI Reports",
+        "Data Warehousing",
+      ],
+      category: "Data",
+    },
+    {
+      title: "Cybersecurity",
+      description:
+        "Protect your digital assets with enterprise-grade security solutions.",
+      icon: "ShieldCheck",
+      features: [
+        "Threat Detection",
+        "Penetration Testing",
+        "Compliance",
+        "Security Audits",
+      ],
+      category: "Security",
+    },
+    {
+      title: "Mobile Development",
+      description:
+        "Build powerful cross-platform mobile applications for iOS and Android.",
+      icon: "Smartphone",
+      features: ["React Native", "Flutter", "iOS", "Android"],
+      category: "Development",
+    },
+    {
+      title: "Web Development",
+      description:
+        "Create stunning, high-performance web applications with modern technologies.",
+      icon: "Globe",
+      features: ["React/Next.js", "Node.js", "Performance Optimization", "SEO"],
+      category: "Development",
+    },
+  ]);
 
   // Pricing
   await Pricing.insertMany([
@@ -187,6 +187,41 @@ async function seed() {
       tags: ["Node.js", "API", "Backend", "JavaScript"],
       author: "Dev Team",
     },
+    {
+      title: "Top 10 Web Development Trends in 2026",
+      content:
+        "Web development is evolving rapidly with new frameworks and tools emerging every year. In 2026, trends like serverless architecture, AI-powered development, and Web3 integration are dominating the industry.\n\nDevelopers are increasingly adopting frameworks like Next.js for better performance and SEO. Progressive Web Apps (PWAs) are also gaining popularity due to their offline capabilities and improved user experience.\n\nBusinesses that adopt these trends early can gain a competitive edge in the digital marketplace.",
+      excerpt:
+        "Discover the latest web development trends shaping the future of the internet.",
+      category: "Development",
+      image:
+        "https://tse4.mm.bing.net/th/id/OIP.1Qizl4tm1rjJ008KoGK0XQHaEI?pid=Api&P=0&h=220",
+      tags: ["Web", "Trends", "Development", "2026"],
+      author: "Dev Team",
+    },
+    {
+      title: "Why Data Analytics is Crucial for Business Growth",
+      content:
+        "Data is the new oil, and businesses that leverage data analytics can make smarter decisions. From customer behavior analysis to sales forecasting, data analytics plays a vital role in modern organizations.\n\nCompanies using data-driven strategies report higher efficiency and profitability. Tools like Power BI and Tableau help visualize complex data into simple dashboards.\n\nInvesting in analytics is no longer optional—it's essential for growth.",
+      excerpt: "Learn how data analytics can drive smarter business decisions.",
+      category: "Data",
+      image:
+        "https://clearinsights.io/wp-content/uploads/2023/08/Blue-3D-Animation-Cloud-Data-Center-Tech-Video-.png",
+      tags: ["Data", "Analytics", "Business"],
+      author: "Data Team",
+    },
+    {
+      title: "Mobile App Development: Native vs Cross Platform",
+      content:
+        "Choosing between native and cross-platform development is a major decision for businesses. Native apps offer better performance, while cross-platform solutions reduce cost and development time.\n\nFrameworks like Flutter and React Native have made cross-platform development highly efficient.\n\nUnderstanding your business needs is key to making the right choice.",
+      excerpt:
+        "A complete comparison between native and cross-platform mobile apps.",
+      category: "Development",
+      image:
+        "https://www.appnality.com/blog/wp-content/uploads/2024/12/Cross-Platform-vs-Native.png",
+      tags: ["Mobile", "Apps", "Development"],
+      author: "Mobile Team",
+    },
   ]);
 
   // Case Studies
@@ -246,6 +281,62 @@ async function seed() {
         "ROI achieved in 8 months",
       ],
       tags: ["Manufacturing", "Automation", "IoT"],
+    },
+    {
+      title: "AI Chatbot for Customer Support",
+      description:
+        "Developed an intelligent AI chatbot for a telecom company to handle customer queries efficiently and reduce support workload.",
+      category: "AI",
+      client: "TeleConnect Ltd",
+      results: [
+        "70% reduction in support tickets",
+        "24/7 automated responses",
+        "Improved customer satisfaction by 45%",
+        "Handled 50,000+ queries monthly",
+      ],
+      tags: ["AI", "Chatbot", "Customer Support"],
+    },
+    {
+      title: "E-Learning Platform Development",
+      description:
+        "Created a scalable e-learning platform with video streaming, quizzes, and student analytics for an educational institute.",
+      category: "Development",
+      client: "EduSmart Academy",
+      results: [
+        "10,000+ active students",
+        "Smooth video streaming experience",
+        "Real-time progress tracking",
+        "99.8% uptime",
+      ],
+      tags: ["Education", "E-learning", "Platform"],
+    },
+    {
+      title: "Retail Mobile App نجاح",
+      description:
+        "Built a feature-rich mobile shopping app with secure payments and real-time order tracking for a retail business.",
+      category: "Mobile",
+      client: "ShopEase",
+      results: [
+        "200% increase in mobile sales",
+        "Seamless checkout experience",
+        "Integrated payment gateways",
+        "Real-time notifications",
+      ],
+      tags: ["Retail", "Mobile App", "E-commerce"],
+    },
+    {
+      title: "Cybersecurity Upgrade for Enterprise",
+      description:
+        "Enhanced the security infrastructure of a large enterprise with advanced threat detection and zero-trust implementation.",
+      category: "Security",
+      client: "SecureCorp",
+      results: [
+        "90% reduction in security incidents",
+        "Real-time threat monitoring",
+        "Zero-trust architecture implemented",
+        "Compliance with international standards",
+      ],
+      tags: ["Security", "Enterprise", "Cybersecurity"],
     },
   ]);
 
