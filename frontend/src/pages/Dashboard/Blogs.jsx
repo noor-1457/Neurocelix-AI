@@ -81,7 +81,6 @@ const Blogs = () => {
     data.append("content", formData.content);
     data.append("excerpt", formData.content.slice(0, 150));
 
-    // ✅ FIXED TAGS
     const tagsArray = formData.tags
       .split(",")
       .map((t) => t.trim())

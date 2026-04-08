@@ -4,24 +4,27 @@ import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { CheckCircle } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
+import api from "../api/api"; 
 
 const PublicServices = () => {
-  const { dark } = useOutletContext(); // get dark mode from layout
+  const { dark } = useOutletContext(); 
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/services")
-      .then((res) => {
-        setServices(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, []);
+ useEffect(() => {
+  const fetchServices = async () => {
+    try {
+      const res = await api.get("/services"); 
+      setServices(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchServices();
+}, []);
 
   if (loading) {
     return (

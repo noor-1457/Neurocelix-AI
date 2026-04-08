@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
+import api from "../api/api"; 
 
 function FAQ() {
   const { dark } = useOutletContext(); // global dark mode
@@ -8,18 +9,20 @@ function FAQ() {
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
 
-  /* Fetch FAQ Data */
+   /* Fetch FAQ Data */
   useEffect(() => {
-    fetch("http://localhost:5000/api/faq")
-      .then((res) => res.json())
-      .then((data) => {
-        setFaqs(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchFaqs = async () => {
+      try {
+        const res = await api.get("/faq"); 
+        setFaqs(res.data);
+      } catch (err) {
         console.error("FAQ Fetch Error:", err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchFaqs();
   }, []);
 
   if (loading) {

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import AnalyticsCharts from "../../components/dashboard/AnalyticsCharts";
+import api from "../../api/api"; 
 
 const Analytics = () => {
   const [stats, setStats] = useState(null);
-  const token = localStorage.getItem("token");
 
+  // Fetch analytics data
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/dashboard/stats",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await api.get("/dashboard/stats"); 
         setStats(res.data);
       } catch (err) {
         console.error("Error fetching analytics:", err);
@@ -21,6 +18,7 @@ const Analytics = () => {
     fetchStats();
   }, []);
 
+  // Loading state
   if (!stats)
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-3">
@@ -30,8 +28,10 @@ const Analytics = () => {
     );
 
   return (
-    <div className="sm:p-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Analytics Dashboard</h1>
+    <div className="sm:p-6 min-h-screen">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">
+        Analytics Dashboard
+      </h1>
       <AnalyticsCharts
         revenueData={stats.revenue}
         analyticsData={stats.analytics}

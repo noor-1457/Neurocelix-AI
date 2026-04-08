@@ -9,7 +9,6 @@ const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { dark } = useContext(AuthContext);
 
-  // Ensure <html> has dark class for Tailwind
   useEffect(() => {
     if (dark) {
       document.documentElement.classList.add("dark");

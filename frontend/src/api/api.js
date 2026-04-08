@@ -1,8 +1,19 @@
 import axios from "axios";
-export const SERVER_URL = "http://localhost:5000";
+
+/* ================= SERVER URL ================= */
+
+export const SERVER_URL =
+  import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
+
+export const API_URL = `${SERVER_URL}/api`;
+
+/* ================= AXIOS INSTANCE ================= */
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: API_URL,
 });
+
+/* ================= AUTO TOKEN ================= */
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");

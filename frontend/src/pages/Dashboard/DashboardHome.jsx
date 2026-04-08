@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import { AuthContext } from "../../context/AuthContext"; // assuming you have dark mode here
+import { AuthContext } from "../../context/AuthContext"; 
+import api from "../../api/api"; 
 
 import {
   LineChart,
@@ -15,18 +15,12 @@ import {
 
 const DashboardHome = () => {
   const [stats, setStats] = useState(null);
-  const token = localStorage.getItem("token");
   const { dark } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/dashboard/stats",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const res = await api.get("/dashboard/stats"); 
         setStats(res.data);
       } catch (err) {
         console.error("Error fetching stats:", err);
@@ -57,28 +51,24 @@ const DashboardHome = () => {
   return (
     <div className="p-4 sm:p-6 space-y-6">
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-        <motion.div className="bg-blue-500 dark:bg-blue-600 text-white p-5 rounded-xl shadow min-h-[110px]">
-          <h2>Users</h2>
-          <p className="text-2xl font-bold">{stats.users}</p>
-        </motion.div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
 
-        <motion.div className="bg-green-500 dark:bg-green-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+        <motion.div className="bg-green-500 dark:bg-green-600 text-white p-5 rounded-xl shadow min-h-30">
           <h2>Blogs</h2>
           <p className="text-2xl font-bold">{stats.blogs}</p>
         </motion.div>
 
-        <motion.div className="bg-yellow-500 dark:bg-yellow-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+        <motion.div className="bg-yellow-500 dark:bg-yellow-600 text-white p-5 rounded-xl shadow min-h-30">
           <h2>Contacts</h2>
           <p className="text-2xl font-bold">{stats.contacts}</p>
         </motion.div>
 
-        <motion.div className="bg-purple-500 dark:bg-purple-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+        <motion.div className="bg-purple-500 dark:bg-purple-600 text-white p-5 rounded-xl shadow min-h-30">
           <h2>Services</h2>
           <p className="text-2xl font-bold">{stats.services}</p>
         </motion.div>
 
-        <motion.div className="bg-pink-500 dark:bg-pink-600 text-white p-5 rounded-xl shadow min-h-[110px]">
+        <motion.div className="bg-pink-500 dark:bg-pink-600 text-white p-5 rounded-xl shadow min-h-30">
           <h2>Case Studies</h2>
           <p className="text-2xl font-bold">{stats.caseStudies}</p>
         </motion.div>
@@ -98,7 +88,7 @@ const DashboardHome = () => {
           Monthly Revenue
         </h2>
 
-        <div className="w-full h-[300px]">
+        <div className="w-full h-75">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />

@@ -42,11 +42,18 @@ const BlogDetail = () => {
   };
 
   /* ========= LOADING ========= */
-  if (loading || !blog) {
-    return (
-      <p className={`text-center mt-20 text-xl ${dark ? "text-gray-200" : "text-gray-800"}`}>
-        Loading...
-      </p>
+   if (loading || !blog) {
+   return (
+      <div
+        className={`flex flex-col items-center justify-center min-h-screen gap-3 ${
+          dark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-800"
+        }`}
+      >
+        <div className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className={`${dark ? "text-gray-400" : "text-gray-500"} text-sm`}>
+          Loading...
+        </p>
+      </div>
     );
   }
 
@@ -70,7 +77,7 @@ const BlogDetail = () => {
         {/* Close Button */}
         <button
           onClick={() => navigate(-1)}
-          className={`absolute top-4 right-4 p-2 rounded-full ${dark ? "bg-gray-700 hover:bg-red-500" : "bg-gray-200 hover:bg-red-500"}`}
+          className={`absolute top-4 right-4 p-2 rounded-full ${dark ? "bg-gray-500 text-white hover:bg-red-500" : "bg-gray-200 hover:bg-red-500"}`}
         >
           <X size={20} />
         </button>
@@ -113,7 +120,7 @@ const BlogDetail = () => {
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mt-6">
           {blog.tags?.map((tag, index) => (
-            <span key={index} className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full ${dark ? "bg-gray-700" : "bg-gray-200"}`}>
+            <span key={index} className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full ${dark ? "bg-gray-700 text-white" : "bg-gray-200"}`}>
               <Tag size={12} /> {tag}
             </span>
           ))}
@@ -121,7 +128,7 @@ const BlogDetail = () => {
 
         {/* COMMENTS */}
         <div className="mt-12">
-          <h2 className={`text-2xl font-semibold mb-6 ${dark ? "text-white" : "text-gray-900"}`}>Comments</h2>
+          <h2 className={`text-2xl font-semibold mb-6 ${dark ? "text-white" : "text-gray-900 text-white"}`}>Comments</h2>
 
           {/* Form */}
           <form onSubmit={handleCommentSubmit} className="mb-8">
@@ -137,7 +144,7 @@ const BlogDetail = () => {
           </form>
 
           {/* List */}
-          <div className="space-y-4">
+          <div className={`space-y-4 ${dark ? "bg-gray-800 text-white" : "bg-white"}`}>
             {blog.comments?.length === 0 && <p>No comments yet.</p>}
 
             {blog.comments?.map((c, index) => (

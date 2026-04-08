@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { AuthContext } from "../../context/AuthContext"; // assuming you have dark mode here
+import { AuthContext } from "../../context/AuthContext"; 
 
 const AnalyticsCharts = ({ revenueData, analyticsData }) => {
   const { dark } = useContext(AuthContext);
@@ -23,8 +23,8 @@ const AnalyticsCharts = ({ revenueData, analyticsData }) => {
     visits: a.visits,
   }));
 
-  const gridColor = dark ? "#374151" : "#e5e7eb"; // gray-700 for dark, gray-200 for light
-  const axisColor = dark ? "#D1D5DB" : "#1F2937"; // text-gray-300 for dark, gray-800 for light
+  const gridColor = dark ? "#374151" : "#e5e7eb"; 
+  const axisColor = dark ? "#D1D5DB" : "#1F2937";  
   const tooltipStyle = {
     backgroundColor: dark ? "#1F2937" : "#fff",
     color: dark ? "#fff" : "#000",

@@ -1,44 +1,38 @@
 // src/context/AuthContext.jsx
+
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api"; // ✅ axios instance
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  // Auth state
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  /* ================= AUTH STATE ================= */
+
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [profile, setProfile] = useState(
-    JSON.parse(localStorage.getItem("user")) || null,
+    JSON.parse(localStorage.getItem("user")) || null
   );
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [loading, setLoading] = useState(true);
 
-  // 🔥 DARK MODE STATE (ADD THIS)
+  /* ================= DARK MODE ================= */
+
   const [dark, setDark] = useState(
-    JSON.parse(localStorage.getItem("theme")) || false,
+    JSON.parse(localStorage.getItem("theme")) || false
   );
 
-  // 🔥 SAVE THEME IN LOCALSTORAGE
   useEffect(() => {
     localStorage.setItem("theme", JSON.stringify(dark));
   }, [dark]);
 
-  // Set token in axios header
-  const setAxiosToken = (token) => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-    }
-  };
+  /* ================= LOAD PROFILE ================= */
 
-  // Load profile
   const loadProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/auth/profile");
+      const res = await api.get("/auth/profile");
 
       setProfile(res.data);
       localStorage.setItem("user", JSON.stringify(res.data));
@@ -49,10 +43,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Load on mount
-  useEffect(() => {
-    setAxiosToken(token);
+  /* ================= INIT AUTH ================= */
 
+  useEffect(() => {
     const initAuth = async () => {
       if (token) {
         await loadProfile();
@@ -63,22 +56,22 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, [token]);
 
-  // Login
+  /* ================= LOGIN ================= */
+
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await api.post("/auth/login", {
         email,
         password,
       });
 
-      const token = res.data.token;
-      const user = res.data.user;
+      const { token, user } = res.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+
       setToken(token);
       setProfile(user);
-      setAxiosToken(token);
       setIsAuthenticated(true);
 
       navigate("/dashboard");
@@ -88,23 +81,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Signup
+  /* ================= SIGNUP ================= */
+
   const signup = async (name, email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await api.post("/auth/register", {
         name,
         email,
         password,
       });
 
-      const token = res.data.token;
-      const user = res.data.user;
+      const { token, user } = res.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+
       setToken(token);
       setProfile(user);
-      setAxiosToken(token);
       setIsAuthenticated(true);
 
       navigate("/dashboard");
@@ -114,13 +107,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Update profile
+  /* ================= UPDATE PROFILE ================= */
+
   const updateProfile = async (data) => {
     try {
-      const res = await axios.put(
-        "http://localhost:5000/api/auth/profile",
-        data,
-      );
+      const res = await api.put("/auth/profile", data);
 
       setProfile(res.data);
       localStorage.setItem("user", JSON.stringify(res.data));
@@ -130,16 +121,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout
+  /* ================= LOGOUT ================= */
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
     setToken(null);
     setProfile(null);
     setIsAuthenticated(false);
-    setAxiosToken(null);
+
     navigate("/auth");
   };
+
+  /* ================= CONTEXT ================= */
 
   return (
     <AuthContext.Provider
@@ -152,8 +147,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         logout,
         updateProfile,
-        dark, 
-        setDark, 
+        dark,
+        setDark,
       }}
     >
       {children}
