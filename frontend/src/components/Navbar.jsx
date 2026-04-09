@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
-
 export default function Navbar({ dark, setDark }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,13 +19,6 @@ export default function Navbar({ dark, setDark }) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
-  useEffect(() => {
-  if (dark) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-}, [dark]);
 
   return (
     <nav
@@ -37,7 +29,10 @@ export default function Navbar({ dark, setDark }) {
       {/* Navbar Top */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-xl md:text-2xl font-bold text-[#8F00FF]">
+        <Link
+          to="/"
+          className="text-xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500"
+        >
           Neurocelix AI
         </Link>
 
@@ -75,7 +70,7 @@ export default function Navbar({ dark, setDark }) {
         {/* Mobile Button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="lg:hidden text-black dark:text-white"
+          className={`lg:hidden text-black  ${dark ? "bg-gray-900 text-gray-100" : "bg-white"}`}
         >
           <Menu size={28} />
         </button>
@@ -84,29 +79,40 @@ export default function Navbar({ dark, setDark }) {
       {/* ================= MOBILE DRAWER ================= */}
 
       <div
-        className={`fixed top-0 left-0 w-full h-screen lg:hidden
-        transition-all duration-500 p-4
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        ${dark ? "bg-gray-900" : "bg-white"}
-       `}
-       >
+        className={`fixed h-screen top-0 left-0 w-full lg:hidden z-50
+  transition-all duration-500 p-4 backdrop-blur-md overflow-y-auto
+  ${isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}
+  ${dark ? "bg-gray-900/95 text-gray-100" : "bg-white/95"}
+  `}
+      >
         {/* Header */}
-        <div className="flex justify-between items-center px-6 py-4 border-b dark:border-gray-700">
-          <h2 className="text-lg font-bold text-[#8F00FF]">Neurocelix AI</h2>
+        <div className="flex justify-between items-center px-4 py-2 border-b dark:border-gray-700 shrink-0">
+          <h2 className="text-xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+            Neurocelix AI
+          </h2>
 
-          <button onClick={() => setIsOpen(false)}>
-            <X size={28} />
+          <button
+            onClick={() => setIsOpen(false)}
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          >
+            <X size={26} />
           </button>
         </div>
 
         {/* Links */}
-        <div className="flex flex-col gap-4 mx-2 my-3 text-lg">
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 ">
           {navLinks.map((link, i) => (
             <Link
               key={i}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="font-medium text-gray-600 dark:text-gray-50"
+              className={`flex items-center justify-center py-3 rounded-xl font-medium
+        ${dark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-700"}
+        hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 
+        hover:text-white 
+        transition-all duration-300 
+        shadow-sm hover:shadow-xl 
+        active:scale-95 hover:scale-[1.02]`}
             >
               {link.name}
             </Link>
@@ -114,20 +120,28 @@ export default function Navbar({ dark, setDark }) {
         </div>
 
         {/* Bottom Actions */}
-        <div className="space-y-4">
+        <div className="absolute left-0 w-full px-6 space-y-4">
+          {/* Admin Button */}
           <Link
             to="/auth"
             onClick={() => setIsOpen(false)}
-            className="block text-center py-3 rounded-lg bg-[#8F00FF] text-white font-semibold"
+            className="block text-center py-3 rounded-xl 
+      bg-gradient-to-r from-purple-600 to-pink-500 
+      text-white font-semibold shadow-lg hover:shadow-xl 
+      transition-all duration-300 active:scale-95"
           >
             Admin Login
           </Link>
 
+          {/* Dark Mode Toggle */}
           <button
             onClick={() => setDark(!dark)}
-            className="w-full flex justify-center py-3 rounded-lg bg-gray-200 dark:bg-purple-700"
+            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl
+      ${dark ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-800"}
+      hover:scale-[1.02] transition-all mb-4 duration-300`}
           >
-            {dark ? <Sun /> : <Moon />}
+            {dark ? <Sun size={20} /> : <Moon size={20} />}
+            <span>{dark ? "Light Mode" : "Dark Mode"}</span>
           </button>
         </div>
       </div>

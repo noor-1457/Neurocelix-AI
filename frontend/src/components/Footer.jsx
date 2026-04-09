@@ -9,13 +9,13 @@ const Footer = ({ dark }) => {
         dark ? "bg-gray-900 text-gray-300" : "bg-gray-100 text-gray-700"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
         {/* Logo + About */}
         <div>
-          <h2 className="text-2xl font-bold text-purple-600 mb-3">
+          <h2 className=" sm:text-2xl mb-3 text-xl font-extrabold  text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
             Neurocelix AI
           </h2>
-          <p className="text-sm">
+          <p className="text-sm leading-relaxed">
             We build smart AI-powered solutions to help businesses grow faster
             and smarter.
           </p>
@@ -79,17 +79,17 @@ const Footer = ({ dark }) => {
         <div>
           <h3 className="font-semibold mb-3">Contact</h3>
 
-          <div className="flex items-center gap-2 text-sm mb-2">
+          <div className="flex items-center justify-center sm:justify-start gap-2 text-sm mb-2">
             <Mail size={16} />
             <span>support@neurocelix.ai</span>
           </div>
 
-          <div className="flex items-center gap-2 text-sm mb-2">
+          <div className="flex items-center justify-center sm:justify-start gap-2 text-sm mb-2">
             <Phone size={16} />
             <span>+92 300 0000000</span>
           </div>
 
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center justify-center sm:justify-start gap-2 text-sm">
             <MapPin size={16} />
             <span>Pakistan</span>
           </div>
@@ -98,7 +98,7 @@ const Footer = ({ dark }) => {
 
       {/* Bottom Bar */}
       <div
-        className={`text-center py-4 text-sm border-t ${
+        className={`text-center px-4 py-4 text-xs sm:text-sm border-t ${
           dark ? "border-gray-700" : "border-gray-300"
         }`}
       >

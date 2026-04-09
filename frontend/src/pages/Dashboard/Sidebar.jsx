@@ -66,8 +66,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <Link to="/dashboard" onClick={handleClose}>
-              <h2 className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                Codecelix
+              <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+                Neurocelix AI
               </h2>
             </Link>
             <button className="lg:hidden p-2" onClick={handleClose}>
