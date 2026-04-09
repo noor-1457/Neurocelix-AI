@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { CheckCircle } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
-import api from "../api/api"; 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchServices } from ".././features/services/serviceSlice";
 
 const PublicServices = () => {
   const { dark } = useOutletContext(); 
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { services, loading } = useSelector((state) => state.services);
 
  useEffect(() => {
-  const fetchServices = async () => {
-    try {
-      const res = await api.get("/services"); 
-      setServices(res.data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchServices();
-}, []);
+    dispatch(fetchServices());
+  }, [dispatch]);
 
   if (loading) {
     return (

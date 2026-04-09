@@ -29,9 +29,9 @@ const BlogCard = ({ blog, dark }) => {
               ? blog.image.startsWith("http")
                 ? blog.image // external image
                 : blog.image.startsWith("/uploads")
-                  ? `${SERVER_URL}${blog.image}` // backend upload path
-                  : `${SERVER_URL}/uploads/${blog.image}` // fallback path
-              : "/no-image.png" // agar image na ho
+                  ? `${SERVER_URL}${blog.image}` 
+                  : `${SERVER_URL}/uploads/${blog.image}` 
+              : "/no-image.png" 
           }
           alt={blog.title}
           className="w-full h-52 object-cover"

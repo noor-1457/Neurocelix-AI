@@ -120,7 +120,7 @@ const DashboardHome = () => {
           Weekly Visits
         </h2>
 
-        <div className="w-full h-[300px]">
+        <div className="w-full h-75">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={analyticsData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />

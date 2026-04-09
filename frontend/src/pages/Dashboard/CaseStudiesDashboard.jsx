@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Plus } from "lucide-react";
 import CaseStudiesTable from "../../components/dashboard/CaseStudiesTable";
 import { AuthContext } from "../../context/AuthContext";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCaseStudies,

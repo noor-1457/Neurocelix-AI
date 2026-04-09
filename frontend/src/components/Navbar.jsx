@@ -45,7 +45,7 @@ export default function Navbar({ dark, setDark }) {
               className="text-[#8F00FF] font-medium relative group"
             >
               {link.name}
-              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#8F00FF] transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#8F00FF] transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
         </div>

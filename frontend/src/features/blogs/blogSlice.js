@@ -161,7 +161,7 @@ const blogSlice = createSlice({
       /* ADD COMMENT */
     .addCase(addComment.fulfilled, (state, action) => {
   if (state.singleBlog?.comments) {
-    state.singleBlog.comments = action.payload.comments; // ✅ overwrite comments array
+    state.singleBlog.comments = action.payload.comments; 
   }
 });
   },

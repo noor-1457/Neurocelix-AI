@@ -32,14 +32,14 @@ const BlogDetail = () => {
       comment: {
         name: "Guest",
         email: "guest@example.com",
-        comment: comment, // ✅ match schema
+        comment: comment, 
       },
     })
   );
 
-  // Update local state instantly from response
+  
   if (result.payload?.comments) {
-    setComment(""); // clear textarea
+    setComment("");
   }
 };
   /* ========= LOADING ========= */
