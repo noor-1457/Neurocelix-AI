@@ -20,6 +20,13 @@ export default function Navbar({ dark, setDark }) {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
+  useEffect(() => {
+  if (dark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [dark]);
 
   return (
     <nav
@@ -99,7 +106,7 @@ export default function Navbar({ dark, setDark }) {
               key={i}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="font-medium text-gray-700 dark:text-gray-200"
+              className="font-medium text-gray-600 dark:text-gray-50"
             >
               {link.name}
             </Link>

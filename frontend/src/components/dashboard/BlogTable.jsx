@@ -166,10 +166,10 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
             <div className="flex gap-3">
               <img
                 src={
-                      blog.image?.startsWith("http")
-                        ? blog.image
-                        : `${SERVER_URL}${blog.image}`
-                    }
+                  blog.image?.startsWith("http")
+                    ? blog.image
+                    : `${SERVER_URL}${blog.image}`
+                }
                 className="w-16 h-16 object-cover rounded"
               />
 
@@ -220,8 +220,12 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
 
       {/* ================= EDIT MODAL ================= */}
       {editingBlog && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-lg">
+        <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-center p-4">
+          <div
+            className={`${
+              dark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+            } p-6 rounded-xl w-full max-w-2xl`}
+          >
             <h3 className="text-xl font-semibold mb-4">Edit Blog</h3>
 
             <input
@@ -291,14 +295,14 @@ const BlogTable = ({ blogs = [], onDelete, dark }) => {
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={() => setEditingBlog(null)}
-                className="px-4 py-2 bg-gray-400 text-white rounded"
+                className="px-4 py-2 bg-gray-300 text-black rounded"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
+                className="px-4 py-2 bg-purple-600 text-white rounded"
               >
                 Save
               </button>
