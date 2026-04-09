@@ -61,9 +61,13 @@ export default function Navbar({ dark, setDark }) {
 
           <Link
             to="/auth"
-            className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white"
+            className="relative px-6 py-3 font-semibold text-white rounded-xl 
+  bg-gradient-to-r from-purple-600 to-fuchsia-600
+  shadow-lg shadow-purple-500/30
+  hover:scale-105 hover:shadow-purple-500/50
+  transition-all duration-300"
           >
-            Admin
+            Admin Panel
           </Link>
         </div>
 

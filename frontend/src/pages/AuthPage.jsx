@@ -36,7 +36,7 @@ const AuthPage = ({ dark }) => {
           </div>
 
           <h2
-            className={`text-2xl font-bold ${dark ? "text-gray-100" : "text-gray-800"}`}
+            className={`text-2xl font-bold ${dark ? "text-gray-100" : "bg-gradient-to-r from-purple-600 to-fuchsia-600 bg-clip-text text-transparent"}`}
           >
             Admin Panel Login
           </h2>
@@ -87,7 +87,8 @@ const AuthPage = ({ dark }) => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300"
+            className="w-full relative px-6 py-3 font-semibold text-white rounded-xl 
+  bg-gradient-to-r from-purple-600 to-fuchsia-600"
           >
             Login as Admin
           </button>
