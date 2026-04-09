@@ -71,7 +71,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               </h2>
             </Link>
             <button className="lg:hidden p-2" onClick={handleClose}>
-              <X size={22} className="text-gray-700 dark:text-gray-200" />
+              <X
+                size={22}
+                className={`${dark ? "text-gray-100" : "bg-white"}`}
+              />
             </button>
           </div>
 
@@ -101,9 +104,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           {/* Logout */}
           <button
             onClick={logout}
-            className="flex items-center gap-3 text-red-500 mt-6 p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-700/30 transition-all duration-200"
+            className="flex items-center gap-3 mt-6 px-5 py-3 rounded-xl text-red-500 font-semiboldbg-red-50 dark:bg-red-900/20 hover:bg-red-500 hover:text-white dark:hover:bg-red-600 transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-red-500/30 active:scale-95"
           >
-            <LogOut size={20} />
+            <LogOut
+              size={20}
+              className="transition-transform duration-300 group-hover:rotate-12"
+            />
             Logout
           </button>
         </div>

@@ -125,7 +125,7 @@ const CaseStudiesDashboard = () => {
           {/* Button */}
           <button
             onClick={openAddModal}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full sm:w-auto"
+            className="flex items-center font-semibold justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full sm:w-auto"
           >
             <Plus size={18} />
             Add Case Study

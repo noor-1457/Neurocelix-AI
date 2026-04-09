@@ -28,7 +28,7 @@ const Analytics = () => {
     );
 
   return (
-    <div className="sm:p-6 min-h-screen">
+    <div className="p-4 sm:p-6 min-h-screen">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6">
         Analytics Dashboard
       </h1>

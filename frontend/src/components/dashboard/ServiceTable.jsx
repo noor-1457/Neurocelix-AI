@@ -88,7 +88,7 @@ const ServiceTable = ({
                 key={service._id}
                 className={`border-t ${
                   dark
-                    ? "border-purple-700 hover:bg-purple-700"
+                    ? "border-purple-700"
                     : "border-gray-200 hover:bg-gray-50"
                 }`}
               >

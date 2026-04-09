@@ -16,7 +16,7 @@ const Topbar = ({ setIsOpen }) => {
         {/* Mobile Sidebar Button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="lg:hidden text-gray-700 dark:text-gray-200"
+          className={`lg:hidden ${dark ? "text-gray-100" : "bg-white"}`}
         >
           <Menu size={24} />
         </button>
@@ -31,7 +31,7 @@ const Topbar = ({ setIsOpen }) => {
 
         {/* Title (optional) */}
         <h1 className="hidden sm:block font-semibold text-gray-800 dark:text-white">
-         Admin Dashboard
+          Admin Dashboard
         </h1>
       </div>
 
@@ -47,7 +47,7 @@ const Topbar = ({ setIsOpen }) => {
     shadow-md`}
         >
           {dark ? (
-            <Sun  className="w-5 h-5 transition-all duration-300 rotate-0" />
+            <Sun className="w-5 h-5 transition-all duration-300 rotate-0" />
           ) : (
             <Moon className="w-5 h-5 transition-all duration-300 rotate-0" />
           )}

@@ -37,7 +37,7 @@ const CaseStudiesTable = ({
                 key={study._id}
                 className={`border-t ${
                   dark
-                    ? "border-purple-700 hover:bg-purple-700 hover:text-white"
+                    ? "border-purple-700"
                     : "hover:bg-gray-50"
                 }`}
               >
