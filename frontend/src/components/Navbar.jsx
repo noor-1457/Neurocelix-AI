@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
+
 
 export default function Navbar({ dark, setDark }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,25 +17,30 @@ export default function Navbar({ dark, setDark }) {
     { name: "Contact", path: "/contact" },
   ];
 
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
+  }, [isOpen]);
+
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 shadow-md transition-colors duration-500 ${
-        dark ? "bg-gray-800" : "bg-white"
+      className={`fixed top-0 left-0 w-full z-50 shadow-md transition-colors duration-300 ${
+        dark ? "bg-gray-900" : "bg-white"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      {/* Navbar Top */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-[#8F00FF]">
+        <Link to="/" className="text-xl md:text-2xl font-bold text-[#8F00FF]">
           Neurocelix AI
         </Link>
 
-        {/* Desktop Links */}
+        {/* Desktop Menu */}
         <div className="hidden lg:flex space-x-8">
-          {navLinks.map((link, index) => (
+          {navLinks.map((link, i) => (
             <Link
-              key={index}
+              key={i}
               to={link.path}
-              className="text-[#8F00FF] font-medium hover:text-[#8F00FF] transition relative group"
+              className="text-[#8F00FF] font-medium relative group"
             >
               {link.name}
               <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#8F00FF] transition-all duration-300 group-hover:w-full"></span>
@@ -42,70 +48,82 @@ export default function Navbar({ dark, setDark }) {
           ))}
         </div>
 
-        {/* Desktop Dark Mode Toggle & Login */}
-        <div className="hidden lg:flex items-center space-x-4">
+        {/* Desktop Right */}
+        <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={() => setDark(!dark)}
-            className={`
-              relative flex items-center border justify-center
-              w-11 h-11 rounded-xl
-             ${dark ? "bg-purple-700" : "bg-white"}
-              shadow-md`}
+            className="w-11 h-11 rounded-xl flex items-center justify-center shadow bg-gray-200 dark:bg-purple-700"
           >
-            {dark ? (
-              <Sun className="w-5 h-5 transition-all duration-300 rotate-0" />
-            ) : (
-              <Moon className="w-5 h-5 transition-all duration-300 rotate-0" />
-            )}
+            {dark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           <Link
             to="/auth"
-            className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white hover:bg-[#8F00FF] transition-colors"
+            className="px-4 py-2 rounded-lg bg-[#8F00FF] text-white"
           >
             Admin
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(true)}
           className="lg:hidden text-black dark:text-white"
         >
-          {isOpen ? <X size={26} /> : <Menu size={26} />}
+          <Menu size={28} />
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="lg:hidden px-6 pb-6 space-y-4 transition-all duration-500 bg-white dark:bg-gray-800">
-          {navLinks.map((link, index) => (
+      {/* ================= MOBILE DRAWER ================= */}
+
+      <div
+        className={`fixed top-0 left-0 w-full h-screen lg:hidden
+        transition-all duration-500 p-4
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        ${dark ? "bg-gray-900" : "bg-white"}
+       `}
+       >
+        {/* Header */}
+        <div className="flex justify-between items-center px-6 py-4 border-b dark:border-gray-700">
+          <h2 className="text-lg font-bold text-[#8F00FF]">Neurocelix AI</h2>
+
+          <button onClick={() => setIsOpen(false)}>
+            <X size={28} />
+          </button>
+        </div>
+
+        {/* Links */}
+        <div className="flex flex-col gap-4 mx-2 my-3 text-lg">
+          {navLinks.map((link, i) => (
             <Link
-              key={index}
+              key={i}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="block text-gray-700 dark:text-gray-200 hover:text-[#800000] transition-colors"
+              className="font-medium text-gray-700 dark:text-gray-200"
             >
               {link.name}
             </Link>
           ))}
+        </div>
 
+        {/* Bottom Actions */}
+        <div className="space-y-4">
           <Link
             to="/auth"
-            className="block px-4 py-2 bg-[#8F00FF] text-white rounded-lg hover:bg-[#800000] transition-colors"
+            onClick={() => setIsOpen(false)}
+            className="block text-center py-3 rounded-lg bg-[#8F00FF] text-white font-semibold"
           >
-            Login
+            Admin Login
           </Link>
 
-          {/* Mobile Dark Mode Toggle */}
           <button
             onClick={() => setDark(!dark)}
-            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-black dark:text-white transition-colors"
+            className="w-full flex justify-center py-3 rounded-lg bg-gray-200 dark:bg-purple-700"
           >
-            {dark ? "☀" : "🌙"}
+            {dark ? <Sun /> : <Moon />}
           </button>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
