@@ -2,7 +2,8 @@
     "services": {
         "frontend": {
             "root": "frontend",
-            "framework": "vite"
+            "framework": "vite",
+            "output": "dist"
         },
         "backend": {
             "root": "backend",
@@ -19,8 +20,10 @@
         },
         {
             "source": "/(.*)",
-            "destination": "/index.html"
+            "destination": {
+                "type": "service",
+                "service": "frontend"
+            }
         }
-    ],
-    "output": "frontend/dist"
+    ]
 }
