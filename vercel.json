@@ -16,6 +16,11 @@
                 "type": "service",
                 "service": "backend"
             }
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
-    ]
+    ],
+    "output": "frontend/dist"
 }
