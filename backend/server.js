@@ -28,11 +28,9 @@ app.get('/api/health', (req, res) => res.json({ status: 'OK', message: 'Codeceli
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('MongoDB Connected');
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`Server running on port ${process.env.PORT || 5000}`);
-    });
   })
   .catch(err => {
     console.error('MongoDB connection error:', err);
-    process.exit(1);
   });
+
+module.exports = app;
