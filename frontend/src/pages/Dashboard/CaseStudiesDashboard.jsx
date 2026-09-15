@@ -1,0 +1,259 @@
+import React, { useEffect, useState, useContext } from "react";
+import { Plus } from "lucide-react";
+import CaseStudiesTable from "../../components/dashboard/CaseStudiesTable";
+import { AuthContext } from "../../context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCaseStudies,
+  addCaseStudy,
+  updateCaseStudy,
+  deleteCaseStudy,
+} from "../../features/caseStudies/caseStudySlice";
+
+const CaseStudiesDashboard = () => {
+  const dispatch = useDispatch();
+
+  const { caseStudies, loading } = useSelector((state) => state.caseStudies);
+
+  const { dark } = useContext(AuthContext);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    client: "",
+    category: "",
+    results: "",
+    tags: "",
+  });
+
+  // FETCH
+  useEffect(() => {
+    dispatch(fetchCaseStudies());
+  }, [dispatch]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const openAddModal = () => {
+    setEditingId(null);
+    setFormData({
+      title: "",
+      description: "",
+      client: "",
+      category: "",
+      results: "",
+      tags: "",
+    });
+    setOpenModal(true);
+  };
+
+  const openEditModal = (study) => {
+    setEditingId(study._id);
+
+    setFormData({
+      title: study.title || "",
+      description: study.description || "",
+      client: study.client || "",
+      category: study.category || "",
+      results: study.results?.join(", ") || "",
+      tags: study.tags?.join(", ") || "",
+    });
+
+    setOpenModal(true);
+  };
+
+  // SUBMIT
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const payload = {
+      title: formData.title,
+      description: formData.description,
+      client: formData.client,
+      category: formData.category,
+      results: formData.results
+        .split(",")
+        .map((r) => r.trim())
+        .filter(Boolean),
+      tags: formData.tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    };
+
+    if (editingId) {
+      dispatch(updateCaseStudy({ id: editingId, data: payload }));
+    } else {
+      dispatch(addCaseStudy(payload));
+    }
+
+    setOpenModal(false);
+  };
+
+  const handleDelete = (id) => {
+    if (!window.confirm("Delete this case study?")) return;
+    dispatch(deleteCaseStudy(id));
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+        <div className="w-15 h-15 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`p-4 md:p-6 ${dark ? "bg-gray-900 text-white" : ""}`}>
+      {/* HEADER */}
+      <div
+        className={` ${
+          dark ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+        } rounded-xl shadow mb-4`}
+      >
+        <div
+          className={` flex flex-col sm:flex-row sm:items-center p-4 md:p-6 sm:justify-between gap-4`}
+        >
+          {/* Title */}
+          <h1 className="text-xl md:text-2xl font-bold">Case Studies</h1>
+
+          {/* Button */}
+          <button
+            onClick={openAddModal}
+            className="flex items-center font-semibold justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full sm:w-auto"
+          >
+            <Plus size={18} />
+            Add Case Study
+          </button>
+        </div>
+      </div>
+
+      <CaseStudiesTable
+        caseStudies={caseStudies}
+        openEditModal={openEditModal}
+        deleteCaseStudy={handleDelete}
+        dark={dark}
+      />
+
+      {openModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          {/* Modal Box */}
+          <div
+            className={`rounded-xl shadow-2xl p-6 w-full max-w-lg space-y-3 ${
+              dark
+                ? "bg-gray-900 border border-gray-700 text-white"
+                : "bg-white text-gray-800"
+            }`}
+          >
+            <h2 className="text-xl font-semibold mb-2">
+              {editingId ? "Edit Case Study" : "Add Case Study"}
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Title"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              <input
+                name="client"
+                value={formData.client}
+                onChange={handleChange}
+                placeholder="Client"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              <input
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="Category"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Description"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              <input
+                name="results"
+                value={formData.results}
+                onChange={handleChange}
+                placeholder="Results (comma separated)"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              <input
+                name="tags"
+                value={formData.tags}
+                onChange={handleChange}
+                placeholder="Tags (comma separated)"
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  dark
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                    : "bg-white border-gray-300"
+                }`}
+              />
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-2 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setOpenModal(false)}
+                  className={`px-4 py-2 rounded-lg ${
+                    dark
+                      ? "bg-gray-700 hover:bg-gray-600 text-white"
+                      : "bg-gray-400 text-white"
+                  }`}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition"
+                >
+                  {editingId ? "Update" : "Add"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CaseStudiesDashboard;
